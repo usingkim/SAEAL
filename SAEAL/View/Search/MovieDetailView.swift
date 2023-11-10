@@ -9,8 +9,14 @@ import SwiftUI
 
 struct MovieDetailView: View {
     
+    @Environment(\.dismiss) var dismiss
+    
+    @ObservedObject var myMedias: MyMediaService
+    
     @State var movie: Movie
     @State private var movieDetail: MovieDetail?
+    @State private var isShowingSaveSheet: Bool = false
+    @State private var status: Status = .bookmark
     
     var body: some View {
         VStack {
@@ -29,6 +35,19 @@ struct MovieDetailView: View {
                 }
             }
         }
+        .toolbar(content: {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    myMedias.addMedia(newMedia: Media(type: .movie, title: movie.title, MovieID: movie.id, runtime: [movieDetail?.runtime ?? 0]))
+                    dismiss()
+                }, label: {
+                    Text("저장")
+                })
+                .sheet(isPresented: $isShowingSaveSheet, content: {
+                    SaveSheet(status: $status)
+                })
+            }
+        })
     }
     
     

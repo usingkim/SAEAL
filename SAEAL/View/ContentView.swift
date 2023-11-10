@@ -10,10 +10,19 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @StateObject var myMedias: MyMediaService = MyMediaService()
+    
     var body: some View {
-        NavigationStack {
-            SearchView()
+        TabView {
+            NavigationStack {
+                SearchView(myMedias: myMedias)
+            }
+            .tabItem { Text("검색") }
+            
+            MyMediaView(myMedias: myMedias)
+            .tabItem { Text("필모") }
         }
+        
     }
     
     
