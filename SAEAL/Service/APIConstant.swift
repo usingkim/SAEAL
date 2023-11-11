@@ -14,4 +14,5 @@ struct APIConstant {
     static var apiKey = ""
     
     static var baseURL = "https://api.themoviedb.org/3/"
+    static var imageURL = "https://image.tmdb.org/t/p/original/"
 }
