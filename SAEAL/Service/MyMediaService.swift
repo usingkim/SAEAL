@@ -14,6 +14,13 @@ class MyMediaService: ObservableObject {
     
     func addMedia(newMedia: Media) {
         myMedias.append(newMedia)
+        
+        if newMedia.status == .end {
+            // Account.time += 러닝타임
+        }
+        else if newMedia.status == .ing {
+            // Account.time += 시청 시간
+        }
     }
     
     func filterStatus(status: Status?) {

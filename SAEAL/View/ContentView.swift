@@ -14,6 +14,9 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
+            ViewingTimeView()
+                .tabItem { Text("시청 시간") }
+            
             NavigationStack {
                 SearchView(myMedias: myMedias)
             }
