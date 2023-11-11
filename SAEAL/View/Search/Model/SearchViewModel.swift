@@ -6,8 +6,8 @@
 //
 
 import Foundation
-// MARK: - Welcome
-struct SearchResult: Codable {
+
+struct SearchViewModel: Codable {
     let page: Int
     let results: [Movie]
     let totalPages, totalResults: Int

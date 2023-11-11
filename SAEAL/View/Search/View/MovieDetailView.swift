@@ -38,18 +38,40 @@ struct MovieDetailView: View {
         .toolbar(content: {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    myMedias.addMedia(newMedia: Media(type: .movie, title: movie.title, MovieID: movie.id, runtime: [movieDetail?.runtime ?? 0]))
-                    dismiss()
+                    isShowingSaveSheet = true
                 }, label: {
                     Text("저장")
                 })
                 .sheet(isPresented: $isShowingSaveSheet, content: {
-                    SaveSheet(status: $status)
+                    saveSheet
                 })
             }
         })
     }
     
+    var saveSheet: some View {
+        VStack {
+            HStack {
+                ForEach(Status.allCases, id:\.self) { s in
+                    Button {
+                        status = s
+                    } label: {
+                        Text(s.statusString)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            
+            Button {
+                myMedias.addMedia(newMedia: Media(type: .movie, title: movie.title, MovieID: movie.id, runtime: [movieDetail?.runtime ?? 0], status: status))
+                isShowingSaveSheet = false
+                dismiss()
+            } label: {
+                Text("저장")
+            }
+
+        }
+    }
     
 }
 //

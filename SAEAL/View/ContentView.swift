@@ -19,9 +19,12 @@ struct ContentView: View {
             }
             .tabItem { Text("검색") }
             
-            MyMediaView(myMedias: myMedias)
+            NavigationStack {
+                MyMediaView(myMedias: myMedias)
+            }
             .tabItem { Text("필모") }
         }
+        
         
     }
     

@@ -7,6 +7,7 @@
 
 import Foundation
 
+// 나의 미디어(드라마/ 영화)
 struct Media: Identifiable {
     var id: UUID = UUID()
     
@@ -15,6 +16,8 @@ struct Media: Identifiable {
     var MovieID: Int
     var runtime: [Int]
     var posterLink: String?
+    var touchedTime: Date = Date.now
+    var status: Status
     
     var allOfRunTime: Int {
         var sum = 0

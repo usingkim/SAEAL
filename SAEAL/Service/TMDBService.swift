@@ -43,7 +43,7 @@ struct TMDBService {
         
         do {
             (data, _) = try await session.data(for: urlRequest)
-            let dataDecoded = try JSONDecoder().decode(SearchResult.self, from: data)
+            let dataDecoded = try JSONDecoder().decode(SearchViewModel.self, from: data)
             
             return dataDecoded.results
         }
