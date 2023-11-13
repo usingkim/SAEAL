@@ -21,7 +21,7 @@ struct TMDBService {
     }
     
     /// 검색을 통해 Movie 리스트를 리턴
-    static func findMoviebyString(word: String) async -> [Movie]? {
+    static func findMoviebyString(word: String) async -> [SearchMovie]? {
         
         let urlString = APIConstant.baseURL + "search/movie"
         let URL = URL(string: urlString)!

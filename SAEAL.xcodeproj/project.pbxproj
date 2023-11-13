@@ -7,7 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C4D3085F2AFE01370005053E /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D3085E2AFE01360005053E /* Movie.swift */; };
+		C4A5B2CD2B0253EA00BECFEB /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A5B2CC2B0253EA00BECFEB /* Movie.swift */; };
+		C4A5B2D02B0253FE00BECFEB /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = C4A5B2CF2B0253FE00BECFEB /* Realm */; };
+		C4A5B2D22B0253FE00BECFEB /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C4A5B2D12B0253FE00BECFEB /* RealmSwift */; };
+		C4D3085F2AFE01370005053E /* SearchMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D3085E2AFE01360005053E /* SearchMovie.swift */; };
 		C4D308612AFE014D0005053E /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D308602AFE014D0005053E /* SearchViewModel.swift */; };
 		C4D308632AFE05C70005053E /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D308622AFE05C70005053E /* MovieDetail.swift */; };
 		C4D308662AFE1E050005053E /* MovieDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D308652AFE1E050005053E /* MovieDetailView.swift */; };
@@ -29,7 +32,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		C4D3085E2AFE01360005053E /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		C4A5B2CC2B0253EA00BECFEB /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		C4D3085E2AFE01360005053E /* SearchMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovie.swift; sourceTree = "<group>"; };
 		C4D308602AFE014D0005053E /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		C4D308622AFE05C70005053E /* MovieDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetail.swift; sourceTree = "<group>"; };
 		C4D308652AFE1E050005053E /* MovieDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailView.swift; sourceTree = "<group>"; };
@@ -55,6 +59,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C4A5B2D22B0253FE00BECFEB /* RealmSwift in Frameworks */,
+				C4A5B2D02B0253FE00BECFEB /* Realm in Frameworks */,
 				C4D308822AFF1AD30005053E /* Kingfisher in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -68,6 +74,7 @@
 				C4D308852AFF37B20005053E /* Account.swift */,
 				C4D308712AFE51A90005053E /* Enums.swift */,
 				C4D308792AFE53B80005053E /* Media.swift */,
+				C4A5B2CC2B0253EA00BECFEB /* Movie.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -97,8 +104,8 @@
 		C4D308772AFE53400005053E /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				C4D3087D2AFF188F0005053E /* Model */,
 				C4D3087E2AFF189B0005053E /* View */,
+				C4D3087D2AFF188F0005053E /* ViewModel */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -111,14 +118,14 @@
 			path = MyMedia;
 			sourceTree = "<group>";
 		};
-		C4D3087D2AFF188F0005053E /* Model */ = {
+		C4D3087D2AFF188F0005053E /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				C4D308602AFE014D0005053E /* SearchViewModel.swift */,
-				C4D3085E2AFE01360005053E /* Movie.swift */,
+				C4D3085E2AFE01360005053E /* SearchMovie.swift */,
 				C4D308622AFE05C70005053E /* MovieDetail.swift */,
 			);
-			path = Model;
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		C4D3087E2AFF189B0005053E /* View */ = {
@@ -193,6 +200,8 @@
 			name = SAEAL;
 			packageProductDependencies = (
 				C4D308812AFF1AD30005053E /* Kingfisher */,
+				C4A5B2CF2B0253FE00BECFEB /* Realm */,
+				C4A5B2D12B0253FE00BECFEB /* RealmSwift */,
 			);
 			productName = RunningTime;
 			productReference = C4D6C7402AFBAE2400072148 /* SAEAL.app */;
@@ -224,6 +233,7 @@
 			mainGroup = C4D6C7372AFBAE2400072148;
 			packageReferences = (
 				C4D308802AFF1AD30005053E /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				C4A5B2CE2B0253FE00BECFEB /* XCRemoteSwiftPackageReference "realm-swift" */,
 			);
 			productRefGroup = C4D6C7412AFBAE2400072148 /* Products */;
 			projectDirPath = "";
@@ -265,8 +275,9 @@
 				C4D308612AFE014D0005053E /* SearchViewModel.swift in Sources */,
 				C4D308762AFE53380005053E /* MyMediaView.swift in Sources */,
 				C4D308842AFF37940005053E /* ViewingTimeView.swift in Sources */,
-				C4D3085F2AFE01370005053E /* Movie.swift in Sources */,
+				C4D3085F2AFE01370005053E /* SearchMovie.swift in Sources */,
 				C4D308722AFE51A90005053E /* Enums.swift in Sources */,
+				C4A5B2CD2B0253EA00BECFEB /* Movie.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +493,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C4A5B2CE2B0253FE00BECFEB /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		C4D308802AFF1AD30005053E /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher";
@@ -493,6 +512,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C4A5B2CF2B0253FE00BECFEB /* Realm */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4A5B2CE2B0253FE00BECFEB /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = Realm;
+		};
+		C4A5B2D12B0253FE00BECFEB /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C4A5B2CE2B0253FE00BECFEB /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
 		C4D308812AFF1AD30005053E /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C4D308802AFF1AD30005053E /* XCRemoteSwiftPackageReference "Kingfisher" */;

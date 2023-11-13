@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @StateObject var myMedias: MyMediaService = MyMediaService()
+    @StateObject var myMediaService: MyMediaService = MyMediaService()
     
     var body: some View {
         TabView {
@@ -18,14 +18,17 @@ struct ContentView: View {
                 .tabItem { Text("시청 시간") }
             
             NavigationStack {
-                SearchView(myMedias: myMedias)
+                SearchView(myMediaService: myMediaService)
             }
             .tabItem { Text("검색") }
             
             NavigationStack {
-                MyMediaView(myMedias: myMedias)
+                MyMediaView(myMediaService: myMediaService)
             }
             .tabItem { Text("필모") }
+        }
+        .onAppear {
+            myMediaService.fetchAllMovie()
         }
         
         

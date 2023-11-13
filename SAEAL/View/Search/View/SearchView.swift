@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct SearchView: View {
-    @ObservedObject var myMedias: MyMediaService
+    @ObservedObject var myMediaService: MyMediaService
     
     @State private var searchText: String = "iron man"
-    @State private var movies: [Movie] = []
+    @State private var movies: [SearchMovie] = []
     @State private var isShowingAlert: Bool = false
     
     var body: some View {
@@ -38,7 +38,7 @@ struct SearchView: View {
         
         List(movies, id:\.self) { movie in
             NavigationLink {
-                MovieDetailView(myMedias: myMedias, movie: movie)
+                MovieDetailView(myMedias: myMediaService, movie: movie)
             } label: {
                 Text("\(movie.title)")
             }
@@ -50,5 +50,5 @@ struct SearchView: View {
 }
 
 #Preview {
-    SearchView(myMedias: MyMediaService())
+    SearchView(myMediaService: MyMediaService())
 }

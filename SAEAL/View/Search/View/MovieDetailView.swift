@@ -13,7 +13,7 @@ struct MovieDetailView: View {
     
     @ObservedObject var myMedias: MyMediaService
     
-    @State var movie: Movie
+    @State var movie: SearchMovie
     @State private var movieDetail: MovieDetail?
     @State private var isShowingSaveSheet: Bool = false
     @State private var status: Status = .bookmark
@@ -63,7 +63,7 @@ struct MovieDetailView: View {
             }
             
             Button {
-                myMedias.addMedia(newMedia: Media(type: .movie, title: movie.title, MovieID: movie.id, runtime: [movieDetail?.runtime ?? 0], posterLink: movie.posterPath, status: status))
+                myMedias.addMovie(newMovie: Movie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.hashValue))
                 isShowingSaveSheet = false
                 dismiss()
             } label: {

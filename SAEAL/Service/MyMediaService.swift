@@ -7,32 +7,25 @@
 
 import Foundation
 
-class MyMediaService: ObservableObject {
-    // Singleton 고민해보기
-    @Published var myMedias: [Media] = []
-    @Published var filteredMedias: [Media] = []
+final class MyMediaService: ObservableObject {
+    @Published var myMovies: [Movie] = []
     
-    func addMedia(newMedia: Media) {
-        myMedias.append(newMedia)
-        
-        if newMedia.status == .end {
-            // Account.time += 러닝타임
-        }
-        else if newMedia.status == .ing {
-            // Account.time += 시청 시간
-        }
+    func addMovie(newMovie: Movie) {
+        myMovies.append(newMovie)
+        Movie.addMovie(newMovie)
     }
     
-    func filterStatus(status: Status?) {
-        if status == nil {
-            filteredMedias = myMedias
-        }
-        else {
-            for media in myMedias {
-                if media.status == status {
-                    filteredMedias.append(media)
-                }
-            }
-        }
+    func delMovie(movie: Movie) {
+        Movie.delMovie(movie)
+        self.fetchAllMovie()
+    }
+    
+    func editMovie(oldMovie: Movie, newMovie: Movie) {
+        Movie.editMovie(oldMovie: oldMovie, newMovie: newMovie)
+        self.fetchAllMovie()
+    }
+    
+    func fetchAllMovie() {
+        myMovies = Array(Movie.findAll())
     }
 }
