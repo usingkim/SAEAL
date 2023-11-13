@@ -14,20 +14,38 @@ struct MyMediaView: View {
     
     var body: some View {
         VStack {
-            //            Menu {
-            //                Picker(selection: $status, label: Text("Sorting options")) {
-            //                    ForEach(Status.allCases, id:\.self) { status in
-            //                        Text(status.statusString)
-            //                    }
-            //                }
-            //            } label: {
-            //                Text("상태값")
-            //            }
-            //            .onChange(of: status, perform: { value in
-            //                myMedias.filterStatus(status: status)
-            //            })
+            HStack {
+                Button(action: {
+                    status = nil
+                    myMediaService.filterMovies(status: status?.hashValue ?? -1)
+                }, label: {
+                    Text("전체")
+                })
+                
+                Button(action: {
+                    status = .bookmark
+                    myMediaService.filterMovies(status: status?.hashValue ?? -1)
+                }, label: {
+                    Text(Status.bookmark.statusString)
+                })
+                
+                Button(action: {
+                    status = .ing
+                    myMediaService.filterMovies(status: status?.hashValue ?? -1)
+                }, label: {
+                    Text(Status.ing.statusString)
+                })
+                
+                Button(action: {
+                    status = .end
+                    myMediaService.filterMovies(status: status?.hashValue ?? -1)
+                }, label: {
+                    Text(Status.end.statusString)
+                })
+            }
+            
             List {
-                ForEach(myMediaService.myMovies) { movie in
+                ForEach(myMediaService.filteredMovies) { movie in
                     NavigationLink {
                         Text(movie.title)
                     } label: {
@@ -35,8 +53,8 @@ struct MyMediaView: View {
                             KFImage(URL(string: APIConstant.imageURL + poster))
                                 .retry(maxCount: 3, interval: .seconds(5))
                                 .resizable()
-                                .frame(width: 128, height: 128) //resize
-                                .cornerRadius(20) //둥근 코너 설정
+                                .frame(width: 128, height: 128)
+                                .cornerRadius(20)
                                 .shadow(radius: 5)
                         }
                         else {
@@ -52,18 +70,8 @@ struct MyMediaView: View {
                         } label: {
                             Text("삭제")
                         }
-                        
-                        Button(role: .none) {
-                            // 확인해봐야한다.
-//                            myMedias.editMovie(oldMovie: <#T##Movie#>, newMovie: <#T##Movie#>)
-                            
-                        } label: {
-                            Text("수정")
-                        }
                     }
-                    
                 }
-                
             }
         }
     }

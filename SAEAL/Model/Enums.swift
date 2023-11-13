@@ -22,6 +22,19 @@ enum Status: CaseIterable {
             return "다 봤어요!"
         }
     }
+    
+    static func getStatusByInt(_ statusNum: Int)-> Status? {
+        switch statusNum {
+        case 0:
+            return .bookmark
+        case 1:
+            return .ing
+        case 2:
+            return .end
+        default:
+            return nil
+        }
+    }
 }
 
 enum MediaType {

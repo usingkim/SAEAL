@@ -60,6 +60,7 @@ final class Movie: Object, ObjectKeyIdentifiable {
     
     static func delMovie(_ movie: Movie) {
         // FIXME: ERROR!!!!
+        // Thread 1: "Object has been deleted or invalidated."
         do {
             try realm.write {
                 realm.delete(movie)
@@ -69,22 +70,5 @@ final class Movie: Object, ObjectKeyIdentifiable {
             print("DELETE ERROR!!!")
         }
         
-    }
-    
-    
-    static func editMovie(oldMovie: Movie, newMovie: Movie) {
-        do {
-            try realm.write {
-                oldMovie.title = newMovie.title
-                oldMovie.MovieID = newMovie.MovieID
-                oldMovie.runtime = newMovie.runtime
-                oldMovie.posterLink = newMovie.posterLink
-                oldMovie.touchedTime = newMovie.touchedTime
-                oldMovie.status = newMovie.status
-            }
-        }
-        catch {
-            print("EDIT ERROR!!!")
-        }
     }
 }
