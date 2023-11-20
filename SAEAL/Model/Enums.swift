@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Status: CaseIterable {
+enum Status: Int, CaseIterable {
     case bookmark
     case ing
     case end

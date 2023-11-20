@@ -12,6 +12,24 @@ final class MyMediaService: ObservableObject {
     @Published var filteredMovies: [Movie] = []
     
     private var recentStatus: Int = -1
+    public var myRunningTime: Int {
+        if myMovies.isEmpty {
+            return -1
+        }
+        
+        var sum = 0
+        for movie in myMovies {
+            
+            if movie.status == Status.end.rawValue {
+                sum += movie.runtime
+            }
+            
+            else if movie.status == Status.ing.rawValue {
+                // sum += 본 만큼만
+            }
+        }
+        return sum
+    }
     
     func addMovie(newMovie: Movie) {
         myMovies.append(newMovie)
@@ -32,7 +50,7 @@ final class MyMediaService: ObservableObject {
     func filterMovies(status: Int) {
         recentStatus = status
         
-        if let s = Status.getStatusByInt(status) {
+        if let _ = Status.getStatusByInt(status) {
             filteredMovies = myMovies.filter { movie in
                 movie.status == status
             }

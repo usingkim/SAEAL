@@ -62,8 +62,10 @@ struct MovieDetailView: View {
                 }
             }
             
+            Text("\(status.statusString)")
+            
             Button {
-                myMedias.addMovie(newMovie: Movie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.hashValue))
+                myMedias.addMovie(newMovie: Movie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue))
                 isShowingSaveSheet = false
                 dismiss()
             } label: {

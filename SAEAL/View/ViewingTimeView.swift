@@ -8,13 +8,14 @@
 import SwiftUI
 
 struct ViewingTimeView: View {
+    @ObservedObject var myMediaService: MyMediaService
     var body: some View {
         VStack {
-            Text("170H 50M 22S")
+            Text("\(myMediaService.myRunningTime / 60)시간 \(myMediaService.myRunningTime % 60)분")
         }
     }
 }
 
 #Preview {
-    ViewingTimeView()
+    ViewingTimeView(myMediaService: MyMediaService())
 }
