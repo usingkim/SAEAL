@@ -10,6 +10,8 @@
 		C4A5B2CD2B0253EA00BECFEB /* Movie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A5B2CC2B0253EA00BECFEB /* Movie.swift */; };
 		C4A5B2D02B0253FE00BECFEB /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = C4A5B2CF2B0253FE00BECFEB /* Realm */; };
 		C4A5B2D22B0253FE00BECFEB /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C4A5B2D12B0253FE00BECFEB /* RealmSwift */; };
+		C4BBF5652B0B233A00C1A409 /* MyMediaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BBF5642B0B233A00C1A409 /* MyMediaDetailView.swift */; };
+		C4BBF5672B0B2A6000C1A409 /* SaveSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BBF5662B0B2A6000C1A409 /* SaveSheetView.swift */; };
 		C4D3085F2AFE01370005053E /* SearchMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D3085E2AFE01360005053E /* SearchMovie.swift */; };
 		C4D308612AFE014D0005053E /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D308602AFE014D0005053E /* SearchViewModel.swift */; };
 		C4D308632AFE05C70005053E /* MovieDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D308622AFE05C70005053E /* MovieDetail.swift */; };
@@ -18,7 +20,7 @@
 		C4D3086C2AFE42410005053E /* TMDBService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D3086B2AFE42410005053E /* TMDBService.swift */; };
 		C4D3086E2AFE482A0005053E /* APIConstant.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D3086D2AFE482A0005053E /* APIConstant.swift */; };
 		C4D308722AFE51A90005053E /* Enums.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D308712AFE51A90005053E /* Enums.swift */; };
-		C4D308742AFE52F80005053E /* MyPageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D308732AFE52F80005053E /* MyPageView.swift */; };
+		C4D308742AFE52F80005053E /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D308732AFE52F80005053E /* SettingView.swift */; };
 		C4D308762AFE53380005053E /* MyMediaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D308752AFE53380005053E /* MyMediaView.swift */; };
 		C4D3087A2AFE53B80005053E /* Media.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D308792AFE53B80005053E /* Media.swift */; };
 		C4D3087C2AFE57BB0005053E /* MyMediaService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4D3087B2AFE57BB0005053E /* MyMediaService.swift */; };
@@ -33,6 +35,8 @@
 
 /* Begin PBXFileReference section */
 		C4A5B2CC2B0253EA00BECFEB /* Movie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Movie.swift; sourceTree = "<group>"; };
+		C4BBF5642B0B233A00C1A409 /* MyMediaDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMediaDetailView.swift; sourceTree = "<group>"; };
+		C4BBF5662B0B2A6000C1A409 /* SaveSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveSheetView.swift; sourceTree = "<group>"; };
 		C4D3085E2AFE01360005053E /* SearchMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovie.swift; sourceTree = "<group>"; };
 		C4D308602AFE014D0005053E /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		C4D308622AFE05C70005053E /* MovieDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetail.swift; sourceTree = "<group>"; };
@@ -41,7 +45,7 @@
 		C4D3086B2AFE42410005053E /* TMDBService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TMDBService.swift; sourceTree = "<group>"; };
 		C4D3086D2AFE482A0005053E /* APIConstant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIConstant.swift; sourceTree = "<group>"; };
 		C4D308712AFE51A90005053E /* Enums.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enums.swift; sourceTree = "<group>"; };
-		C4D308732AFE52F80005053E /* MyPageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageView.swift; sourceTree = "<group>"; };
+		C4D308732AFE52F80005053E /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		C4D308752AFE53380005053E /* MyMediaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMediaView.swift; sourceTree = "<group>"; };
 		C4D308792AFE53B80005053E /* Media.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Media.swift; sourceTree = "<group>"; };
 		C4D3087B2AFE57BB0005053E /* MyMediaService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMediaService.swift; sourceTree = "<group>"; };
@@ -83,10 +87,11 @@
 			isa = PBXGroup;
 			children = (
 				C4D6C7452AFBAE2400072148 /* ContentView.swift */,
+				C4D308832AFF37940005053E /* ViewingTimeView.swift */,
 				C4D308772AFE53400005053E /* Search */,
 				C4D308782AFE53580005053E /* MyMedia */,
-				C4D308732AFE52F80005053E /* MyPageView.swift */,
-				C4D308832AFF37940005053E /* ViewingTimeView.swift */,
+				C4D308732AFE52F80005053E /* SettingView.swift */,
+				C4BBF5662B0B2A6000C1A409 /* SaveSheetView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -114,6 +119,7 @@
 			isa = PBXGroup;
 			children = (
 				C4D308752AFE53380005053E /* MyMediaView.swift */,
+				C4BBF5642B0B233A00C1A409 /* MyMediaDetailView.swift */,
 			);
 			path = MyMedia;
 			sourceTree = "<group>";
@@ -269,14 +275,16 @@
 				C4D308862AFF37B20005053E /* Account.swift in Sources */,
 				C4D6C7442AFBAE2400072148 /* RunningTimeApp.swift in Sources */,
 				C4D308692AFE41380005053E /* SearchView.swift in Sources */,
-				C4D308742AFE52F80005053E /* MyPageView.swift in Sources */,
+				C4D308742AFE52F80005053E /* SettingView.swift in Sources */,
 				C4D3086C2AFE42410005053E /* TMDBService.swift in Sources */,
 				C4D308632AFE05C70005053E /* MovieDetail.swift in Sources */,
 				C4D308612AFE014D0005053E /* SearchViewModel.swift in Sources */,
 				C4D308762AFE53380005053E /* MyMediaView.swift in Sources */,
 				C4D308842AFF37940005053E /* ViewingTimeView.swift in Sources */,
 				C4D3085F2AFE01370005053E /* SearchMovie.swift in Sources */,
+				C4BBF5672B0B2A6000C1A409 /* SaveSheetView.swift in Sources */,
 				C4D308722AFE51A90005053E /* Enums.swift in Sources */,
+				C4BBF5652B0B233A00C1A409 /* MyMediaDetailView.swift in Sources */,
 				C4A5B2CD2B0253EA00BECFEB /* Movie.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -38,7 +38,7 @@ struct SearchView: View {
         
         List(movies, id:\.self) { movie in
             NavigationLink {
-                MovieDetailView(myMedias: myMediaService, movie: movie)
+                MovieDetailView(myMediaService: myMediaService, movie: movie)
             } label: {
                 Text("\(movie.title)")
             }

@@ -20,7 +20,7 @@ final class Movie: Object, ObjectKeyIdentifiable {
     
     override init() {
         super.init()
-        self.id = ""
+        self.id = UUID().uuidString
         self.title = ""
         self.MovieID = 0
         self.runtime = 0
@@ -57,13 +57,28 @@ final class Movie: Object, ObjectKeyIdentifiable {
         return realm.objects(Movie.self)
     }
     
+    static func editMovie(movie: Movie, newStatus: Status) {
+        do {
+            try realm.write {
+                movie.status = newStatus.rawValue
+            }
+        }
+        catch {
+            print("WRITE ERROR!!!")
+        }
+    }
+    
     
     static func delMovie(_ movie: Movie) {
         // FIXME: ERROR!!!!
-        // Thread 1: "Object has been deleted or invalidated."
+        // Exception    NSException *    "'Movie' does not have a primary key defined"    0x0000600000041fe0
         do {
+            guard let movieToDelete = realm.object(ofType: Movie.self, forPrimaryKey: movie.id) else {
+                return
+            }
+            
             try realm.write {
-                realm.delete(movie)
+                realm.delete(movieToDelete)
             }
         }
         catch {

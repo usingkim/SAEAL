@@ -11,7 +11,7 @@ struct MovieDetailView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @ObservedObject var myMedias: MyMediaService
+    @ObservedObject var myMediaService: MyMediaService
     
     @State var movie: SearchMovie
     @State private var movieDetail: MovieDetail?
@@ -31,7 +31,7 @@ struct MovieDetailView: View {
                     movieDetail = detail
                 }
                 else {
-                    print("러닝 타임 정보가 없습니다.")
+                    print("영화 정보가 없습니다.")
                 }
             }
         }
@@ -43,39 +43,37 @@ struct MovieDetailView: View {
                     Text("저장")
                 })
                 .sheet(isPresented: $isShowingSaveSheet, content: {
-                    saveSheet
+                    VStack {
+                        HStack {
+                            ForEach(Status.allCases, id:\.self) { s in
+                                Button {
+                                    status = s
+                                } label: {
+                                    Text(s.statusString)
+                                }
+                                .buttonStyle(.plain)
+                            }
+                        }
+                        
+                        Text("\(status.statusString)")
+                        
+                        Button {
+                            myMediaService.addMovie(newMovie: Movie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue))
+                            isShowingSaveSheet = false
+                            dismiss()
+                        } label: {
+                            Text("저장")
+                        }
+                    }
                 })
             }
         })
     }
-    
-    var saveSheet: some View {
-        VStack {
-            HStack {
-                ForEach(Status.allCases, id:\.self) { s in
-                    Button {
-                        status = s
-                    } label: {
-                        Text(s.statusString)
-                    }
-                    .buttonStyle(.plain)
-                }
-            }
-            
-            Text("\(status.statusString)")
-            
-            Button {
-                myMedias.addMovie(newMovie: Movie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue))
-                isShowingSaveSheet = false
-                dismiss()
-            } label: {
-                Text("저장")
-            }
-
-        }
-    }
-    
 }
+
+
+                        
+
 //
 //#Preview {
 //    MovieDetailView(movie: Movie(adult: <#T##Bool#>, genreIDS: <#T##[Int]#>, id: <#T##Int#>, originalLanguage: <#T##OriginalLanguage#>, originalTitle: <#T##String#>, overview: <#T##String#>, popularity: <#T##Double#>, releaseDate: <#T##String#>, title: <#T##String#>, video: <#T##Bool#>, voteAverage: <#T##Double#>, voteCount: <#T##Int#>))

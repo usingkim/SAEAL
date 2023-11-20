@@ -26,6 +26,9 @@ struct ContentView: View {
                 MyMediaView(myMediaService: myMediaService)
             }
             .tabItem { Text("필모") }
+            
+            SettingView()
+                .tabItem { Text("설정") }
         }
         .onAppear {
             myMediaService.fetchAllMovie()

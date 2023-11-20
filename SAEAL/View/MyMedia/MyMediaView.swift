@@ -9,9 +9,11 @@ import SwiftUI
 import Kingfisher
 
 struct MyMediaView: View {
+    @Environment(\.dismiss) var dismiss
     @ObservedObject var myMediaService: MyMediaService
     @State private var status: Status?
     
+    @State private var isShowingSaveSheet: Bool = false
     let columns = [
       //추가 하면 할수록 화면에 보여지는 개수가 변함
         GridItem(.flexible()),
@@ -59,9 +61,28 @@ struct MyMediaView: View {
                 LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(myMediaService.filteredMovies) { movie in
                         NavigationLink {
-                            Text(movie.title)
-                            Text("\(movie.status)")
-                            Text(Status.getStatusByInt(movie.status)?.statusString ?? "")
+                            MyMediaDetailView(myMediaService: MyMediaService(), movie: movie)
+                                .toolbar(content: {
+                                    ToolbarItem(placement: .topBarTrailing) {
+                                        Button(action: {
+                                            isShowingSaveSheet = true
+                                        }, label: {
+                                            Text("수정")
+                                        })
+                                        .sheet(isPresented: $isShowingSaveSheet, content: {
+                                            EditSheetView(myMediaService: myMediaService, movie: movie, isShowingEditSheet: $isShowingSaveSheet)
+                                                .presentationDetents([.medium])
+                                        })
+                                    }
+                                    ToolbarItem(placement: .topBarTrailing) {
+                                        Button(action: {
+                                            dismiss()
+                                            myMediaService.delMovie(movie: movie)
+                                        }, label: {
+                                            Text("삭제")
+                                        })
+                                    }
+                                })
                         } label: {
                             if let poster = movie.posterLink {
                                 KFImage(URL(string: APIConstant.imageURL + poster))

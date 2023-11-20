@@ -11,33 +11,25 @@ final class MyMediaService: ObservableObject {
     @Published var myMovies: [Movie] = []
     @Published var filteredMovies: [Movie] = []
     
+    @Published var myRunningTime: Int = -1
+    
     private var recentStatus: Int = -1
-    public var myRunningTime: Int {
-        if myMovies.isEmpty {
-            return -1
-        }
-        
-        var sum = 0
-        for movie in myMovies {
-            
-            if movie.status == Status.end.rawValue {
-                sum += movie.runtime
-            }
-            
-            else if movie.status == Status.ing.rawValue {
-                // sum += 본 만큼만
-            }
-        }
-        return sum
-    }
     
     func addMovie(newMovie: Movie) {
         myMovies.append(newMovie)
         Movie.addMovie(newMovie)
         self.filterMovies(status: recentStatus)
+        resetRunningTime()
+    }
+    
+    func editMovie(oldMovie: Movie, newStatus: Status) {
+        Movie.editMovie(movie: oldMovie, newStatus: newStatus)
+        self.fetchAllMovie()
     }
     
     func delMovie(movie: Movie) {
+        myMovies = []
+        filteredMovies = []
         Movie.delMovie(movie)
         self.fetchAllMovie()
     }
@@ -45,6 +37,7 @@ final class MyMediaService: ObservableObject {
     func fetchAllMovie() {
         myMovies = Array(Movie.findAll())
         self.filterMovies(status: recentStatus)
+        resetRunningTime()
     }
     
     func filterMovies(status: Int) {
@@ -57,6 +50,25 @@ final class MyMediaService: ObservableObject {
         }
         else {
             filteredMovies = myMovies
+        }
+    }
+    
+    func resetRunningTime() {
+        if myMovies.isEmpty {
+            myRunningTime = 0
+            return
+        }
+        
+        myRunningTime = 0
+        for movie in myMovies {
+            
+            if movie.status == Status.end.rawValue {
+                myRunningTime += movie.runtime
+            }
+            
+            else if movie.status == Status.ing.rawValue {
+                // sum += 본 만큼만
+            }
         }
     }
 }
