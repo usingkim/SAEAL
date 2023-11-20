@@ -10,7 +10,7 @@ import SwiftUI
 struct SearchView: View {
     @ObservedObject var myMediaService: MyMediaService
     
-    @State private var searchText: String = "iron man"
+    @State private var searchText: String = ""
     @State private var movies: [SearchMovie] = []
     @State private var isShowingAlert: Bool = false
     
@@ -19,7 +19,7 @@ struct SearchView: View {
             
             HStack {
                 TextField(text: $searchText) {
-                    Text("hello")
+                    Text("영화를 검색해주세요!")
                 }
                 Button(action: {
                     Task {
@@ -27,8 +27,6 @@ struct SearchView: View {
                             movies = m
                         }
                     }
-                    
-                    
                 }, label: {
                     Text("검색")
                 })
@@ -42,7 +40,6 @@ struct SearchView: View {
             } label: {
                 Text("\(movie.title)")
             }
-
         }
         .listStyle(.plain)
     }

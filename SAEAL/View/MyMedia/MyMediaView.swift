@@ -13,9 +13,9 @@ struct MyMediaView: View {
     @ObservedObject var myMediaService: MyMediaService
     @State private var status: Status?
     
-    @State private var isShowingSaveSheet: Bool = false
+    @State private var isShowingEditSheet: Bool = false
+    
     let columns = [
-      //추가 하면 할수록 화면에 보여지는 개수가 변함
         GridItem(.flexible()),
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -65,12 +65,12 @@ struct MyMediaView: View {
                                 .toolbar(content: {
                                     ToolbarItem(placement: .topBarTrailing) {
                                         Button(action: {
-                                            isShowingSaveSheet = true
+                                            isShowingEditSheet = true
                                         }, label: {
                                             Text("수정")
                                         })
-                                        .sheet(isPresented: $isShowingSaveSheet, content: {
-                                            EditSheetView(myMediaService: myMediaService, movie: movie, isShowingEditSheet: $isShowingSaveSheet)
+                                        .sheet(isPresented: $isShowingEditSheet, content: {
+                                            EditSheetView(myMediaService: myMediaService, movie: movie, isShowingEditSheet: $isShowingEditSheet)
                                                 .presentationDetents([.medium])
                                         })
                                     }
@@ -84,25 +84,65 @@ struct MyMediaView: View {
                                     }
                                 })
                         } label: {
-                            if let poster = movie.posterLink {
-                                KFImage(URL(string: APIConstant.imageURL + poster))
-                                    .retry(maxCount: 3, interval: .seconds(5))
-                                    .resizable()
-                                    .frame(width: 128, height: 128)
-                                    .cornerRadius(10)
-                                    .shadow(radius: 5)
-                                Text(movie.title)
+                            VStack {
+                                if let poster = movie.posterLink {
+                                    KFImage(URL(string: APIConstant.imageURL + poster))
+                                        .retry(maxCount: 3, interval: .seconds(5))
+                                        .resizable()
+                                        .frame(width: 120, height: 150)
+                                        .cornerRadius(10)
+                                        .shadow(radius: 5)
+                                    Text(movie.title)
+                                        .lineLimit(1)
+                                }
+                                else {
+                                    Spacer()
+                                    Text(movie.title)
+                                }
                             }
-                            else {
-                                Spacer()
-                                Text(movie.title)
-                            }
+                            .padding()
                         }
-                        .padding()
+                        
                     }
                 }
                 .padding(.horizontal)
             }
+        }
+    }
+}
+
+struct EditSheetView: View {
+    
+    @ObservedObject var myMediaService: MyMediaService
+    
+    @State var movie: Movie
+    @Binding var isShowingEditSheet: Bool
+    
+    @State private var status: Status = .bookmark
+    
+    var body: some View {
+        VStack {
+            HStack {
+                ForEach(Status.allCases, id:\.self) { s in
+                    Button {
+                        status = s
+                    } label: {
+                        Text(s.statusString)
+                    }
+                    .buttonStyle(.plain)
+                }
+            }
+            
+            Text("\(status.statusString)")
+            
+            Button {
+//                movie.status = status.rawValue
+                myMediaService.editMovie(oldMovie: movie, newStatus: status)
+                isShowingEditSheet = false
+            } label: {
+                Text("저장")
+            }
+            
         }
     }
 }
