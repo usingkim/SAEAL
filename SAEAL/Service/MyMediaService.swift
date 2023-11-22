@@ -9,8 +9,8 @@ import Foundation
 import RealmSwift
 
 final class MyMediaService: ObservableObject {
-    @Published var myMovies: [Movie] = []
-    @Published var filteredMovies: [Movie] = []
+    @Published var myMovies: [DBMovie] = []
+    @Published var filteredMovies: [DBMovie] = []
     
     @Published var myRunningTime: Int = -1
     
@@ -19,7 +19,7 @@ final class MyMediaService: ObservableObject {
     private static var realm: Realm = try! Realm()
     
     
-    func addMovie(newMovie: Movie) {
+    func addMovie(newMovie: DBMovie) {
         myMovies.append(newMovie)
         do {
             try MyMediaService.realm.write {
@@ -33,7 +33,7 @@ final class MyMediaService: ObservableObject {
         resetRunningTime()
     }
     
-    func editMovie(oldMovie: Movie, newStatus: Status) {
+    func editMovie(oldMovie: DBMovie, newStatus: Status) {
         do {
             try MyMediaService.realm.write {
                 oldMovie.touchedTime = Date.now
@@ -46,7 +46,7 @@ final class MyMediaService: ObservableObject {
         self.fetchAllMovie()
     }
     
-    func editMovie(oldMovie: Movie, newMovie: Movie) {
+    func editMovie(oldMovie: DBMovie, newMovie: DBMovie) {
         do {
             try MyMediaService.realm.write {
                 oldMovie.touchedTime = newMovie.touchedTime
@@ -63,28 +63,24 @@ final class MyMediaService: ObservableObject {
         self.fetchAllMovie()
     }
     
-    func delMovie(movie: Movie) {
-        myMovies = []
-        filteredMovies = []
-        
+    func delMovie(movie: DBMovie) {
         do {
-            guard let movieToDelete = MyMediaService.realm.object(ofType: Movie.self, forPrimaryKey: movie.id) else {
-                return
-            }
-            
             try MyMediaService.realm.write {
-                MyMediaService.realm.delete(movieToDelete)
+                MyMediaService.realm.delete(movie)
             }
         }
         catch {
             print("DELETE ERROR!!!")
         }
         
+        myMovies = []
+        filteredMovies = []
+        
         self.fetchAllMovie()
     }
     
     func fetchAllMovie() {
-        myMovies = Array(MyMediaService.realm.objects(Movie.self))
+        myMovies = Array(MyMediaService.realm.objects(DBMovie.self))
         self.filterMovies(status: recentStatus)
         resetRunningTime()
     }
@@ -115,62 +111,3 @@ final class MyMediaService: ObservableObject {
     }
 }
 
-
-//static func addMovie(_ movie: Movie) {
-//    do {
-//        try realm.write {
-//            realm.add(movie)
-//        }
-//    }
-//    catch {
-//        print("WRITE ERROR!!!")
-//    }
-//}
-//
-//static func findAll() -> Results<Movie> {
-//    return realm.objects(Movie.self)
-//}
-//
-//static func editMovie(movie: Movie, newStatus: Status) {
-//    do {
-//        try realm.write {
-//            movie.status = newStatus.rawValue
-//        }
-//    }
-//    catch {
-//        print("WRITE ERROR!!!")
-//    }
-//}
-//
-//static func editMovie(oldMovie: Movie, newMovie: Movie) {
-//    do {
-//        try realm.write {
-//            oldMovie.touchedTime = newMovie.touchedTime
-//            oldMovie.status = newMovie.status
-//            oldMovie.myRuntime = newMovie.myRuntime
-//            oldMovie.startDate = newMovie.startDate
-//            oldMovie.endDate = newMovie.endDate
-//        }
-//    }
-//    catch {
-//        print("WRITE ERROR!!!")
-//    }
-//}
-//
-//
-//static func delMovie(_ movie: Movie) {
-//    // FIXME: ERROR!!!!
-//    // Exception    NSException *    "'Movie' does not have a primary key defined"    0x0000600000041fe0
-//    do {
-//        guard let movieToDelete = realm.object(ofType: Movie.self, forPrimaryKey: movie.id) else {
-//            return
-//        }
-//        
-//        try realm.write {
-//            realm.delete(movieToDelete)
-//        }
-//    }
-//    catch {
-//        print("DELETE ERROR!!!")
-//    }
-//}

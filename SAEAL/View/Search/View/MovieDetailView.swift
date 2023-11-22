@@ -95,11 +95,11 @@ struct MovieDetailView: View {
             Button {
                 switch(status) {
                 case .bookmark:
-                    myMediaService.addMovie(newMovie: Movie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue, myRuntime: 0, startDate: nil, endDate: nil))
+                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue, myRuntime: 0, startDate: nil, endDate: nil))
                 case .ing:
-                    myMediaService.addMovie(newMovie: Movie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue, myRuntime: Int(watchedTime), startDate: startDate, endDate: nil))
+                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue, myRuntime: Int(watchedTime), startDate: startDate, endDate: nil))
                 case .end:
-                    myMediaService.addMovie(newMovie: Movie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue, myRuntime: movieDetail?.runtime ?? 0, startDate: startDate, endDate: endDate))
+                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue, myRuntime: movieDetail?.runtime ?? 0, startDate: startDate, endDate: endDate))
                 }
                 isShowingSaveSheet = false
                 dismiss()

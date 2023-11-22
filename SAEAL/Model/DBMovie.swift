@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-final class Movie: Object, ObjectKeyIdentifiable {
+final class DBMovie: Object, ObjectKeyIdentifiable {
     @Persisted(primaryKey: true) var id: String
     
     @Persisted var title: String
@@ -51,7 +51,7 @@ final class Movie: Object, ObjectKeyIdentifiable {
         self.endDate = endDate
     }
     
-    init(movie: Movie) {
+    init(movie: DBMovie) {
         super.init()
         self.id = movie.id
         self.title = movie.title

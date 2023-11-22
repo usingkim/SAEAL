@@ -13,7 +13,6 @@ struct MyMediaView: View {
     @ObservedObject var myMediaService: MyMediaService
     @State private var status: Status?
     
-    @State private var isShowingEditSheet: Bool = false
     
     let columns = [
         GridItem(.flexible()),
@@ -62,27 +61,6 @@ struct MyMediaView: View {
                     ForEach(myMediaService.filteredMovies) { movie in
                         NavigationLink {
                             MyMediaDetailView(myMediaService: MyMediaService(), movie: movie)
-                                .toolbar(content: {
-                                    ToolbarItem(placement: .topBarTrailing) {
-                                        Button(action: {
-                                            isShowingEditSheet = true
-                                        }, label: {
-                                            Text("수정")
-                                        })
-                                        .sheet(isPresented: $isShowingEditSheet, content: {
-                                            EditSheetView(myMediaService: myMediaService, movie: movie, isShowingEditSheet: $isShowingEditSheet)
-                                                .presentationDetents([.medium])
-                                        })
-                                    }
-                                    ToolbarItem(placement: .topBarTrailing) {
-                                        Button(action: {
-                                            dismiss()
-                                            myMediaService.delMovie(movie: movie)
-                                        }, label: {
-                                            Text("삭제")
-                                        })
-                                    }
-                                })
                         } label: {
                             VStack {
                                 if let poster = movie.posterLink {
@@ -116,7 +94,7 @@ struct EditSheetView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var myMediaService: MyMediaService
     
-    @State var movie: Movie
+    @State var movie: DBMovie
     @Binding var isShowingEditSheet: Bool
     
     @State private var status: Status = .bookmark
@@ -166,7 +144,7 @@ struct EditSheetView: View {
             }
             
             Button {
-                let newMovie = Movie(movie: movie)
+                let newMovie = DBMovie(movie: movie)
                 newMovie.touchedTime = Date.now
                 
                 switch(status) {
