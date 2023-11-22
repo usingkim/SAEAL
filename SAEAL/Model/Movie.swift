@@ -18,6 +18,13 @@ final class Movie: Object, ObjectKeyIdentifiable {
     @Persisted var touchedTime: Date
     @Persisted var status: Int
     
+    // 나의 영화 관련 정보
+    @Persisted var myRuntime: Int
+    @Persisted var startDate: Date?
+    @Persisted var endDate: Date?
+    
+    private static var realm: Realm = try! Realm()
+    
     override init() {
         super.init()
         self.id = UUID().uuidString
@@ -27,9 +34,12 @@ final class Movie: Object, ObjectKeyIdentifiable {
         self.posterLink = nil
         self.touchedTime = Date.now
         self.status = 0
+        self.myRuntime = 0
+        self.startDate = Date.now
+        self.endDate = Date.now
     }
     
-    init(title: String, MovieID: Int, runtime: Int, posterLink: String?, touchedTime: Date, status: Int) {
+    init(title: String, MovieID: Int, runtime: Int, posterLink: String?, touchedTime: Date, status: Int, myRuntime: Int, startDate: Date?, endDate: Date?) {
         super.init()
         self.id = UUID().uuidString
         self.title = title
@@ -38,9 +48,24 @@ final class Movie: Object, ObjectKeyIdentifiable {
         self.posterLink = posterLink
         self.touchedTime = touchedTime
         self.status = status
+        self.myRuntime = myRuntime
+        self.startDate = startDate
+        self.endDate = endDate
     }
     
-    private static var realm: Realm = try! Realm()
+    init(movie: Movie) {
+        super.init()
+        self.id = movie.id
+        self.title = movie.title
+        self.MovieID = movie.MovieID
+        self.runtime = movie.runtime
+        self.posterLink = movie.posterLink
+        self.touchedTime = movie.touchedTime
+        self.status = movie.status
+        self.myRuntime = movie.myRuntime
+        self.startDate = movie.startDate
+        self.endDate = movie.endDate
+    }
     
     static func addMovie(_ movie: Movie) {
         do {
@@ -68,6 +93,21 @@ final class Movie: Object, ObjectKeyIdentifiable {
         }
     }
     
+    static func editMovie(oldMovie: Movie, newMovie: Movie) {
+        do {
+            try realm.write {
+                oldMovie.touchedTime = newMovie.touchedTime
+                oldMovie.status = newMovie.status
+                oldMovie.myRuntime = newMovie.myRuntime
+                oldMovie.startDate = newMovie.startDate
+                oldMovie.endDate = newMovie.endDate
+            }
+        }
+        catch {
+            print("WRITE ERROR!!!")
+        }
+    }
+    
     
     static func delMovie(_ movie: Movie) {
         // FIXME: ERROR!!!!
@@ -84,6 +124,5 @@ final class Movie: Object, ObjectKeyIdentifiable {
         catch {
             print("DELETE ERROR!!!")
         }
-        
     }
 }

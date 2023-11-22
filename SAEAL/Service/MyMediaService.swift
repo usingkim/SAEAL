@@ -27,6 +27,11 @@ final class MyMediaService: ObservableObject {
         self.fetchAllMovie()
     }
     
+    func editMovie(oldMovie: Movie, newMovie: Movie) {
+        Movie.editMovie(oldMovie: oldMovie, newMovie: newMovie)
+        self.fetchAllMovie()
+    }
+    
     func delMovie(movie: Movie) {
         myMovies = []
         filteredMovies = []
@@ -36,6 +41,8 @@ final class MyMediaService: ObservableObject {
     
     func fetchAllMovie() {
         myMovies = Array(Movie.findAll())
+        for movie in myMovies {
+        }
         self.filterMovies(status: recentStatus)
         resetRunningTime()
     }
@@ -61,14 +68,7 @@ final class MyMediaService: ObservableObject {
         
         myRunningTime = 0
         for movie in myMovies {
-            
-            if movie.status == Status.end.rawValue {
-                myRunningTime += movie.runtime
-            }
-            
-            else if movie.status == Status.ing.rawValue {
-                // sum += 본 만큼만
-            }
+            myRunningTime += movie.myRuntime
         }
     }
 }

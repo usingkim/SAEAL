@@ -20,7 +20,10 @@ struct ContentView: View {
             NavigationStack {
                 SearchView(myMediaService: myMediaService)
             }
-            .tabItem { Text("검색") }
+            .tabItem {
+                Image(systemName: "magnifyingglass")
+                Text("검색")
+            }
             
             NavigationStack {
                 MyMediaView(myMediaService: myMediaService)
@@ -28,7 +31,10 @@ struct ContentView: View {
             .tabItem { Text("필모") }
             
             SettingView()
-                .tabItem { Text("설정") }
+                .tabItem {
+                    Image(systemName: "gear")
+                    Text("설정")
+                }
         }
         .onAppear {
             myMediaService.fetchAllMovie()

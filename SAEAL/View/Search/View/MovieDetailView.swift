@@ -17,6 +17,9 @@ struct MovieDetailView: View {
     @State private var movieDetail: MovieDetail?
     @State private var isShowingSaveSheet: Bool = false
     @State private var status: Status = .bookmark
+    @State private var watchedTime: Double = 0
+    @State private var startDate: Date = Date.now
+    @State private var endDate: Date = Date.now
     
     var body: some View {
         VStack {
@@ -43,34 +46,69 @@ struct MovieDetailView: View {
                     Text("저장")
                 })
                 .sheet(isPresented: $isShowingSaveSheet, content: {
-                    VStack {
-                        HStack {
-                            ForEach(Status.allCases, id:\.self) { s in
-                                Button {
-                                    status = s
-                                } label: {
-                                    Text(s.statusString)
-                                }
-                                .buttonStyle(.plain)
-                            }
-                        }
-                        
-                        Text("\(status.statusString)")
-                        
-                        Button {
-                            myMediaService.addMovie(newMovie: Movie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue))
-                            isShowingSaveSheet = false
-                            dismiss()
-                        } label: {
-                            Text("저장")
-                        }
-                    }
+                    saveSheet
                 })
             }
         })
     }
+    
+    var saveSheet: some View {
+        VStack {
+            HStack {
+                ForEach(Status.allCases, id:\.self) { s in
+                    Button {
+                        status = s
+                    } label: {
+                        Text(s.statusString)
+                    }
+                    .buttonStyle(.plain)
+                    .background(status == s ? .red : .blue)
+                }
+            }
+            
+            Text("\(status.statusString)")
+            
+            if status == .ing {
+                HStack {
+                    Text("0")
+                    Slider(value: $watchedTime, in: 0...Double(movieDetail?.runtime ?? 0), step: 1)
+                        
+                    Text("\(movieDetail?.runtime ?? 0)")
+                }
+                
+                Text("\(Int(watchedTime))분")
+                
+                DatePicker(selection: $startDate, displayedComponents: .date) {
+                    Text("시작 날짜")
+                }
+            }
+            
+            else if status == .end {
+                Text("\(Int(watchedTime))분")
+                
+                DatePicker(selection: $startDate, displayedComponents: .date) {
+                    Text("시작 날짜")
+                }
+                DatePicker("끝난 날짜", selection: $endDate, in: startDate...(Calendar.current.date(byAdding: .year, value: 1, to: startDate) ?? startDate), displayedComponents: .date)
+            }
+            
+            Button {
+                switch(status) {
+                case .bookmark:
+                    myMediaService.addMovie(newMovie: Movie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue, myRuntime: 0, startDate: nil, endDate: nil))
+                case .ing:
+                    myMediaService.addMovie(newMovie: Movie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue, myRuntime: Int(watchedTime), startDate: startDate, endDate: nil))
+                case .end:
+                    myMediaService.addMovie(newMovie: Movie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue, myRuntime: movieDetail?.runtime ?? 0, startDate: startDate, endDate: endDate))
+                }
+                isShowingSaveSheet = false
+                dismiss()
+            } label: {
+                Text("저장")
+            }
+        }
+    }
 }
-
 
                         
 

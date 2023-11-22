@@ -13,11 +13,11 @@ struct MyMediaDetailView: View {
     @ObservedObject var myMediaService: MyMediaService
     @State var movie: Movie
     
-    
     var body: some View {
         VStack {
             Text(movie.title)
             Text("\(movie.status)")
+            Text("내 러닝타임 : \(movie.myRuntime)")
             Text(Status.getStatusByInt(movie.status)?.statusString ?? "")
         }
         
@@ -25,5 +25,5 @@ struct MyMediaDetailView: View {
 }
 
 #Preview {
-    MyMediaDetailView(myMediaService: MyMediaService(), movie: Movie(title: "", MovieID: 0, runtime: 0, posterLink: nil, touchedTime: Date.now, status: 0))
+    MyMediaDetailView(myMediaService: MyMediaService(), movie: Movie(title: "", MovieID: 0, runtime: 0, posterLink: nil, touchedTime: Date.now, status: 0, myRuntime: 0, startDate: nil, endDate: nil))
 }
