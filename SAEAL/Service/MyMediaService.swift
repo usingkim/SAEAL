@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 final class MyMediaService: ObservableObject {
     @Published var myMovies: [Movie] = []
@@ -15,34 +16,75 @@ final class MyMediaService: ObservableObject {
     
     private var recentStatus: Int = -1
     
+    private static var realm: Realm = try! Realm()
+    
+    
     func addMovie(newMovie: Movie) {
         myMovies.append(newMovie)
-        Movie.addMovie(newMovie)
+        do {
+            try MyMediaService.realm.write {
+                MyMediaService.realm.add(newMovie)
+            }
+        }
+        catch {
+            print("WRITE ERROR!!!")
+        }
         self.filterMovies(status: recentStatus)
         resetRunningTime()
     }
     
     func editMovie(oldMovie: Movie, newStatus: Status) {
-        Movie.editMovie(movie: oldMovie, newStatus: newStatus)
+        do {
+            try MyMediaService.realm.write {
+                oldMovie.touchedTime = Date.now
+                oldMovie.status = newStatus.rawValue
+            }
+        }
+        catch {
+            print("WRITE ERROR!!!")
+        }
         self.fetchAllMovie()
     }
     
     func editMovie(oldMovie: Movie, newMovie: Movie) {
-        Movie.editMovie(oldMovie: oldMovie, newMovie: newMovie)
+        do {
+            try MyMediaService.realm.write {
+                oldMovie.touchedTime = newMovie.touchedTime
+                oldMovie.status = newMovie.status
+                oldMovie.myRuntime = newMovie.myRuntime
+                oldMovie.startDate = newMovie.startDate
+                oldMovie.endDate = newMovie.endDate
+            }
+        }
+        catch {
+            print("WRITE ERROR!!!")
+        }
+        
         self.fetchAllMovie()
     }
     
     func delMovie(movie: Movie) {
         myMovies = []
         filteredMovies = []
-        Movie.delMovie(movie)
+        
+        do {
+            guard let movieToDelete = MyMediaService.realm.object(ofType: Movie.self, forPrimaryKey: movie.id) else {
+                return
+            }
+            
+            try MyMediaService.realm.write {
+                MyMediaService.realm.delete(movieToDelete)
+            }
+        }
+        catch {
+            print("DELETE ERROR!!!")
+        }
+        
         self.fetchAllMovie()
     }
     
     func fetchAllMovie() {
-        myMovies = Array(Movie.findAll())
-        for movie in myMovies {
-        }
+        myMovies = Array(MyMediaService.realm.objects(Movie.self))
         self.filterMovies(status: recentStatus)
         resetRunningTime()
     }
@@ -72,3 +114,63 @@ final class MyMediaService: ObservableObject {
         }
     }
 }
+
+
+//static func addMovie(_ movie: Movie) {
+//    do {
+//        try realm.write {
+//            realm.add(movie)
+//        }
+//    }
+//    catch {
+//        print("WRITE ERROR!!!")
+//    }
+//}
+//
+//static func findAll() -> Results<Movie> {
+//    return realm.objects(Movie.self)
+//}
+//
+//static func editMovie(movie: Movie, newStatus: Status) {
+//    do {
+//        try realm.write {
+//            movie.status = newStatus.rawValue
+//        }
+//    }
+//    catch {
+//        print("WRITE ERROR!!!")
+//    }
+//}
+//
+//static func editMovie(oldMovie: Movie, newMovie: Movie) {
+//    do {
+//        try realm.write {
+//            oldMovie.touchedTime = newMovie.touchedTime
+//            oldMovie.status = newMovie.status
+//            oldMovie.myRuntime = newMovie.myRuntime
+//            oldMovie.startDate = newMovie.startDate
+//            oldMovie.endDate = newMovie.endDate
+//        }
+//    }
+//    catch {
+//        print("WRITE ERROR!!!")
+//    }
+//}
+//
+//
+//static func delMovie(_ movie: Movie) {
+//    // FIXME: ERROR!!!!
+//    // Exception    NSException *    "'Movie' does not have a primary key defined"    0x0000600000041fe0
+//    do {
+//        guard let movieToDelete = realm.object(ofType: Movie.self, forPrimaryKey: movie.id) else {
+//            return
+//        }
+//        
+//        try realm.write {
+//            realm.delete(movieToDelete)
+//        }
+//    }
+//    catch {
+//        print("DELETE ERROR!!!")
+//    }
+//}

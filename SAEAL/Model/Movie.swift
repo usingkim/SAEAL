@@ -23,8 +23,6 @@ final class Movie: Object, ObjectKeyIdentifiable {
     @Persisted var startDate: Date?
     @Persisted var endDate: Date?
     
-    private static var realm: Realm = try! Realm()
-    
     override init() {
         super.init()
         self.id = UUID().uuidString
@@ -67,62 +65,4 @@ final class Movie: Object, ObjectKeyIdentifiable {
         self.endDate = movie.endDate
     }
     
-    static func addMovie(_ movie: Movie) {
-        do {
-            try realm.write {
-                realm.add(movie)
-            }
-        }
-        catch {
-            print("WRITE ERROR!!!")
-        }
-    }
-    
-    static func findAll() -> Results<Movie> {
-        return realm.objects(Movie.self)
-    }
-    
-    static func editMovie(movie: Movie, newStatus: Status) {
-        do {
-            try realm.write {
-                movie.status = newStatus.rawValue
-            }
-        }
-        catch {
-            print("WRITE ERROR!!!")
-        }
-    }
-    
-    static func editMovie(oldMovie: Movie, newMovie: Movie) {
-        do {
-            try realm.write {
-                oldMovie.touchedTime = newMovie.touchedTime
-                oldMovie.status = newMovie.status
-                oldMovie.myRuntime = newMovie.myRuntime
-                oldMovie.startDate = newMovie.startDate
-                oldMovie.endDate = newMovie.endDate
-            }
-        }
-        catch {
-            print("WRITE ERROR!!!")
-        }
-    }
-    
-    
-    static func delMovie(_ movie: Movie) {
-        // FIXME: ERROR!!!!
-        // Exception    NSException *    "'Movie' does not have a primary key defined"    0x0000600000041fe0
-        do {
-            guard let movieToDelete = realm.object(ofType: Movie.self, forPrimaryKey: movie.id) else {
-                return
-            }
-            
-            try realm.write {
-                realm.delete(movieToDelete)
-            }
-        }
-        catch {
-            print("DELETE ERROR!!!")
-        }
-    }
 }
