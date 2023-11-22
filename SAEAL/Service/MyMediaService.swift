@@ -30,7 +30,6 @@ final class MyMediaService: ObservableObject {
             print("WRITE ERROR!!!")
         }
         self.filterMovies(status: recentStatus)
-        resetRunningTime()
     }
     
     func editMovie(oldMovie: DBMovie, newStatus: Status) {
@@ -82,7 +81,6 @@ final class MyMediaService: ObservableObject {
     func fetchAllMovie() {
         myMovies = Array(MyMediaService.realm.objects(DBMovie.self))
         self.filterMovies(status: recentStatus)
-        resetRunningTime()
     }
     
     func filterMovies(status: Int) {
@@ -106,6 +104,7 @@ final class MyMediaService: ObservableObject {
         
         myRunningTime = 0
         for movie in myMovies {
+            print(movie.title, movie.myRuntime)
             myRunningTime += movie.myRuntime
         }
     }

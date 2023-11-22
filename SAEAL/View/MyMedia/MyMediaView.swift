@@ -160,7 +160,7 @@ struct EditSheetView: View {
                     newMovie.endDate = nil
                 case .end:
                     newMovie.status = Status.end.rawValue
-                    newMovie.myRuntime = Int(watchedTime)
+                    newMovie.myRuntime = movie.runtime
                     newMovie.startDate = startDate
                     newMovie.endDate = endDate
                 }

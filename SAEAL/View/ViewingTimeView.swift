@@ -19,7 +19,9 @@ struct ViewingTimeView: View {
             else {
                 Text("\(myMediaService.myRunningTime / 60)시간 \(myMediaService.myRunningTime % 60)분")
             }
-
+        }
+        .onAppear {
+            myMediaService.resetRunningTime()
         }
     }
 }
