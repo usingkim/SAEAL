@@ -47,6 +47,7 @@ struct MovieDetailView: View {
                 })
                 .sheet(isPresented: $isShowingSaveSheet, content: {
                     saveSheet
+                        .presentationDetents([.medium])
                 })
             }
         })

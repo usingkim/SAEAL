@@ -134,6 +134,7 @@
 		C4D3087F2AFF19500005053E /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C4D6C7472AFBAE2600072148 /* Assets.xcassets */,
 				C4D6C7492AFBAE2600072148 /* Preview Content */,
 				C4D6C7432AFBAE2400072148 /* RunningTimeApp.swift */,
 				C4D6C7452AFBAE2400072148 /* ContentView.swift */,
@@ -164,7 +165,6 @@
 				C4D308672AFE3EC30005053E /* View */,
 				C4D3086A2AFE42340005053E /* Service */,
 				C498EEC82B0F33EB00D16CE8 /* View Model */,
-				C4D6C7472AFBAE2600072148 /* Assets.xcassets */,
 				C4D3087F2AFF19500005053E /* Resources */,
 			);
 			path = SAEAL;

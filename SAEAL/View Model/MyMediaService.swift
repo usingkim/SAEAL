@@ -104,7 +104,6 @@ final class MyMediaService: ObservableObject {
         
         myRunningTime = 0
         for movie in myMovies {
-            print(movie.title, movie.myRuntime)
             myRunningTime += movie.myRuntime
         }
     }
