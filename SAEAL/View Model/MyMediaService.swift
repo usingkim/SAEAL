@@ -14,10 +14,9 @@ final class MyMediaService: ObservableObject {
     
     @Published var myRunningTime: Int = -1
     
-    private var recentStatus: Int = -1
-    
     private static var realm: Realm = try! Realm()
     
+    private var recentStatus: Int = -1
     
     func addMovie(newMovie: DBMovie) {
         myMovies.append(newMovie)
@@ -63,6 +62,7 @@ final class MyMediaService: ObservableObject {
     }
     
     func delMovie(movie: DBMovie) {
+        // FIXME: DELETE ERROR . . .
         do {
             try MyMediaService.realm.write {
                 MyMediaService.realm.delete(movie)

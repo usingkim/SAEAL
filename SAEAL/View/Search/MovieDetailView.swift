@@ -13,8 +13,8 @@ struct MovieDetailView: View {
     
     @ObservedObject var myMediaService: MyMediaService
     
-    @State var movie: SearchMovie
-    @State private var movieDetail: MovieDetail?
+    @State var movie: TMDBService.SearchMovie
+    @State private var movieDetail: TMDBService.MovieDetail?
     @State private var isShowingSaveSheet: Bool = false
     @State private var status: DBMovie.Status = .bookmark
     @State private var watchedTime: Double = 0

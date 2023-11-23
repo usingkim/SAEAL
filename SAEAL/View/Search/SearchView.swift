@@ -11,7 +11,7 @@ struct SearchView: View {
     @ObservedObject var myMediaService: MyMediaService
     
     @State private var searchText: String = "친구"
-    @State private var movies: [SearchMovie] = []
+    @State private var movies: [TMDBService.SearchMovie] = []
     @State private var isShowingAlert: Bool = false
     
     var body: some View {
