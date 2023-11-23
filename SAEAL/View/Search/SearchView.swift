@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct SearchView: View {
-    @ObservedObject var myMedias: MyMediaService
+    @ObservedObject var myMediaService: MyMediaService
     
-    @State private var searchText: String = "iron man"
-    @State private var movies: [Movie] = []
+    @State private var searchText: String = "친구"
+    @State private var movies: [TMDBService.SearchMovie] = []
     @State private var isShowingAlert: Bool = false
     
     var body: some View {
@@ -19,7 +19,7 @@ struct SearchView: View {
             
             HStack {
                 TextField(text: $searchText) {
-                    Text("hello")
+                    Text("영화를 검색해주세요!")
                 }
                 Button(action: {
                     Task {
@@ -27,8 +27,6 @@ struct SearchView: View {
                             movies = m
                         }
                     }
-                    
-                    
                 }, label: {
                     Text("검색")
                 })
@@ -38,11 +36,10 @@ struct SearchView: View {
         
         List(movies, id:\.self) { movie in
             NavigationLink {
-                MovieDetailView(myMedias: myMedias, movie: movie)
+                MovieDetailView(myMediaService: myMediaService, movie: movie)
             } label: {
                 Text("\(movie.title)")
             }
-
         }
         .listStyle(.plain)
     }
@@ -50,5 +47,5 @@ struct SearchView: View {
 }
 
 #Preview {
-    SearchView(myMedias: MyMediaService())
+    SearchView(myMediaService: MyMediaService())
 }

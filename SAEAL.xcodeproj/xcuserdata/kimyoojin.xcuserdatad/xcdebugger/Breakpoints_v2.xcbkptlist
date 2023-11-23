@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "80EAA2C3-0983-4F4E-8FAB-7E56C0E346BA"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "CA617D1E-8E8F-49FB-B5EA-3B498318F738"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SAEAL/Service/MyMediaService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "64"
+            endingLineNumber = "64"
+            landmarkName = "MyMediaService"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "CA617D1E-8E8F-49FB-B5EA-3B498318F738 - faf7b9a272cf23e9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SAEAL.MyMediaService.delMovie(movie: SAEAL.Movie) -&gt; ()"
+                  moduleName = "SAEAL"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kimyoojin/Desktop/SWIFT/SAEAL/SAEAL/Service/MyMediaService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "108">
+               </Location>
+               <Location
+                  uuid = "CA617D1E-8E8F-49FB-B5EA-3B498318F738 - faf7b9a272cf23e9"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SAEAL.MyMediaService.delMovie(movie: SAEAL.Movie) -&gt; ()"
+                  moduleName = "SAEAL"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kimyoojin/Desktop/SWIFT/SAEAL/SAEAL/Service/MyMediaService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "67"
+                  endingLineNumber = "67"
+                  offsetFromSymbolStart = "100">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

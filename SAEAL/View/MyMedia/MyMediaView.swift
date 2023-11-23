@@ -9,53 +9,86 @@ import SwiftUI
 import Kingfisher
 
 struct MyMediaView: View {
-    @ObservedObject var myMedias: MyMediaService
-    @State private var status: Status?
+    @Environment(\.dismiss) var dismiss
+    @ObservedObject var myMediaService: MyMediaService
+    @State private var status: DBMovie.Status?
+    
+    
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
     
     var body: some View {
         VStack {
-            //            Menu {
-            //                Picker(selection: $status, label: Text("Sorting options")) {
-            //                    ForEach(Status.allCases, id:\.self) { status in
-            //                        Text(status.statusString)
-            //                    }
-            //                }
-            //            } label: {
-            //                Text("상태값")
-            //            }
-            //            .onChange(of: status, perform: { value in
-            //                myMedias.filterStatus(status: status)
-            //            })
+            HStack {
+                Button(action: {
+                    status = nil
+                    myMediaService.filterMovies(status: status?.rawValue ?? -1)
+                }, label: {
+                    Text("전체")
+                })
+                .buttonStyle(.plain)
+                
+                Button(action: {
+                    status = .bookmark
+                    myMediaService.filterMovies(status: DBMovie.Status.bookmark.rawValue)
+                }, label: {
+                    Text(DBMovie.Status.bookmark.statusString)
+                })
+                .buttonStyle(.plain)
+                
+                Button(action: {
+                    status = .ing
+                    myMediaService.filterMovies(status: DBMovie.Status.ing.rawValue)
+                }, label: {
+                    Text(DBMovie.Status.ing.statusString)
+                })
+                .buttonStyle(.plain)
+                
+                Button(action: {
+                    status = .end
+                    myMediaService.filterMovies(status: DBMovie.Status.end.rawValue)
+                }, label: {
+                    Text(DBMovie.Status.end.statusString)
+                })
+                .buttonStyle(.plain)
+            }
             
-            
-            List(myMedias.myMedias) { media in
-                NavigationLink {
-                    
-                    Text(media.title)
-                    Text(media.status.statusString)
-                    
-                } label: {
-                    if let poster = media.posterLink {
-                        KFImage(URL(string: APIConstant.imageURL + poster))
-                            .retry(maxCount: 3, interval: .seconds(5))
-                            .resizable()
-                                              .frame(width: 128, height: 128) //resize
-                                              .cornerRadius(20) //둥근 코너 설정
-                                              .shadow(radius: 5)
-                    }
-                    else {
-                        HStack {
-                            Text(media.title)
-                            Spacer()
-                            Text("\(media.allOfRunTime)")
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 20) {
+                    ForEach(myMediaService.filteredMovies) { movie in
+                        NavigationLink {
+                            MyMediaDetailView(myMediaService: MyMediaService(), movie: movie)
+                        } label: {
+                            VStack {
+                                if let poster = movie.posterLink {
+                                    KFImage(URL(string: APIConstant.imageURL + poster))
+                                        .retry(maxCount: 3, interval: .seconds(5))
+                                        .resizable()
+                                        .frame(width: 120, height: 150)
+                                        .cornerRadius(10)
+                                        .shadow(radius: 5)
+                                    Text(movie.title)
+                                        .lineLimit(1)
+                                }
+                                else {
+                                    Spacer()
+                                    Text(movie.title)
+                                }
+                            }
+                            .padding()
                         }
+                        
                     }
                 }
+                .padding(.horizontal)
             }
         }
     }
 }
 
 #Preview {
-    MyMediaView(myMedias: MyMediaService())
+    MyMediaView(myMediaService: MyMediaService())
 }
