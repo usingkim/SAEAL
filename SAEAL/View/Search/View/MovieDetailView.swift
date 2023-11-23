@@ -16,7 +16,7 @@ struct MovieDetailView: View {
     @State var movie: SearchMovie
     @State private var movieDetail: MovieDetail?
     @State private var isShowingSaveSheet: Bool = false
-    @State private var status: Status = .bookmark
+    @State private var status: DBMovie.Status = .bookmark
     @State private var watchedTime: Double = 0
     @State private var startDate: Date = Date.now
     @State private var endDate: Date = Date.now
@@ -55,7 +55,7 @@ struct MovieDetailView: View {
     var saveSheet: some View {
         VStack {
             HStack {
-                ForEach(Status.allCases, id:\.self) { s in
+                ForEach(DBMovie.Status.allCases, id:\.self) { s in
                     Button {
                         status = s
                     } label: {

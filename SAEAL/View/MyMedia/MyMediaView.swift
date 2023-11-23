@@ -11,7 +11,7 @@ import Kingfisher
 struct MyMediaView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var myMediaService: MyMediaService
-    @State private var status: Status?
+    @State private var status: DBMovie.Status?
     
     
     let columns = [
@@ -33,25 +33,25 @@ struct MyMediaView: View {
                 
                 Button(action: {
                     status = .bookmark
-                    myMediaService.filterMovies(status: Status.bookmark.rawValue)
+                    myMediaService.filterMovies(status: DBMovie.Status.bookmark.rawValue)
                 }, label: {
-                    Text(Status.bookmark.statusString)
+                    Text(DBMovie.Status.bookmark.statusString)
                 })
                 .buttonStyle(.plain)
                 
                 Button(action: {
                     status = .ing
-                    myMediaService.filterMovies(status: Status.ing.rawValue)
+                    myMediaService.filterMovies(status: DBMovie.Status.ing.rawValue)
                 }, label: {
-                    Text(Status.ing.statusString)
+                    Text(DBMovie.Status.ing.statusString)
                 })
                 .buttonStyle(.plain)
                 
                 Button(action: {
                     status = .end
-                    myMediaService.filterMovies(status: Status.end.rawValue)
+                    myMediaService.filterMovies(status: DBMovie.Status.end.rawValue)
                 }, label: {
-                    Text(Status.end.statusString)
+                    Text(DBMovie.Status.end.statusString)
                 })
                 .buttonStyle(.plain)
             }
@@ -97,7 +97,7 @@ struct EditSheetView: View {
     @State var movie: DBMovie
     @Binding var isShowingEditSheet: Bool
     
-    @State private var status: Status = .bookmark
+    @State private var status: DBMovie.Status = .bookmark
     
     @State private var watchedTime: Double = 0
     
@@ -107,7 +107,7 @@ struct EditSheetView: View {
     var body: some View {
         VStack {
             HStack {
-                ForEach(Status.allCases, id:\.self) { s in
+                ForEach(DBMovie.Status.allCases, id:\.self) { s in
                     Button {
                         status = s
                     } label: {
@@ -149,17 +149,17 @@ struct EditSheetView: View {
                 
                 switch(status) {
                 case .bookmark:
-                    newMovie.status = Status.bookmark.rawValue
+                    newMovie.status = DBMovie.Status.bookmark.rawValue
                     newMovie.myRuntime = 0
                     newMovie.startDate = nil
                     newMovie.endDate = nil
                 case .ing:
-                    newMovie.status = Status.ing.rawValue
+                    newMovie.status = DBMovie.Status.ing.rawValue
                     newMovie.myRuntime = Int(watchedTime)
                     newMovie.startDate = startDate
                     newMovie.endDate = nil
                 case .end:
-                    newMovie.status = Status.end.rawValue
+                    newMovie.status = DBMovie.Status.end.rawValue
                     newMovie.myRuntime = movie.runtime
                     newMovie.startDate = startDate
                     newMovie.endDate = endDate

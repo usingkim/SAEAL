@@ -19,7 +19,7 @@ struct MyMediaDetailView: View {
             Text(movie.title)
             Text("\(movie.status)")
             Text("내 러닝타임 : \(movie.myRuntime)")
-            Text(Status.getStatusByInt(movie.status)?.statusString ?? "")
+            Text(DBMovie.Status.getStatusByInt(movie.status)?.statusString ?? "")
         }
         .toolbar(content: {
             ToolbarItem(placement: .topBarTrailing) {

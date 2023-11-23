@@ -32,7 +32,7 @@ final class MyMediaService: ObservableObject {
         self.filterMovies(status: recentStatus)
     }
     
-    func editMovie(oldMovie: DBMovie, newStatus: Status) {
+    func editMovie(oldMovie: DBMovie, newStatus: DBMovie.Status) {
         do {
             try MyMediaService.realm.write {
                 oldMovie.touchedTime = Date.now
@@ -86,7 +86,7 @@ final class MyMediaService: ObservableObject {
     func filterMovies(status: Int) {
         recentStatus = status
         
-        if let _ = Status.getStatusByInt(status) {
+        if let _ = DBMovie.Status.getStatusByInt(status) {
             filteredMovies = myMovies.filter { movie in
                 movie.status == status
             }
