@@ -12,12 +12,10 @@ struct MyMediaDetailView: View {
     
     @ObservedObject var myMediaService: MyMediaService
     @State var movie: DBMovie
+    
     @State private var isShowingEditSheet: Bool = false
-    
     @State private var status: DBMovie.Status = .bookmark
-    
     @State private var watchedTime: Double = 0
-    
     @State private var startDate: Date = Date.now
     @State private var endDate: Date = Date.now
     
@@ -55,7 +53,7 @@ struct MyMediaDetailView: View {
             }
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
-                    myMediaService.delMovie(movie: movie)
+//                    myMediaService.delMovie(movie: movie)
                     dismiss()
                 }, label: {
                     Text("삭제")
