@@ -62,23 +62,7 @@ struct MyMediaView: View {
                         NavigationLink {
                             MyMediaDetailView(myMediaService: MyMediaService(), movie: movie)
                         } label: {
-                            VStack {
-                                if let poster = movie.posterLink {
-                                    KFImage(URL(string: APIConstant.imageURL + poster))
-                                        .retry(maxCount: 3, interval: .seconds(5))
-                                        .resizable()
-                                        .frame(width: 120, height: 150)
-                                        .cornerRadius(10)
-                                        .shadow(radius: 5)
-                                    Text(movie.title)
-                                        .lineLimit(1)
-                                }
-                                else {
-                                    Spacer()
-                                    Text(movie.title)
-                                }
-                            }
-                            .padding()
+                            OneMovieCapsule(movie: movie)
                         }
                         
                     }

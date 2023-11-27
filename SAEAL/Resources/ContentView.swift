@@ -28,12 +28,12 @@ struct ContentView: View {
             NavigationStack {
                 MyMediaView(myMediaService: myMediaService)
             }
-            .tabItem { Text("필모") }
+            .tabItem { Text("필모그래피") }
             
             SettingView()
                 .tabItem {
                     Image(systemName: "gear")
-                    Text("설정")
+                    Text("내 정보")
                 }
         }
         .onAppear {

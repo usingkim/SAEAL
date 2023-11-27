@@ -14,6 +14,12 @@ struct SearchView: View {
     @State private var movies: [TMDBService.SearchMovie] = []
     @State private var isShowingAlert: Bool = false
     
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
     var body: some View {
         VStack {
             
@@ -34,14 +40,18 @@ struct SearchView: View {
             .padding()
         }
         
-        List(movies, id:\.self) { movie in
-            NavigationLink {
-                MovieDetailView(myMediaService: myMediaService, movie: movie)
-            } label: {
-                Text("\(movie.title)")
+        ScrollView {
+            LazyVGrid(columns: columns, spacing: 20) {
+                ForEach(movies, id:\.self) { movie in
+                    NavigationLink {
+                        MovieDetailView(myMediaService: myMediaService, movie: movie)
+                    } label: {
+                        OneMovieCapsule(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: 0, posterLink: movie.posterPath, touchedTime: Date.now, status: -1, myRuntime: 0, startDate: nil, endDate: nil))
+                    }
+                }
+                .listStyle(.plain)
             }
         }
-        .listStyle(.plain)
     }
     
 }
