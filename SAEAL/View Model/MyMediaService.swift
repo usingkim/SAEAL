@@ -96,7 +96,7 @@ final class MyMediaService: ObservableObject {
         }
     }
     
-    func resetRunningTime() {
+    func resetRunningTime(startDate: Date, endDate: Date) {
         if myMovies.isEmpty {
             myRunningTime = 0
             return
@@ -104,7 +104,11 @@ final class MyMediaService: ObservableObject {
         
         myRunningTime = 0
         for movie in myMovies {
-            myRunningTime += movie.myRuntime
+            if let end = movie.endDate {
+                if startDate...endDate ~= end {
+                    myRunningTime += movie.myRuntime
+                }
+            }
         }
     }
 }

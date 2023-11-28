@@ -15,7 +15,10 @@ struct ContentView: View {
     var body: some View {
         TabView {
             ViewingTimeView(myMediaService: myMediaService)
-                .tabItem { Text("시청 시간") }
+                .tabItem {
+                    Image(systemName: "magnifyingglass")
+                    Text("시청 시간")
+                }
             
             NavigationStack {
                 SearchView(myMediaService: myMediaService)
@@ -28,7 +31,15 @@ struct ContentView: View {
             NavigationStack {
                 MyMediaView(myMediaService: myMediaService)
             }
-            .tabItem { Text("필모그래피") }
+            .tabItem {
+//                Image(.film)
+//                    .resizable()
+//                    .renderingMode(.template)
+//                    .frame(width: 20)
+//                    .foregroundStyle(Color.blue)
+                Image(systemName: "magnifyingglass")
+                Text("필모그래피")
+            }
             
             SettingView()
                 .tabItem {
