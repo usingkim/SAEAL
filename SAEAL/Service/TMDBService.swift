@@ -33,6 +33,7 @@ struct TMDBService {
         [
             URLQueryItem(name: "query", value: word),
             URLQueryItem(name: "language", value: "ko-KR"),
+            URLQueryItem(name: "include_adult", value: "false"),
         ]
         urlRequest.url = urlComponent?.url
         
