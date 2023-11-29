@@ -70,7 +70,7 @@ struct ViewingTimeView: View {
                 }
             }
             else if myMediaService.myRunningTime == 0 {
-                Text("해당 연도에 시청한 영화가 없습니다!")
+                Text("해당 연도에 다 본 영화가 없습니다!")
                     .foregroundStyle(Color.color1)
                     .bold()
                     .frame(width: 350, height: 100)

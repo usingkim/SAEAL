@@ -10,7 +10,7 @@ import SwiftUI
 struct SearchView: View {
     @ObservedObject var myMediaService: MyMediaService
     
-    @State private var searchText: String = "친구"
+    @State private var searchText: String = ""
     @State private var movies: [TMDBService.SearchMovie] = []
     @State private var isShowingAlert: Bool = false
     
@@ -22,11 +22,16 @@ struct SearchView: View {
     
     var body: some View {
         VStack {
+            if movies.isEmpty {
+                Spacer()
+            }
             
             HStack {
                 TextField(text: $searchText) {
                     Text("어떤 영화를 기록하시겠어요?")
                 }
+                .foregroundStyle(Color.color2)
+                
                 Button(action: {
                     Task {
                         if let m = await TMDBService.findMoviebyString(word: searchText) {
@@ -34,11 +39,20 @@ struct SearchView: View {
                         }
                     }
                 }, label: {
-                    Text("검색")
+                    Image(systemName: "magnifyingglass")
+                        .renderingMode(.template)
+                        .foregroundStyle(Color.color2)
                 })
             }
             .padding()
+            .background {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.color5)
+            }
+            
+            
         }
+        .padding()
         
         ScrollView {
             LazyVGrid(columns: columns, spacing: 20) {
@@ -52,6 +66,7 @@ struct SearchView: View {
                 .listStyle(.plain)
             }
         }
+        .padding()
     }
     
 }
