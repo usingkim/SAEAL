@@ -22,14 +22,12 @@ struct ViewingTimeView: View {
                     isPickingYear = true
                 }, label: {
                     Text("\(year)년")
-                        .bold()
-                        .font(.title2)
+                        .font(.dotumMedium(size: 20))
                 })
                 .foregroundColor(Color.color1)
                 
                 Text("! 유진님의 시청시간")
-                    .bold()
-                    .font(.title2)
+                    .font(.dotumMedium(size: 20))
                 
                 Spacer()
             }
@@ -41,7 +39,7 @@ struct ViewingTimeView: View {
                         isPickingYear = false
                     }, label: {
                         Text("완료")
-                            .bold()
+                            .font(.dotumLight(size: 20))
                     })
                     .foregroundColor(Color.color1)
                     .padding(.trailing, 16)
@@ -62,7 +60,7 @@ struct ViewingTimeView: View {
                     Text("영화 기록을 시작해보세요!")
                     Text("검색 후 저장을 시작하시면 됩니다!")
                 })
-                .bold()
+                .font(.dotumLight(size: 15))
                 .frame(width: 350, height: 100)
                 .background {
                     RoundedRectangle(cornerRadius: 12)
@@ -72,7 +70,7 @@ struct ViewingTimeView: View {
             else if myMediaService.myRunningTime == 0 {
                 Text("해당 연도에 다 본 영화가 없습니다!")
                     .foregroundStyle(Color.color1)
-                    .bold()
+                    .font(.dotumLight(size: 15))
                     .frame(width: 350, height: 100)
                     .background {
                         RoundedRectangle(cornerRadius: 12)
@@ -81,7 +79,7 @@ struct ViewingTimeView: View {
             }
             else {
                 Text("\(myMediaService.myRunningTime / 60)시간 \(myMediaService.myRunningTime % 60)분")
-                    .font(.largeTitle)
+                    .font(.dotumBold(size: 40))
                     .foregroundStyle(Color.color1)
                     .bold()
                     .frame(width: 350, height: 100)
@@ -92,11 +90,11 @@ struct ViewingTimeView: View {
                 
                 HStack {
                     Text("월별 러닝 타임")
-                        .bold()
+                        .font(.dotumMedium(size: 15))
                         
                     Spacer()
                 }
-                .padding()
+                .padding(.leading, 15)
                 
                 MonthlyGraphView(myMediaService: myMediaService)
                     .padding()

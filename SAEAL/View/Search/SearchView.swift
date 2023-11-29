@@ -29,6 +29,7 @@ struct SearchView: View {
             HStack {
                 TextField(text: $searchText) {
                     Text("어떤 영화를 기록하시겠어요?")
+                        .font(.dotumMedium(size: 15))
                 }
                 .foregroundStyle(Color.color2)
                 
@@ -61,6 +62,7 @@ struct SearchView: View {
                         SearchMovieDetailView(myMediaService: myMediaService, movie: movie)
                     } label: {
                         OneMovieCapsule(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: 0, posterLink: movie.posterPath, touchedTime: Date.now, status: -1, myRuntime: 0, startDate: nil, endDate: nil))
+                        
                     }
                 }
                 .listStyle(.plain)

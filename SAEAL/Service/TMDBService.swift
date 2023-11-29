@@ -8,7 +8,6 @@
 import Foundation
 
 struct TMDBService {
-    
     /// header 추가
     private static func makeURLRequest(url: URL)->URLRequest {
         var urlRequest = URLRequest(url: url)
@@ -45,7 +44,6 @@ struct TMDBService {
         do {
             (data, _) = try await session.data(for: urlRequest)
             let dataDecoded = try JSONDecoder().decode(SearchViewModel.self, from: data)
-            
             return dataDecoded.results
         }
         catch {

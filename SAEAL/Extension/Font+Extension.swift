@@ -6,25 +6,22 @@
 //
 
 import Foundation
-
 import SwiftUI
 
 extension Font {
-    /// Bold, size 40
-    static var dotumBold1: Font {
-        return Font.custom("KoPubWorld돋움체_Pro Bold", size: 20)
+    static func dotumBold(size: CGFloat) -> Font {
+        return Font.custom("KoPubWorldDotumPB", size: size)
     }
     
-    static var dotumLight1: Font {
-        return Font.custom("KoPubWorld Dotum_Pro Light", size: 20)
+    static func dotumMedium(size: CGFloat) -> Font {
+        return Font.custom("KoPubWorldDotumPM", size: size)
     }
     
-    static var dotumMedium1: Font {
-        return Font.custom("KoPubWorld Dotum_Pro Medium", size: 20)
+    static func dotumLight(size: CGFloat) -> Font {
+        return Font.custom("KoPubWorldDotumPM", size: size)
     }
     
-    static var wooju1: Font {
-        return Font.custom("학교안심 우주 R", size: 20).bold()
+    static func wooju(size: CGFloat) -> Font {
+        return Font.custom("HakgyoansimWoojuR", size: size)
     }
 }
-

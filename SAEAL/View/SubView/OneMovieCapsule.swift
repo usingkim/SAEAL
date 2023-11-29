@@ -24,7 +24,9 @@ struct OneMovieCapsule: View {
                     .lineLimit(1)
             }
             else {
-                Spacer()
+                Image(.loading)
+                    .resizable()
+                    .frame(width: 120, height: 120)
                 Text(movie.title)
             }
         }
