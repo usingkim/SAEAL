@@ -87,12 +87,12 @@
 			path = Time;
 			sourceTree = "<group>";
 		};
-		C498EEC82B0F33EB00D16CE8 /* View Model */ = {
+		C498EEC82B0F33EB00D16CE8 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
 				C4D3087B2AFE57BB0005053E /* MyMediaService.swift */,
 			);
-			path = "View Model";
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		C498EEC92B0F36E700D16CE8 /* Setting */ = {
@@ -191,11 +191,11 @@
 		C4D6C7422AFBAE2400072148 /* SAEAL */ = {
 			isa = PBXGroup;
 			children = (
-				C48D43582B1708B100471126 /* Extension */,
 				C4D308642AFE1DEF0005053E /* Model */,
 				C4D308672AFE3EC30005053E /* View */,
 				C4D3086A2AFE42340005053E /* Service */,
-				C498EEC82B0F33EB00D16CE8 /* View Model */,
+				C498EEC82B0F33EB00D16CE8 /* ViewModel */,
+				C48D43582B1708B100471126 /* Extension */,
 				C4D3087F2AFF19500005053E /* Resources */,
 			);
 			path = SAEAL;
