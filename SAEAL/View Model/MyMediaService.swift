@@ -105,14 +105,14 @@ final class MyMediaService: ObservableObject {
         }
         
         myRunningTime = 0
+        monthlyRunningTime = (1...12).map { [$0, 0] }
         for movie in myMovies {
             if let end = movie.endDate {
                 if startDate...endDate ~= end {
                     myRunningTime += movie.myRuntime
-                }
-                
-                if let month = Calendar.current.dateComponents([.month], from: end).month {
-                    monthlyRunningTime[month - 1][1] += movie.myRuntime
+                    if let month = Calendar.current.dateComponents([.month], from: end).month {
+                        monthlyRunningTime[month - 1][1] += movie.myRuntime
+                    }
                 }
             }
         }
