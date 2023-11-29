@@ -12,30 +12,50 @@ struct ViewingTimeView: View {
     
     let years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
     @State private var year: Int = 2023
+    @State private var isPickingYear: Bool = false
     
     var body: some View {
         VStack {
-            HStack {
-                Image(.defaultProfile)
-                    .resizable()
-                    .frame(width: 20, height: 20)
-                Text("유진")
+            
+            HStack(spacing: 0) {
+                Button(action: {
+                    isPickingYear = true
+                }, label: {
+                    Text("\(year)년")
+                        .bold()
+                        .font(.title2)
+                })
+                .foregroundColor(Color.color1)
+                
+                Text("! 유진님의 시청시간")
+                    .bold()
+                    .font(.title2)
+                
                 Spacer()
             }
             .padding()
-            
-            HStack {
-                Text("연도")
+            .sheet(isPresented: $isPickingYear, content: {
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        isPickingYear = false
+                    }, label: {
+                        Text("완료")
+                            .bold()
+                    })
+                    .foregroundColor(Color.color1)
+                    .padding(.trailing, 16)
+                }
                 Picker(selection: $year, label: Text("기간")) {
                     ForEach(years, id:\.self) { year in
                         Text("\(year)년").tag(year)
+                            .bold()
+                            .font(.title2)
                     }
                 }
-                Spacer()
-            }
-            .padding()
-            
-            Spacer()
+                .pickerStyle(.wheel)
+                .presentationDetents([.fraction(0.4)])
+            })
             
             if myMediaService.myRunningTime == -1 {
                 VStack(spacing: 0, content: {
@@ -46,27 +66,48 @@ struct ViewingTimeView: View {
                 .frame(width: 350, height: 100)
                 .background {
                     RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.blue)
+                        .fill(Color.color5)
                 }
             }
-            else {
-                Text("\(myMediaService.myRunningTime / 60)시간 \(myMediaService.myRunningTime % 60)분")
-                    .font(.largeTitle)
+            else if myMediaService.myRunningTime == 0 {
+                Text("해당 연도에 시청한 영화가 없습니다!")
+                    .foregroundStyle(Color.color1)
                     .bold()
                     .frame(width: 350, height: 100)
                     .background {
                         RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.blue)
+                            .fill(Color.color5)
+                    }
+            }
+            else {
+                Text("\(myMediaService.myRunningTime / 60)시간 \(myMediaService.myRunningTime % 60)분")
+                    .font(.largeTitle)
+                    .foregroundStyle(Color.color1)
+                    .bold()
+                    .frame(width: 350, height: 100)
+                    .background {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.color5)
+                    }
+                
+                HStack {
+                    Text("월별 러닝 타임")
+                        .bold()
+                        
+                    Spacer()
+                }
+                .padding()
+                
+                MonthlyGraphView(myMediaService: myMediaService)
+                    .padding()
+                    .frame(width: 350, height: 250)
+                    .background {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.color5)
                     }
             }
             
-            MonthlyGraphView(myMediaService: myMediaService)
-                .padding()
-                .frame(width: 350, height: 250)
-                .background {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.cyan)
-                }
+            
             
             Spacer()
         }

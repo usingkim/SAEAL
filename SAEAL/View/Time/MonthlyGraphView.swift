@@ -15,6 +15,7 @@ struct MonthlyGraphView: View {
         Chart {
             ForEach(myMediaService.monthlyRunningTime, id: \.self) { runtime in
                 BarMark(x: .value("month", runtime[0]), y: .value("time", runtime[1]))
+                    .foregroundStyle(Color.color2)
                     
             }
             

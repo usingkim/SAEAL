@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		C48D43552B16F4C400471126 /* MovieDetailSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48D43542B16F4C400471126 /* MovieDetailSubView.swift */; };
 		C48D43572B16FF6900471126 /* MonthlyGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48D43562B16FF6900471126 /* MonthlyGraphView.swift */; };
+		C48D435A2B1708C500471126 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48D43592B1708C500471126 /* Color+Extension.swift */; };
 		C498EF4A2B0F806900D16CE8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C498EF492B0F806900D16CE8 /* GoogleService-Info.plist */; };
 		C4A5B2CD2B0253EA00BECFEB /* DBMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A5B2CC2B0253EA00BECFEB /* DBMovie.swift */; };
 		C4A5B2D02B0253FE00BECFEB /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = C4A5B2CF2B0253FE00BECFEB /* Realm */; };
@@ -34,6 +35,7 @@
 /* Begin PBXFileReference section */
 		C48D43542B16F4C400471126 /* MovieDetailSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailSubView.swift; sourceTree = "<group>"; };
 		C48D43562B16FF6900471126 /* MonthlyGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyGraphView.swift; sourceTree = "<group>"; };
+		C48D43592B1708C500471126 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
 		C498EF492B0F806900D16CE8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		C4A5B2CC2B0253EA00BECFEB /* DBMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBMovie.swift; sourceTree = "<group>"; };
 		C4A8FF9E2B148FED008E25E4 /* OneMovieCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneMovieCapsule.swift; sourceTree = "<group>"; };
@@ -68,6 +70,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C48D43582B1708B100471126 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				C48D43592B1708C500471126 /* Color+Extension.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
 		C498EEC62B0F2D5500D16CE8 /* Time */ = {
 			isa = PBXGroup;
 			children = (
@@ -114,6 +124,7 @@
 		C4D308672AFE3EC30005053E /* View */ = {
 			isa = PBXGroup;
 			children = (
+				C4D6C7452AFBAE2400072148 /* ContentView.swift */,
 				C498EEC62B0F2D5500D16CE8 /* Time */,
 				C4D308772AFE53400005053E /* Search */,
 				C4D308782AFE53580005053E /* MyMedia */,
@@ -156,7 +167,6 @@
 				C4D6C7472AFBAE2600072148 /* Assets.xcassets */,
 				C4D6C7492AFBAE2600072148 /* Preview Content */,
 				C4D6C7432AFBAE2400072148 /* RunningTimeApp.swift */,
-				C4D6C7452AFBAE2400072148 /* ContentView.swift */,
 				C498EF492B0F806900D16CE8 /* GoogleService-Info.plist */,
 			);
 			path = Resources;
@@ -181,6 +191,7 @@
 		C4D6C7422AFBAE2400072148 /* SAEAL */ = {
 			isa = PBXGroup;
 			children = (
+				C48D43582B1708B100471126 /* Extension */,
 				C4D308642AFE1DEF0005053E /* Model */,
 				C4D308672AFE3EC30005053E /* View */,
 				C4D3086A2AFE42340005053E /* Service */,
@@ -292,6 +303,7 @@
 				C4D308842AFF37940005053E /* ViewingTimeView.swift in Sources */,
 				C4A8FF9F2B148FED008E25E4 /* OneMovieCapsule.swift in Sources */,
 				C4BBF5652B0B233A00C1A409 /* MyMediaDetailView.swift in Sources */,
+				C48D435A2B1708C500471126 /* Color+Extension.swift in Sources */,
 				C48D43552B16F4C400471126 /* MovieDetailSubView.swift in Sources */,
 				C4A5B2CD2B0253EA00BECFEB /* DBMovie.swift in Sources */,
 			);

@@ -112,7 +112,7 @@ final class MyMediaService: ObservableObject {
                 }
                 
                 if let month = Calendar.current.dateComponents([.month], from: end).month {
-                    monthlyRunningTime[month][1] += movie.myRuntime
+                    monthlyRunningTime[month - 1][1] += movie.myRuntime
                 }
             }
         }
