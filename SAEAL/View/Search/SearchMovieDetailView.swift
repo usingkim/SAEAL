@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MovieDetailView: View {
+struct SearchMovieDetailView: View {
     
     @Environment(\.dismiss) var dismiss
     

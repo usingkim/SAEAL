@@ -111,5 +111,18 @@ final class MyMediaService: ObservableObject {
             }
         }
     }
+    
+    func writeReview(movie: DBMovie, score: Int, review: String) {
+        do {
+            try MyMediaService.realm.write {
+                movie.score = score
+                movie.review = review
+            }
+        }
+        catch {
+            print("WRITE ERROR!!!")
+        }
+        self.fetchAllMovie()
+    }
 }
 

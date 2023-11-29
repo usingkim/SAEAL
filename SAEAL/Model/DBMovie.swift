@@ -23,6 +23,9 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
     @Persisted var startDate: Date?
     @Persisted var endDate: Date?
     
+    @Persisted var score: Int = 3
+    @Persisted var review: String = ""
+    
     override init() {
         super.init()
         self.id = UUID().uuidString

@@ -25,7 +25,7 @@ struct SearchView: View {
             
             HStack {
                 TextField(text: $searchText) {
-                    Text("영화를 검색해주세요!")
+                    Text("어떤 영화를 기록하시겠어요?")
                 }
                 Button(action: {
                     Task {
@@ -44,7 +44,7 @@ struct SearchView: View {
             LazyVGrid(columns: columns, spacing: 20) {
                 ForEach(movies, id:\.self) { movie in
                     NavigationLink {
-                        MovieDetailView(myMediaService: myMediaService, movie: movie)
+                        SearchMovieDetailView(myMediaService: myMediaService, movie: movie)
                     } label: {
                         OneMovieCapsule(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: 0, posterLink: movie.posterPath, touchedTime: Date.now, status: -1, myRuntime: 0, startDate: nil, endDate: nil))
                     }

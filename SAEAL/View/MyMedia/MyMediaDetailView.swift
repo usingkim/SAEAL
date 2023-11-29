@@ -102,6 +102,9 @@ struct MyMediaDetailView: View {
             }
             
             Button {
+                // TODO: 이미 나의 필모그래피에 있는 경우
+                // 이미 나의 필모그래피에 존재합니다. 2회차를 감상하시겠습니까?
+                
                 let newMovie = DBMovie(movie: movie)
                 newMovie.touchedTime = Date.now
                 
