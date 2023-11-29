@@ -20,8 +20,8 @@ struct OneMovieCapsule: View {
                     .frame(width: 120, height: 150)
                     .cornerRadius(10)
                     .shadow(radius: 5)
-                Text(movie.title)
-                    .lineLimit(1)
+//                Text(movie.title)
+//                    .lineLimit(1)
             }
             else {
                 Image(.loading)

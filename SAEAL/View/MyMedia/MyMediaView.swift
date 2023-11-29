@@ -30,6 +30,7 @@ struct MyMediaView: View {
                     Text("전체")
                 })
                 .buttonStyle(.plain)
+                .foregroundStyle(status == nil ? Color.red : Color.black)
                 
                 Button(action: {
                     status = .bookmark
@@ -38,6 +39,7 @@ struct MyMediaView: View {
                     Text(DBMovie.Status.bookmark.statusString)
                 })
                 .buttonStyle(.plain)
+                .foregroundStyle(status == .bookmark ? Color.red : Color.black)
                 
                 Button(action: {
                     status = .ing
@@ -46,6 +48,7 @@ struct MyMediaView: View {
                     Text(DBMovie.Status.ing.statusString)
                 })
                 .buttonStyle(.plain)
+                .foregroundStyle(status == .ing ? Color.red : Color.black)
                 
                 Button(action: {
                     status = .end
@@ -54,6 +57,7 @@ struct MyMediaView: View {
                     Text(DBMovie.Status.end.statusString)
                 })
                 .buttonStyle(.plain)
+                .foregroundStyle(status == .end ? Color.red : Color.black)
             }
             
             ScrollView {
@@ -68,6 +72,10 @@ struct MyMediaView: View {
                     }
                 }
                 .padding(.horizontal)
+                .refreshable {
+                    status = nil
+                    myMediaService.fetchAllMovie()
+                }
             }
         }
     }

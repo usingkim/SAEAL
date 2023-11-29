@@ -81,6 +81,7 @@ final class MyMediaService: ObservableObject {
     
     func fetchAllMovie() {
         myMovies = Array(MyMediaService.realm.objects(DBMovie.self))
+        myMovies.sort { $0.touchedTime > $1.touchedTime }
         self.filterMovies(status: recentStatus)
     }
     

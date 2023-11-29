@@ -21,8 +21,8 @@ struct MyMediaDetailView: View {
     
     var body: some View {
         VStack {
-            Text(movie.title)
-            Text("\(movie.status)")
+            Text("제목 : " + movie.title)
+            Text("총 러닝타임 : \(movie.runtime)")
             Text("내 러닝타임 : \(movie.myRuntime)")
             Text(DBMovie.Status.getStatusByInt(movie.status)?.statusString ?? "")
         }
