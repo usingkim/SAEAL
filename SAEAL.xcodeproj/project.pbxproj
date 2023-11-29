@@ -103,6 +103,13 @@
 			path = Setting;
 			sourceTree = "<group>";
 		};
+		C4A6D0A92B17605D00137244 /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		C4A8FF9D2B148FC5008E25E4 /* SubView */ = {
 			isa = PBXGroup;
 			children = (
@@ -196,6 +203,7 @@
 				C4D3086A2AFE42340005053E /* Service */,
 				C498EEC82B0F33EB00D16CE8 /* ViewModel */,
 				C48D43582B1708B100471126 /* Extension */,
+				C4A6D0A92B17605D00137244 /* Fonts */,
 				C4D3087F2AFF19500005053E /* Resources */,
 			);
 			path = SAEAL;
