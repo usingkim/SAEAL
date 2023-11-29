@@ -13,6 +13,7 @@ final class MyMediaService: ObservableObject {
     @Published var filteredMovies: [DBMovie] = []
     
     @Published var myRunningTime: Int = -1
+    @Published var monthlyRunningTime = (1...12).map { [$0, 0] }
     
     private static var realm: Realm = try! Realm()
     
@@ -99,6 +100,7 @@ final class MyMediaService: ObservableObject {
     func resetRunningTime(startDate: Date, endDate: Date) {
         if myMovies.isEmpty {
             myRunningTime = 0
+            monthlyRunningTime = (1...12).map { [$0, 0] }
             return
         }
         
@@ -107,6 +109,10 @@ final class MyMediaService: ObservableObject {
             if let end = movie.endDate {
                 if startDate...endDate ~= end {
                     myRunningTime += movie.myRuntime
+                }
+                
+                if let month = Calendar.current.dateComponents([.month], from: end).month {
+                    monthlyRunningTime[month][1] += movie.myRuntime
                 }
             }
         }
@@ -124,5 +130,6 @@ final class MyMediaService: ObservableObject {
         }
         self.fetchAllMovie()
     }
+    
 }
 

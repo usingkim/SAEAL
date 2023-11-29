@@ -16,10 +16,19 @@ struct ViewingTimeView: View {
     var body: some View {
         VStack {
             HStack {
-                Text("기간")
+                Image(.defaultProfile)
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                Text("유진")
+                Spacer()
+            }
+            .padding()
+            
+            HStack {
+                Text("연도")
                 Picker(selection: $year, label: Text("기간")) {
                     ForEach(years, id:\.self) { year in
-                        Text("\(year)").tag(year)
+                        Text("\(year)년").tag(year)
                     }
                 }
                 Spacer()
@@ -27,15 +36,38 @@ struct ViewingTimeView: View {
             .padding()
             
             Spacer()
+            
             if myMediaService.myRunningTime == -1 {
-                Text("영화 기록을 시작해보세요!")
-                Text("검색 후 저장을 시작하시면 됩니다!")
+                VStack(spacing: 0, content: {
+                    Text("영화 기록을 시작해보세요!")
+                    Text("검색 후 저장을 시작하시면 됩니다!")
+                })
+                .bold()
+                .frame(width: 350, height: 100)
+                .background {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.blue)
+                }
             }
             else {
                 Text("\(myMediaService.myRunningTime / 60)시간 \(myMediaService.myRunningTime % 60)분")
                     .font(.largeTitle)
                     .bold()
+                    .frame(width: 350, height: 100)
+                    .background {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.blue)
+                    }
             }
+            
+            MonthlyGraphView(myMediaService: myMediaService)
+                .padding()
+                .frame(width: 350, height: 250)
+                .background {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.cyan)
+                }
+            
             Spacer()
         }
         .onAppear {
