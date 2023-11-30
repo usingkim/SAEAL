@@ -17,6 +17,10 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
     @Persisted var posterLink: String?
     @Persisted var touchedTime: Date
     @Persisted var status: Int
+    @Persisted var releaseDate: String
+    @Persisted var overview: String
+    @Persisted var actors: List<String>
+    @Persisted var director: String
     
     // 나의 영화 관련 정보
     @Persisted var myRuntime: Int
@@ -34,13 +38,16 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
         self.runtime = 0
         self.posterLink = nil
         self.touchedTime = Date.now
+        self.overview = ""
+        self.actors = List<String>()
+        self.director = ""
         self.status = 0
         self.myRuntime = 0
         self.startDate = Date.now
         self.endDate = Date.now
     }
     
-    init(title: String, MovieID: Int, runtime: Int, posterLink: String?, touchedTime: Date, status: Int, myRuntime: Int, startDate: Date?, endDate: Date?) {
+    init(title: String, MovieID: Int, runtime: Int, posterLink: String?, touchedTime: Date, releaseDate: String, overview: String, status: Int, actors: [String], director: String, myRuntime: Int, startDate: Date?, endDate: Date?) {
         super.init()
         self.id = UUID().uuidString
         self.title = title
@@ -48,6 +55,14 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
         self.runtime = runtime
         self.posterLink = posterLink
         self.touchedTime = touchedTime
+        self.releaseDate = releaseDate
+        self.overview = overview
+        
+        let actorList = List<String>()
+        actorList.append(objectsIn: actors)
+        self.actors = actorList
+        self.director = director
+        
         self.status = status
         self.myRuntime = myRuntime
         self.startDate = startDate
@@ -62,6 +77,10 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
         self.runtime = movie.runtime
         self.posterLink = movie.posterLink
         self.touchedTime = movie.touchedTime
+        self.releaseDate = movie.releaseDate
+        self.overview = movie.overview
+        self.actors = movie.actors
+        self.director = movie.director
         self.status = movie.status
         self.myRuntime = movie.myRuntime
         self.startDate = movie.startDate
@@ -97,4 +116,5 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
             }
         }
     }
+    
 }

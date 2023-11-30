@@ -21,11 +21,51 @@ struct MyMediaDetailView: View {
     
     var body: some View {
         VStack {
-            Text("제목 : " + movie.title)
-            Text("총 러닝타임 : \(movie.runtime)")
-            Text("내 러닝타임 : \(movie.myRuntime)")
-            Text(DBMovie.Status.getStatusByInt(movie.status)?.statusString ?? "")
+            HStack {
+                VStack(alignment: .leading, content: {
+                    Text(movie.title)
+                        .font(.dotumBold(size: 25))
+                    Text("\(movie.releaseDate), \(movie.runtime)분")
+                        .font(.dotumMedium(size: 15))
+                    Text("감독 : \(movie.director)")
+                        .font(.dotumMedium(size: 15))
+                    
+                    Text("주요 출연진")
+                        .font(.dotumMedium(size: 15))
+                    ForEach(movie.actors, id:\.self) { actor in
+                        Text("- \(actor) ")
+                            .font(.dotumMedium(size: 15))
+                    }
+                    
+                    Spacer()
+                })
+                .frame(height: 150)
+                
+                Spacer()
+                
+                VStack {
+                    Image(.film)
+                        .resizable()
+                        .frame(width: 100, height: 150)
+                    Spacer()
+                }
+            }
+            
+            HStack {
+                VStack(alignment: .leading, content: {
+                    Text("줄거리")
+                        .font(.dotumBold(size: 20))
+                    Text("\(movie.overview)")
+                        .font(.dotumMedium(size: 15))
+                })
+                Spacer()
+            }
+            
+            
+            Spacer()
         }
+        .padding(.leading, 16)
+        .padding(.trailing, 16)
         .toolbar(content: {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: {
@@ -136,5 +176,5 @@ struct MyMediaDetailView: View {
 }
 
 #Preview {
-    MyMediaDetailView(myMediaService: MyMediaService(), movie: DBMovie(title: "", MovieID: 0, runtime: 0, posterLink: nil, touchedTime: Date.now, status: 0, myRuntime: 0, startDate: nil, endDate: nil))
+    MyMediaDetailView(myMediaService: MyMediaService(), movie: DBMovie(title: "태어난 김에 세계일주 3", MovieID: 0, runtime: 235, posterLink: nil, touchedTime: Date.now, releaseDate: "2023-03-21", overview: "모두 끝나버렸다 난 시작도 안해봤는데", status: 0, actors: ["정우성", "김유진"], director: "김유진", myRuntime: 0, startDate: nil, endDate: nil))
 }

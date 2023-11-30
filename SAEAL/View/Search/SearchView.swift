@@ -10,7 +10,7 @@ import SwiftUI
 struct SearchView: View {
     @ObservedObject var myMediaService: MyMediaService
     
-    @State private var searchText: String = ""
+    @State private var searchText: String = "서울의 봄"
     @State private var movies: [TMDBService.SearchMovie] = []
     @State private var isShowingAlert: Bool = false
     
@@ -61,7 +61,7 @@ struct SearchView: View {
                     NavigationLink {
                         SearchMovieDetailView(myMediaService: myMediaService, movie: movie)
                     } label: {
-                        OneMovieCapsule(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: 0, posterLink: movie.posterPath, touchedTime: Date.now, status: -1, myRuntime: 0, startDate: nil, endDate: nil))
+                        OneMovieCapsule(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: -1, actors: [], director: "", myRuntime: 0, startDate: nil, endDate: nil))
                         
                     }
                 }

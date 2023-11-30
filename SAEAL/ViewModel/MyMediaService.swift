@@ -24,6 +24,7 @@ final class MyMediaService: ObservableObject {
         do {
             try MyMediaService.realm.write {
                 MyMediaService.realm.add(newMovie)
+                print(newMovie.actors, newMovie.director)
             }
         }
         catch {

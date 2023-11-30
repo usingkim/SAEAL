@@ -15,6 +15,9 @@ struct SearchMovieDetailView: View {
     
     @State var movie: TMDBService.SearchMovie
     @State private var movieDetail: TMDBService.MovieDetail?
+    @State private var movieCredit: TMDBService.MovieCredit?
+    @State private var director: String = ""
+    @State private var actors: [String] = []
     @State private var isShowingSaveSheet: Bool = false
     @State private var status: DBMovie.Status = .bookmark
     @State private var watchedTime: Double = 0
@@ -36,6 +39,25 @@ struct SearchMovieDetailView: View {
                 else {
                     print("영화 정보가 없습니다.")
                 }
+                
+                if let credit = await TMDBService.getMovieCreditByID(id: movie.id) {
+                    movieCredit = credit
+                    var numOfActor = 0
+                    for actor in credit.cast {
+                        actors.append(actor.name)
+                        numOfActor += 1
+                        if numOfActor == 3 {
+                            break
+                        }
+                    }
+                    if let idx = movieCredit?.crew.firstIndex(where: { $0.job == "Directing" || $0.job ==  "Director" }) {
+                        director = credit.crew[idx].name
+                    }
+                }
+                else {
+                    print("Credit 정보가 없습니다.")
+                }
+                
             }
         }
         .toolbar(content: {
@@ -96,11 +118,11 @@ struct SearchMovieDetailView: View {
             Button {
                 switch(status) {
                 case .bookmark:
-                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue, myRuntime: 0, startDate: nil, endDate: nil))
+                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: status.rawValue, actors: actors, director: director, myRuntime: 0, startDate: nil, endDate: nil))
                 case .ing:
-                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue, myRuntime: Int(watchedTime), startDate: startDate, endDate: nil))
+                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: status.rawValue, actors: actors, director: director, myRuntime: Int(watchedTime), startDate: startDate, endDate: nil))
                 case .end:
-                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, status: status.rawValue, myRuntime: movieDetail?.runtime ?? 0, startDate: startDate, endDate: endDate))
+                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: status.rawValue, actors: actors, director: director, myRuntime: movieDetail?.runtime ?? 0, startDate: startDate, endDate: endDate))
                 }
                 isShowingSaveSheet = false
                 dismiss()
