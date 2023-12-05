@@ -69,10 +69,6 @@ struct OneMovieCapsule: View {
                 }
             })
             Spacer()
-            
-            if mode == .search {
-                Image(.addButton)
-            }
         }
     }
 }

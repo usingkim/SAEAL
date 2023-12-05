@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Kingfisher
 
 struct MyMediaDetailView: View {
     @Environment(\.dismiss) var dismiss
@@ -21,20 +22,23 @@ struct MyMediaDetailView: View {
     
     var body: some View {
         VStack {
+            Text(movie.title)
+                .font(.title01)
             HStack {
                 VStack(alignment: .leading, content: {
-                    Text(movie.title)
-                        .font(.dotumBold(size: 25))
+                    
                     Text("\(movie.releaseDate), \(movie.runtime)분")
-                        .font(.dotumMedium(size: 15))
+                        .font(.body01)
+                        .padding(.bottom, 10)
                     Text("감독 : \(movie.director)")
-                        .font(.dotumMedium(size: 15))
+                        .font(.body02)
+                        .padding(.bottom, 5)
                     
                     Text("주요 출연진")
-                        .font(.dotumMedium(size: 15))
+                        .font(.body02)
                     ForEach(movie.actors, id:\.self) { actor in
                         Text("- \(actor) ")
-                            .font(.dotumMedium(size: 15))
+                            .font(.body02)
                     }
                     
                     Spacer()
@@ -43,10 +47,19 @@ struct MyMediaDetailView: View {
                 
                 Spacer()
                 
-                Image(.film)
-                    .resizable()
-                    .frame(width: 100, height: 150)
-                Spacer()
+                if let poster = movie.posterLink {
+                    KFImage(URL(string: APIConstant.imageURL + poster))
+                        .retry(maxCount: 3, interval: .seconds(5))
+                        .resizable()
+                        .frame(width: 100, height: 125)
+                        .cornerRadius(10)
+                        .shadow(radius: 5)
+                }
+                else {
+                    Image(.film)
+                        .resizable()
+                        .frame(width: 100, height: 125)
+                }
                 
             }
             
@@ -67,10 +80,10 @@ struct MyMediaDetailView: View {
                                 .renderingMode(.template)
                                 .resizable()
                                 .frame(width: 30, height: 30)
-                                .foregroundStyle(s == DBMovie.Status.getStatusByInt(movie.status) ? Color.red : Color.black)
+                                .foregroundStyle(s == DBMovie.Status.getStatusByInt(movie.status) ? Color.black : Color.gray)
                             Text(s.statusString)
-                                .font(.dotumMedium(size: 15))
-                                .foregroundStyle(s == DBMovie.Status.getStatusByInt(movie.status) ? Color.red : Color.black)
+                                .font(.body02)
+                                .foregroundStyle(s == DBMovie.Status.getStatusByInt(movie.status) ? Color.black : Color.gray)
                         }
                     }
                     .buttonStyle(.plain)
@@ -88,9 +101,11 @@ struct MyMediaDetailView: View {
             HStack {
                 VStack(alignment: .leading, content: {
                     Text("줄거리")
-                        .font(.dotumBold(size: 20))
+                        .font(.title04)
+                        .padding(.bottom, 10)
                     Text("\(movie.overview)")
-                        .font(.dotumMedium(size: 15))
+                        .font(.body03)
+                        .padding(.leading, 5)
                 })
                 Spacer()
             }
@@ -124,19 +139,25 @@ struct MyMediaDetailView: View {
             if status == .ing {
                 DatePicker(selection: $startDate, displayedComponents: .date) {
                     Text("시작 날짜")
+                        .font(.body02)
                 }
                 .padding()
             }
             
             else if status == .end {
-                VStack(spacing: 0) {
+                VStack(spacing: 20) {
                     DatePicker(selection: $startDate, displayedComponents: .date) {
                         Text("시작 날짜")
+                            .font(.body02)
                     }
+                    
                     DatePicker("끝난 날짜", selection: $endDate, in: startDate...(Calendar.current.date(byAdding: .year, value: 1, to: startDate) ?? startDate), displayedComponents: .date)
+                        .font(.body02)
                 }
                 .padding()
+                .padding(.top, 30)
             }
+            
             
             Button {
                 // TODO: 이미 나의 필모그래피에 있는 경우
@@ -163,13 +184,30 @@ struct MyMediaDetailView: View {
                         newMovie.startDate = startDate
                         newMovie.endDate = endDate
                     }
+                    movie = newMovie
                     myMediaService.editMovie(oldMovie: movie, newMovie: newMovie)
                 }
                 isShowingEditSheet = false
                 dismiss()
             } label: {
-                Text("저장")
+                HStack {
+                    Spacer()
+                    Text("저장")
+                        .foregroundColor(Color.white)
+                        .font(.body02)
+                    Spacer()
+                }
+                .padding(.top, 16)
+                .padding(.bottom, 16)
             }
+            .background {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.black)
+            }
+            .foregroundColor(.white)
+            .padding(.leading, 11)
+            .padding(.trailing, 15)
+            .padding(.bottom, 80)
         }
     }
 }

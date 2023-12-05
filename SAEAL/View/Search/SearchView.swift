@@ -62,10 +62,20 @@ struct SearchView: View {
         
         ScrollView {
             ForEach(movies, id:\.self) { movie in
-                NavigationLink {
-                    SearchMovieDetailView(myMediaService: myMediaService, movie: movie)
-                } label: {
-                    OneMovieCapsule(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: -1, actors: [], director: "", myRuntime: 0, startDate: nil, endDate: nil))
+                HStack {
+                    NavigationLink {
+                        SearchMovieDetailView(myMediaService: myMediaService, movie: movie)
+                    } label: {
+                        OneMovieCapsule(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: -1, actors: [], director: "", myRuntime: 0, startDate: nil, endDate: nil))
+                    }
+                    
+                    Button {
+                        print("add")
+                    } label: {
+                        Image(.addButton)
+                    }
+                    .buttonStyle(.plain)
+
                     
                 }
             }
