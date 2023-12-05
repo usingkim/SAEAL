@@ -90,24 +90,19 @@ struct MyMediaView: View {
             }
             .padding()
             
-            ScrollView {
-                
-                ForEach(myMediaService.filteredMovies) { movie in
-                    NavigationLink {
-                        MyMediaDetailView(myMediaService: MyMediaService(), movie: movie)
-                    } label: {
-                        OneMovieCapsule(mode: .myMedia, movie: movie)
-                    }
-                    
-                }
-                
-                .padding(.horizontal)
-                .refreshable {
-                    status = nil
-                    myMediaService.fetchAllMovie()
+            List(myMediaService.filteredMovies) { movie in
+                NavigationLink {
+                    MyMediaDetailView(myMediaService: MyMediaService(), movie: movie)
+                } label: {
+                    OneMovieCapsule(mode: .myMedia, movie: movie)
                 }
             }
-            .padding(.trailing, 16)
+            .refreshable {
+                status = nil
+                myMediaService.fetchAllMovie()
+            }
+            .listStyle(.plain)
+            .listRowSeparator(.hidden)
         }
     }
 }

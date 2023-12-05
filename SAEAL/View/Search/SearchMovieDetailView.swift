@@ -19,6 +19,7 @@ struct SearchMovieDetailView: View {
     @State private var director: String = ""
     @State private var actors: [String] = []
     @State private var isShowingSaveSheet: Bool = false
+    @State private var isShowingSaveAlert: Bool = false
     @State private var status: DBMovie.Status? = nil
     @State private var watchedTime: Double = 0
     @State private var startDate: Date = Date.now
@@ -38,6 +39,9 @@ struct SearchMovieDetailView: View {
                         }
                         else {
                             status = s
+                        }
+                        if status == .bookmark {
+                            isShowingSaveAlert = true
                         }
                     } label: {
                         VStack {
@@ -109,9 +113,20 @@ struct SearchMovieDetailView: View {
                 
             }
         }
-        .sheet(isPresented: $isShowingSaveSheet, content: {
+        .sheet(isPresented: $isShowingSaveSheet, onDismiss: {
+            status = nil
+        }, content: {
             saveSheet
                 .presentationDetents([.fraction(0.3)])
+        })
+        .alert(isPresented: $isShowingSaveAlert, content: {
+            Alert(title: Text("나의 필모그래피에 등록하시겠습니까?"),
+                  primaryButton: .cancel(Text("등록") , action: {
+                myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.bookmark.rawValue, actors: actors, director: director, myRuntime: 0, startDate: nil, endDate: nil))
+                dismiss()
+            }),
+                  secondaryButton: .destructive(Text("취소"), action: { status = nil })
+            )
         })
     }
     

@@ -95,9 +95,9 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
         var statusString: String {
             switch(self){
             case .bookmark:
-                return "보고싶당"
+                return "보고싶어요"
             case .ing:
-                return "보는중"
+                return "보는 중"
             case .end:
                 return "봤어요"
             }
