@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Kingfisher
 
 struct MyMediaDetailView: View {
     @Environment(\.dismiss) var dismiss
@@ -22,48 +21,8 @@ struct MyMediaDetailView: View {
     
     var body: some View {
         VStack {
-            Text(movie.title)
-                .font(.title01)
-            HStack {
-                VStack(alignment: .leading, content: {
-                    
-                    Text("\(movie.releaseDate), \(movie.runtime)분")
-                        .font(.body01)
-                        .padding(.bottom, 10)
-                    Text("감독 : \(movie.director)")
-                        .font(.body02)
-                        .padding(.bottom, 5)
-                    
-                    Text("주요 출연진")
-                        .font(.body02)
-                    ForEach(movie.actors, id:\.self) { actor in
-                        Text("- \(actor) ")
-                            .font(.body02)
-                    }
-                    
-                    Spacer()
-                })
-                .frame(height: 150)
-                
-                Spacer()
-                
-                if let poster = movie.posterLink {
-                    KFImage(URL(string: APIConstant.imageURL + poster))
-                        .retry(maxCount: 3, interval: .seconds(5))
-                        .resizable()
-                        .frame(width: 100, height: 125)
-                        .cornerRadius(10)
-                        .shadow(radius: 5)
-                }
-                else {
-                    Image(.film)
-                        .resizable()
-                        .frame(width: 100, height: 125)
-                }
-                
-            }
             
-            Divider()
+            MovieDetailSubView(movie: movie)
             
             HStack {
                 ForEach(DBMovie.Status.allCases, id:\.self) { s in
@@ -160,9 +119,6 @@ struct MyMediaDetailView: View {
             
             
             Button {
-                // TODO: 이미 나의 필모그래피에 있는 경우
-                // 이미 나의 필모그래피에 존재합니다. 2회차를 감상하시겠습니까?
-                
                 let newMovie = DBMovie(movie: movie)
                 newMovie.touchedTime = Date.now
                 

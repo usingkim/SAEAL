@@ -17,7 +17,7 @@ struct ContentView: View {
             ViewingTimeView(myMediaService: myMediaService)
                 .tabItem {
                     Image(systemName: "magnifyingglass")
-                    Text("시청 시간")
+                    Text("러닝 타임")
                 }
             
             NavigationStack {
@@ -38,19 +38,19 @@ struct ContentView: View {
 //                    .frame(width: 20)
 //                    .foregroundStyle(Color.blue)
                 Image(systemName: "magnifyingglass")
-                Text("필모그래피")
+                Text("나의 필모그래피")
             }
             
-            SettingView()
-                .tabItem {
-                    Image(systemName: "gear")
-                    Text("내 정보")
-                }
+//            SettingView()
+//                .tabItem {
+//                    Image(systemName: "gear")
+//                    Text("내 정보")
+//                }
         }
         .onAppear {
             myMediaService.fetchAllMovie()
         }
-        
+        .accentColor(.black)
         
         
     }
