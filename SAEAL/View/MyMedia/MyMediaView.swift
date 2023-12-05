@@ -96,6 +96,13 @@ struct MyMediaView: View {
                 } label: {
                     OneMovieCapsule(mode: .myMedia, movie: movie)
                 }
+                .swipeActions {
+                    Button(role: .destructive) {
+                        myMediaService.delMovie(movie: movie)
+                    } label: {
+                        Text("삭제")
+                    }
+                }
             }
             .refreshable {
                 status = nil
@@ -103,6 +110,7 @@ struct MyMediaView: View {
             }
             .listStyle(.plain)
             .listRowSeparator(.hidden)
+            
         }
     }
 }
