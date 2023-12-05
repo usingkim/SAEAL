@@ -5,8 +5,8 @@
 //  Created by 김유진 on 11/13/23.
 //
 
-import Foundation
 import RealmSwift
+import Foundation
 
 final class DBMovie: Object, ObjectKeyIdentifiable {
     @Persisted(primaryKey: true) var id: String
@@ -95,11 +95,11 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
         var statusString: String {
             switch(self){
             case .bookmark:
-                return "보고싶어요!"
+                return "보고싶당"
             case .ing:
-                return "쉿! 보는중!"
+                return "보는중"
             case .end:
-                return "다 봤어요!"
+                return "봤어요"
             }
         }
         
@@ -113,6 +113,19 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
                 return .end
             default:
                 return nil
+            }
+        }
+        
+        func getStatusImageString()->String {
+            switch self {
+            case .bookmark:
+                return "loading"
+            case .ing:
+                return "loading"
+            case .end:
+                return "loading"
+            default:
+                return "loading"
             }
         }
     }

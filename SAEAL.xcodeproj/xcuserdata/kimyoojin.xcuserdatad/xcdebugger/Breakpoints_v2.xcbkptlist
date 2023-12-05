@@ -52,5 +52,83 @@
             </Locations>
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "F6F4472E-91D2-4ABF-96B8-72DA6C059BAF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SAEAL/View/Search/SearchView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "F6F4472E-91D2-4ABF-96B8-72DA6C059BAF - cdd6c81ee187b5c8"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SAEAL.SearchView.body.getter : some"
+                  moduleName = "SAEAL"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kimyoojin/Desktop/SWIFT/SAEAL/SAEAL/View/Search/SearchView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "56"
+                  endingLineNumber = "56"
+                  offsetFromSymbolStart = "680">
+               </Location>
+               <Location
+                  uuid = "F6F4472E-91D2-4ABF-96B8-72DA6C059BAF - 1b262e6e5c00c70f"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #2 () -&gt; SwiftUI.LazyVGrid&lt;&lt;&lt;opaque return type of SwiftUI.View.listStyle&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.ListStyle&gt;(&#x3c4;_1_0) -&gt; some&gt;&gt;.0&gt; in SAEAL.SearchView.body.getter : some"
+                  moduleName = "SAEAL"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kimyoojin/Desktop/SWIFT/SAEAL/SAEAL/View/Search/SearchView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "500">
+               </Location>
+               <Location
+                  uuid = "F6F4472E-91D2-4ABF-96B8-72DA6C059BAF - 2c7aa693e78889f2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; &lt;&lt;opaque return type of SwiftUI.View.listStyle&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.ListStyle&gt;(&#x3c4;_1_0) -&gt; some&gt;&gt;.0 in closure #2 () -&gt; SwiftUI.LazyVGrid&lt;&lt;&lt;opaque return type of SwiftUI.View.listStyle&lt;&#x3c4;_0_0 where &#x3c4;_1_0: SwiftUI.ListStyle&gt;(&#x3c4;_1_0) -&gt; some&gt;&gt;.0&gt; in SAEAL.SearchView.body.getter : some"
+                  moduleName = "SAEAL"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kimyoojin/Desktop/SWIFT/SAEAL/SAEAL/View/Search/SearchView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "60"
+                  endingLineNumber = "60"
+                  offsetFromSymbolStart = "252">
+               </Location>
+               <Location
+                  uuid = "F6F4472E-91D2-4ABF-96B8-72DA6C059BAF - cdd6c81ee187b42b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "SAEAL.SearchView.body.getter : some"
+                  moduleName = "SAEAL"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/kimyoojin/Desktop/SWIFT/SAEAL/SAEAL/View/Search/SearchView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59"
+                  offsetFromSymbolStart = "696">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

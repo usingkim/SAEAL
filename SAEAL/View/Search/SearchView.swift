@@ -22,16 +22,13 @@ struct SearchView: View {
     
     var body: some View {
         VStack {
-            if movies.isEmpty {
-                Spacer()
-            }
             
             HStack {
                 TextField(text: $searchText) {
                     Text("어떤 영화를 기록하시겠어요?")
-                        .font(.dotumMedium(size: 15))
+                        .font(.title05)
                 }
-                .foregroundStyle(Color.color2)
+                .font(.title05)
                 
                 Button(action: {
                     Task {
@@ -42,31 +39,37 @@ struct SearchView: View {
                 }, label: {
                     Image(systemName: "magnifyingglass")
                         .renderingMode(.template)
-                        .foregroundStyle(Color.color2)
+                        .foregroundColor(.black)
                 })
             }
             .padding()
             .background {
-                RoundedRectangle(cornerRadius: 12)
-                    .fill(Color.color5)
+                RoundedRectangle(cornerRadius: 6)
+                    .fill(Color.white)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 25)
+                            .stroke(Color.black, lineWidth: 1)
+                    )
             }
             
-            
+            if movies.isEmpty {
+                Spacer()
+            }
         }
-        .padding()
+        .padding(.leading, 16)
+        .padding(.trailing, 16)
+        
         
         ScrollView {
-            LazyVGrid(columns: columns, spacing: 20) {
-                ForEach(movies, id:\.self) { movie in
-                    NavigationLink {
-                        SearchMovieDetailView(myMediaService: myMediaService, movie: movie)
-                    } label: {
-                        OneMovieCapsule(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: -1, actors: [], director: "", myRuntime: 0, startDate: nil, endDate: nil))
-                        
-                    }
+            ForEach(movies, id:\.self) { movie in
+                NavigationLink {
+                    SearchMovieDetailView(myMediaService: myMediaService, movie: movie)
+                } label: {
+                    OneMovieCapsule(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: -1, actors: [], director: "", myRuntime: 0, startDate: nil, endDate: nil))
+                    
                 }
-                .listStyle(.plain)
             }
+            .listStyle(.plain)
         }
         .padding()
     }

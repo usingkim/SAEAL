@@ -14,6 +14,13 @@ struct ViewingTimeView: View {
     @State private var year: Int = 2023
     @State private var isPickingYear: Bool = false
     
+    let columns = [
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible()),
+        GridItem(.flexible())
+    ]
+    
     var body: some View {
         VStack {
             
@@ -21,13 +28,15 @@ struct ViewingTimeView: View {
                 Button(action: {
                     isPickingYear = true
                 }, label: {
-                    Text("\(year)년")
-                        .font(.dotumMedium(size: 20))
+                    if let y = year.yearFormatterString() {
+                        Text("\(y)년")
+                            .font(.title05)
+                    }
+                    Image(.expandMore)
+                        .resizable()
+                        .frame(width: 24, height: 24)
                 })
                 .foregroundColor(Color.color1)
-                
-                Text("! 유진님의 시청시간")
-                    .font(.dotumMedium(size: 20))
                 
                 Spacer()
             }
@@ -39,21 +48,25 @@ struct ViewingTimeView: View {
                         isPickingYear = false
                     }, label: {
                         Text("완료")
-                            .font(.dotumLight(size: 20))
+                            .font(.body03)
                     })
                     .foregroundColor(Color.color1)
                     .padding(.trailing, 16)
                 }
                 Picker(selection: $year, label: Text("기간")) {
                     ForEach(years, id:\.self) { year in
-                        Text("\(year)년").tag(year)
-                            .bold()
-                            .font(.title2)
+                        if let y = year.yearFormatterString() {
+                            Text("\(y)년").tag(year)
+                                .font(.body01)
+                        }
                     }
                 }
                 .pickerStyle(.wheel)
                 .presentationDetents([.fraction(0.4)])
             })
+            
+            
+            Spacer()
             
             if myMediaService.myRunningTime == -1 {
                 VStack(spacing: 0, content: {
@@ -67,47 +80,51 @@ struct ViewingTimeView: View {
                         .fill(Color.color5)
                 }
             }
-            else if myMediaService.myRunningTime == 0 {
-                Text("해당 연도에 다 본 영화가 없습니다!")
-                    .foregroundStyle(Color.color1)
-                    .font(.dotumLight(size: 15))
-                    .frame(width: 350, height: 100)
-                    .background {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.color5)
-                    }
-            }
             else {
-                Text("\(myMediaService.myRunningTime / 60)시간 \(myMediaService.myRunningTime % 60)분")
-                    .font(.dotumBold(size: 40))
-                    .foregroundStyle(Color.color1)
-                    .bold()
-                    .frame(width: 350, height: 100)
-                    .background {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.color5)
-                    }
+                Text("Total")
+                    .font(.caption01)
+                    .padding(.bottom, 10)
+                Text("\(intToHour(runtime: myMediaService.myRunningTime))시간 \(intToMinute(runtime: myMediaService.myRunningTime))분")
+                    .font(.headline1)
+                
+                Spacer()
                 
                 HStack {
                     Text("월별 러닝 타임")
-                        .font(.dotumMedium(size: 15))
+                        .font(.title04)
                         
                     Spacer()
                 }
                 .padding(.leading, 15)
                 
-                MonthlyGraphView(myMediaService: myMediaService)
-                    .padding()
-                    .frame(width: 350, height: 250)
-                    .background {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(Color.color5)
+                LazyVGrid(columns: columns, spacing: 20) {
+                    ForEach(myMediaService.monthlyRunningTime, id: \.self) { runtime in
+                        VStack {
+                            Text("\(runtime[0])월")
+                                .font(.title05)
+                            if let hour = intToHour(runtime: runtime[1]).timeFormatterString() {
+                                if let minute = intToMinute(runtime: runtime[1]).timeFormatterString() {
+                                    Text("\(hour):\(minute)")
+                                        .font(.body01)
+                                }
+                            }
+                        }
                     }
+                }
+                .padding(10)
+                
+//                MonthlyGraphView(myMediaService: myMediaService)
+//                    .padding()
+//                    .frame(width: 350, height: 250)
+//                    .background {
+//                        RoundedRectangle(cornerRadius: 12)
+//                            .fill(Color.color5)
+//                    }
             }
             
             
             
-            Spacer()
+//            Spacer()
         }
         .onAppear {
             myMediaService.resetRunningTime(startDate: calendarToDate(year: year, month: 1, day: 1, isStart: true), endDate: calendarToDate(year: year, month: 12, day: 31, isStart: false))
@@ -115,6 +132,14 @@ struct ViewingTimeView: View {
         .onChange(of: year, perform: { value in
             myMediaService.resetRunningTime(startDate: calendarToDate(year: year, month: 1, day: 1, isStart: true), endDate: calendarToDate(year: year, month: 12, day: 31, isStart: false))
         })
+    }
+    
+    func intToHour(runtime: Int) -> Int {
+        return runtime / 60
+    }
+    
+    func intToMinute(runtime: Int) -> Int {
+        return runtime % 60
     }
     
     func calendarToDate(year: Int, month: Int, day: Int, isStart: Bool)->Date {
