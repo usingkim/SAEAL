@@ -16,7 +16,10 @@ struct ContentView: View {
         TabView {
             ViewingTimeView(myMediaService: myMediaService)
                 .tabItem {
-                    Image(systemName: "magnifyingglass")
+                    Image(.timetab)
+                        .resizable()
+                        .frame(width: 20, height: 20)
+                        .scaledToFit()
                     Text("러닝 타임")
                 }
             
@@ -25,6 +28,7 @@ struct ContentView: View {
             }
             .tabItem {
                 Image(systemName: "magnifyingglass")
+                    .frame(width: 20, height: 20)
                 Text("검색")
             }
             
@@ -32,29 +36,18 @@ struct ContentView: View {
                 MyMediaView(myMediaService: myMediaService)
             }
             .tabItem {
-//                Image(.film)
-//                    .resizable()
-//                    .renderingMode(.template)
-//                    .frame(width: 20)
-//                    .foregroundStyle(Color.blue)
-                Image(systemName: "magnifyingglass")
+                Image(.filmotab)
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .scaledToFit()
                 Text("나의 필모그래피")
             }
-            
-//            SettingView()
-//                .tabItem {
-//                    Image(systemName: "gear")
-//                    Text("내 정보")
-//                }
         }
         .onAppear {
             myMediaService.fetchAllMovie()
         }
         .accentColor(.black)
-        
-        
     }
-    
     
 }
 

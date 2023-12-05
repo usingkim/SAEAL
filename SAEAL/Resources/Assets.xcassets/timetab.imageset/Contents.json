@@ -1,11 +1,11 @@
 {
   "images" : [
     {
+      "filename" : "timetab.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "expand_more.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
