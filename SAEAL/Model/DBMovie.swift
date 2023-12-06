@@ -28,7 +28,7 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
     @Persisted var endDate: Date?
     
     @Persisted var score: Int = 3
-    @Persisted var review: String = ""
+    @Persisted var review: List<String> = List<String>()
     
     override init() {
         super.init()
