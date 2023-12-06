@@ -29,7 +29,7 @@ final class MyMediaService: ObservableObject {
         catch {
             print("WRITE ERROR!!!")
         }
-        self.filterMovies(status: recentStatus)
+        self.fetchAllMovie()
     }
     
     func editMovie(oldMovie: DBMovie, newStatus: DBMovie.Status) {
@@ -64,7 +64,11 @@ final class MyMediaService: ObservableObject {
     
     func delMovie(movie: DBMovie) {
         do {
-            filteredMovies = []
+            if let idx = filteredMovies.firstIndex(where: { m in
+                m.id == movie.id
+            }) {
+                filteredMovies.remove(at: idx)
+            }
             try MyMediaService.realm.write {
                 MyMediaService.realm.delete(movie)
             }

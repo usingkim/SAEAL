@@ -13,12 +13,11 @@ struct SearchView: View {
     @State private var searchText: String = ""
     @State private var movies: [TMDBService.SearchMovie] = []
     @State private var isShowingAlert: Bool = false
+    @State private var isSearched: Bool = false
     
-    let columns = [
-        GridItem(.flexible()),
-        GridItem(.flexible()),
-        GridItem(.flexible())
-    ]
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
     
     var body: some View {
         VStack {
@@ -30,12 +29,22 @@ struct SearchView: View {
                 }
                 .font(.title05)
                 
+                if searchText != "" {
+                    Button {
+                        searchText = ""
+                    } label: {
+                        Image(systemName: "xmark")
+                            .foregroundColor(Color.gray)
+                    }
+                }
+                
                 Button(action: {
                     Task {
                         if let m = await TMDBService.findMoviebyString(word: searchText) {
                             movies = m
                         }
                     }
+                    isSearched = true
                 }, label: {
                     Image(systemName: "magnifyingglass")
                         .renderingMode(.template)
@@ -59,6 +68,23 @@ struct SearchView: View {
         .padding(.leading, 16)
         .padding(.trailing, 16)
         
+        if movies.isEmpty {
+            if !isSearched {
+                VStack(spacing: 0, content: {
+                    Text("검색을 시작해보세요!")
+                })
+                .font(.body01)
+                .foregroundColor(Color.gray)
+            }
+            else {
+                VStack(spacing: 0, content: {
+                    Text("검색된 영화가 없습니다")
+                })
+                .font(.body01)
+                .foregroundColor(Color.gray)
+            }
+        }
+        
         
         List(movies, id:\.self) { movie in
             HStack {
@@ -80,6 +106,9 @@ struct SearchView: View {
         .listRowSeparator(.hidden)
         
         .padding()
+//        .onTapGesture {
+//            hideKeyboard()
+//        }
     }
     
 }

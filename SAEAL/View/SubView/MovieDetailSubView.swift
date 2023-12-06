@@ -21,15 +21,19 @@ struct MovieDetailSubView: View {
                     Text("\(movie.releaseDate), \(movie.runtime)분")
                         .font(.body01)
                         .padding(.bottom, 10)
-                    Text("감독 : \(movie.director)")
-                        .font(.body02)
-                        .padding(.bottom, 5)
-                    
-                    Text("주요 출연진")
-                        .font(.body02)
-                    ForEach(movie.actors, id:\.self) { actor in
-                        Text("- \(actor) ")
+                    if movie.director != "" {
+                        Text("감독 : \(movie.director)")
                             .font(.body02)
+                            .padding(.bottom, 5)
+                    }
+                    
+                    if !movie.actors.isEmpty {
+                        Text("주요 출연진")
+                            .font(.body02)
+                        ForEach(movie.actors, id:\.self) { actor in
+                            Text("- \(actor) ")
+                                .font(.body02)
+                        }
                     }
                     
                     Spacer()

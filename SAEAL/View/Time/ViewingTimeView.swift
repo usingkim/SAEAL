@@ -68,17 +68,13 @@ struct ViewingTimeView: View {
             
             Spacer()
             
-            if myMediaService.myRunningTime == -1 {
+            if myMediaService.myMovies.isEmpty {
                 VStack(spacing: 0, content: {
                     Text("영화 기록을 시작해보세요!")
-                    Text("검색 후 저장을 시작하시면 됩니다!")
+                    Text("검색 탭으로 이동해 관심있는 영화를 검색해봐요!")
                 })
-                .font(.dotumLight(size: 15))
-                .frame(width: 350, height: 100)
-                .background {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.color5)
-                }
+                .font(.body01)
+                Spacer()
             }
             else {
                 Text("Total")

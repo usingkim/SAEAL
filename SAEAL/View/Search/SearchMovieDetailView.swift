@@ -31,7 +31,7 @@ struct SearchMovieDetailView: View {
                 MovieDetailSubView(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: detail.runtime, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: -1, actors: actors, director: director, myRuntime: -1, startDate: startDate, endDate: endDate))
             }
             
-            HStack {
+            HStack(spacing: 30) {
                 ForEach(DBMovie.Status.allCases, id:\.self) { s in
                     Button {
                         if status == s {
