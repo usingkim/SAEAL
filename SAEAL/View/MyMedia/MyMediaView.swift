@@ -92,7 +92,7 @@ struct MyMediaView: View {
             
             List(myMediaService.filteredMovies) { movie in
                 NavigationLink {
-                    MyMediaDetailView(myMediaService: MyMediaService(), movie: movie)
+                    MyMediaDetailView(myMediaService: myMediaService, movie: movie)
                 } label: {
                     OneMovieCapsule(mode: .myMedia, movie: movie)
                 }

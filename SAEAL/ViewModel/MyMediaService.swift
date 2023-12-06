@@ -24,7 +24,6 @@ final class MyMediaService: ObservableObject {
         do {
             try MyMediaService.realm.write {
                 MyMediaService.realm.add(newMovie)
-                print(newMovie.actors, newMovie.director)
             }
         }
         catch {
@@ -64,8 +63,8 @@ final class MyMediaService: ObservableObject {
     }
     
     func delMovie(movie: DBMovie) {
-        // FIXME: DELETE ERROR . . .
         do {
+            filteredMovies = []
             try MyMediaService.realm.write {
                 MyMediaService.realm.delete(movie)
             }
@@ -73,9 +72,6 @@ final class MyMediaService: ObservableObject {
         catch {
             print("DELETE ERROR!!!")
         }
-        
-        myMovies = []
-        filteredMovies = []
         
         self.fetchAllMovie()
     }
