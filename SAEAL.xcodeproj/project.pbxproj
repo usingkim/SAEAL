@@ -24,13 +24,6 @@
 		C4A5B2CD2B0253EA00BECFEB /* DBMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A5B2CC2B0253EA00BECFEB /* DBMovie.swift */; };
 		C4A5B2D02B0253FE00BECFEB /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = C4A5B2CF2B0253FE00BECFEB /* Realm */; };
 		C4A5B2D22B0253FE00BECFEB /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C4A5B2D12B0253FE00BECFEB /* RealmSwift */; };
-		C4A6D0B12B1760A600137244 /* KoPubWorld Dotum_Pro Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C4A6D0AA2B1760A600137244 /* KoPubWorld Dotum_Pro Bold.otf */; };
-		C4A6D0B22B1760A600137244 /* KoPubWorld Batang_Pro Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C4A6D0AB2B1760A600137244 /* KoPubWorld Batang_Pro Bold.otf */; };
-		C4A6D0B32B1760A600137244 /* KoPubWorld Batang_Pro Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = C4A6D0AC2B1760A600137244 /* KoPubWorld Batang_Pro Light.otf */; };
-		C4A6D0B42B1760A600137244 /* KoPubWorld Dotum_Pro Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = C4A6D0AD2B1760A600137244 /* KoPubWorld Dotum_Pro Medium.otf */; };
-		C4A6D0B52B1760A600137244 /* KoPubWorld Dotum_Pro Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = C4A6D0AE2B1760A600137244 /* KoPubWorld Dotum_Pro Light.otf */; };
-		C4A6D0B62B1760A600137244 /* KoPubWorld Batang_Pro Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = C4A6D0AF2B1760A600137244 /* KoPubWorld Batang_Pro Medium.otf */; };
-		C4A6D0B72B1760A600137244 /* 우주.ttf in Resources */ = {isa = PBXBuildFile; fileRef = C4A6D0B02B1760A600137244 /* 우주.ttf */; };
 		C4A6D0BA2B17647D00137244 /* Font+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A6D0B92B17647D00137244 /* Font+Extension.swift */; };
 		C4A8FF9F2B148FED008E25E4 /* OneMovieCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4A8FF9E2B148FED008E25E4 /* OneMovieCapsule.swift */; };
 		C4BBF5652B0B233A00C1A409 /* MyMediaDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4BBF5642B0B233A00C1A409 /* MyMediaDetailView.swift */; };
@@ -65,13 +58,6 @@
 		C49D5ED52B1ED5240054901F /* Int+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Int+Extension.swift"; sourceTree = "<group>"; };
 		C49D5ED72B1EE9180054901F /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		C4A5B2CC2B0253EA00BECFEB /* DBMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBMovie.swift; sourceTree = "<group>"; };
-		C4A6D0AA2B1760A600137244 /* KoPubWorld Dotum_Pro Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KoPubWorld Dotum_Pro Bold.otf"; sourceTree = "<group>"; };
-		C4A6D0AB2B1760A600137244 /* KoPubWorld Batang_Pro Bold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KoPubWorld Batang_Pro Bold.otf"; sourceTree = "<group>"; };
-		C4A6D0AC2B1760A600137244 /* KoPubWorld Batang_Pro Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KoPubWorld Batang_Pro Light.otf"; sourceTree = "<group>"; };
-		C4A6D0AD2B1760A600137244 /* KoPubWorld Dotum_Pro Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KoPubWorld Dotum_Pro Medium.otf"; sourceTree = "<group>"; };
-		C4A6D0AE2B1760A600137244 /* KoPubWorld Dotum_Pro Light.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KoPubWorld Dotum_Pro Light.otf"; sourceTree = "<group>"; };
-		C4A6D0AF2B1760A600137244 /* KoPubWorld Batang_Pro Medium.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "KoPubWorld Batang_Pro Medium.otf"; sourceTree = "<group>"; };
-		C4A6D0B02B1760A600137244 /* 우주.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "우주.ttf"; sourceTree = "<group>"; };
 		C4A6D0B82B1760C900137244 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C4A6D0B92B17647D00137244 /* Font+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Font+Extension.swift"; sourceTree = "<group>"; };
 		C4A8FF9E2B148FED008E25E4 /* OneMovieCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OneMovieCapsule.swift; sourceTree = "<group>"; };
@@ -153,13 +139,6 @@
 			isa = PBXGroup;
 			children = (
 				C49D5EC22B1ED1520054901F /* Pretendard */,
-				C4A6D0B02B1760A600137244 /* 우주.ttf */,
-				C4A6D0AB2B1760A600137244 /* KoPubWorld Batang_Pro Bold.otf */,
-				C4A6D0AC2B1760A600137244 /* KoPubWorld Batang_Pro Light.otf */,
-				C4A6D0AF2B1760A600137244 /* KoPubWorld Batang_Pro Medium.otf */,
-				C4A6D0AA2B1760A600137244 /* KoPubWorld Dotum_Pro Bold.otf */,
-				C4A6D0AE2B1760A600137244 /* KoPubWorld Dotum_Pro Light.otf */,
-				C4A6D0AD2B1760A600137244 /* KoPubWorld Dotum_Pro Medium.otf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -338,23 +317,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				C49D5ED32B1ED1520054901F /* Pretendard-ExtraLight.otf in Resources */,
-				C4A6D0B62B1760A600137244 /* KoPubWorld Batang_Pro Medium.otf in Resources */,
 				C49D5ED12B1ED1520054901F /* Pretendard-Bold.otf in Resources */,
-				C4A6D0B72B1760A600137244 /* 우주.ttf in Resources */,
 				C49D5ED02B1ED1520054901F /* Pretendard-ExtraBold.otf in Resources */,
 				C49D5ED42B1ED1520054901F /* Pretendard-SemiBold.otf in Resources */,
 				C4D6C74B2AFBAE2600072148 /* Preview Assets.xcassets in Resources */,
 				C49D5ECE2B1ED1520054901F /* Pretendard-Medium.otf in Resources */,
-				C4A6D0B42B1760A600137244 /* KoPubWorld Dotum_Pro Medium.otf in Resources */,
 				C4D6C7482AFBAE2600072148 /* Assets.xcassets in Resources */,
-				C4A6D0B12B1760A600137244 /* KoPubWorld Dotum_Pro Bold.otf in Resources */,
 				C49D5ED22B1ED1520054901F /* Pretendard-Thin.otf in Resources */,
-				C4A6D0B32B1760A600137244 /* KoPubWorld Batang_Pro Light.otf in Resources */,
 				C49D5ECC2B1ED1520054901F /* Pretendard-Regular.otf in Resources */,
-				C4A6D0B22B1760A600137244 /* KoPubWorld Batang_Pro Bold.otf in Resources */,
 				C49D5ECF2B1ED1520054901F /* Pretendard-Light.otf in Resources */,
 				C49D5ECD2B1ED1520054901F /* Pretendard-Black.otf in Resources */,
-				C4A6D0B52B1760A600137244 /* KoPubWorld Dotum_Pro Light.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
