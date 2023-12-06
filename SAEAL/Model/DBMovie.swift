@@ -119,11 +119,11 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
         func getStatusImageString()->String {
             switch self {
             case .bookmark:
-                return "loading"
+                return "bookmark"
             case .ing:
-                return "loading"
+                return "watching"
             case .end:
-                return "loading"
+                return "filming"
             default:
                 return "loading"
             }

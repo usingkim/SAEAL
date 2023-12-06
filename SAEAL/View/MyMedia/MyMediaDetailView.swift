@@ -14,44 +14,75 @@ struct MyMediaDetailView: View {
     @State var movie: DBMovie
     
     @State private var isShowingEditSheet: Bool = false
+    @State private var isShowingDeleteAlertSheet: Bool = false
+    @State private var isShowingBookmarkAlert: Bool = false
     @State private var status: DBMovie.Status? = .bookmark
     @State private var watchedTime: Double = 0
     @State private var startDate: Date = Date.now
     @State private var endDate: Date = Date.now
+    
+    
     
     var body: some View {
         VStack {
             
             MovieDetailSubView(movie: movie)
             
-            HStack {
+            HStack(spacing: 30) {
                 ForEach(DBMovie.Status.allCases, id:\.self) { s in
                     Button {
-                        if status == s {
-                            status = nil
+                        if s != .bookmark {
+                            isShowingEditSheet = true
                         }
                         else {
-                            status = s
+                            isShowingBookmarkAlert = true
                         }
+                        status = s
                     } label: {
                         VStack {
                             Image(s.getStatusImageString())
                                 .renderingMode(.template)
                                 .resizable()
                                 .frame(width: 30, height: 30)
-                                .foregroundStyle(s == DBMovie.Status.getStatusByInt(movie.status) ? Color.black : Color.gray)
+                                .foregroundStyle(s == status ? Color.black : Color.gray)
                             Text(s.statusString)
                                 .font(.body02)
-                                .foregroundStyle(s == DBMovie.Status.getStatusByInt(movie.status) ? Color.black : Color.gray)
+                                .foregroundStyle(s == status ? Color.black : Color.gray)
                         }
                     }
                     .buttonStyle(.plain)
-                    .onChange(of: status, perform: { value in
-                        if status != .bookmark && s == status {
-                            isShowingEditSheet = true
-                        }
+                    .alert(isPresented: $isShowingBookmarkAlert, content: {
+                        changeAlert
                     })
+                    
                 }
+//                Button {
+//                    isShowingDeleteAlertSheet = true
+//                } label: {
+//                    VStack {
+//                        Image(systemName: "xmark")
+//                            .renderingMode(.template)
+//                            .resizable()
+//                            .frame(width: 20, height: 20)
+//                            .foregroundStyle(Color.red)
+//                            .padding(.bottom, 10)
+//                        Text("삭제")
+//                            .font(.body02)
+//                            .foregroundStyle(Color.red)
+//                    }
+//                }
+//                .alert(isPresented: $isShowingDeleteAlertSheet, content: {
+//                    Alert(title: Text("나의 필모그래피에서 삭제하시겠습니까?"),
+//                          primaryButton: .destructive(Text("삭제") , action: {
+//                        myMediaService.delMovie(movie: movie)
+//                        dismiss()
+//                    }),
+//                          secondaryButton: .cancel(Text("취소"), action: {
+//                        isShowingDeleteAlertSheet = false
+//                    })
+//                    )
+//                })
+
             }
             
             
@@ -73,6 +104,9 @@ struct MyMediaDetailView: View {
             
             Spacer()
         }
+        .onAppear {
+            status = DBMovie.Status.getStatusByInt(movie.status)
+        }
         .padding(.leading, 16)
         .padding(.trailing, 16)
         .sheet(isPresented: $isShowingEditSheet, content: {
@@ -87,8 +121,51 @@ struct MyMediaDetailView: View {
                         endDate = e
                     }
                 }
+                .onDisappear {
+                    status = DBMovie.Status.getStatusByInt(movie.status)
+                }
                 .presentationDetents([.fraction(0.3)])
+                .alert(isPresented: $isShowingBookmarkAlert, content: {
+                    changeAlert
+                })
         })
+        
+    }
+    
+    var changeAlert: Alert {
+        Alert(title: Text("변경하시겠습니까?"),
+              primaryButton: .default(Text("확인") , action: {
+            let newMovie = DBMovie(movie: movie)
+            newMovie.touchedTime = Date.now
+            
+            if let s = status {
+                switch(s) {
+                case .bookmark:
+                    newMovie.status = DBMovie.Status.bookmark.rawValue
+                    newMovie.myRuntime = 0
+                    newMovie.startDate = nil
+                    newMovie.endDate = nil
+                case .ing:
+                    newMovie.status = DBMovie.Status.ing.rawValue
+                    newMovie.myRuntime = Int(watchedTime)
+                    newMovie.startDate = startDate
+                    newMovie.endDate = nil
+                case .end:
+                    newMovie.status = DBMovie.Status.end.rawValue
+                    newMovie.myRuntime = movie.runtime
+                    newMovie.startDate = startDate
+                    newMovie.endDate = endDate
+                }
+                myMediaService.editMovie(oldMovie: movie, newMovie: newMovie)
+                movie = newMovie
+            }
+            isShowingEditSheet = false
+            dismiss()
+        }),
+              secondaryButton: .cancel(Text("취소"), action: {
+            isShowingDeleteAlertSheet = false
+        })
+        )
     }
     
     
@@ -119,32 +196,7 @@ struct MyMediaDetailView: View {
             
             
             Button {
-                let newMovie = DBMovie(movie: movie)
-                newMovie.touchedTime = Date.now
-                
-                if let s = status {
-                    switch(s) {
-                    case .bookmark:
-                        newMovie.status = DBMovie.Status.bookmark.rawValue
-                        newMovie.myRuntime = 0
-                        newMovie.startDate = nil
-                        newMovie.endDate = nil
-                    case .ing:
-                        newMovie.status = DBMovie.Status.ing.rawValue
-                        newMovie.myRuntime = Int(watchedTime)
-                        newMovie.startDate = startDate
-                        newMovie.endDate = nil
-                    case .end:
-                        newMovie.status = DBMovie.Status.end.rawValue
-                        newMovie.myRuntime = movie.runtime
-                        newMovie.startDate = startDate
-                        newMovie.endDate = endDate
-                    }
-                    movie = newMovie
-                    myMediaService.editMovie(oldMovie: movie, newMovie: newMovie)
-                }
-                isShowingEditSheet = false
-                dismiss()
+                isShowingBookmarkAlert = true
             } label: {
                 HStack {
                     Spacer()
