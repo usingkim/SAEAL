@@ -13,7 +13,7 @@ struct ViewingTimeView: View {
     let years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
     @State private var year: Int = 2023
     @State private var isPickingYear: Bool = false
-    
+    @State private var isPopupVisible: Bool = false
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -68,7 +68,7 @@ struct ViewingTimeView: View {
             
             Spacer()
             
-            if myMediaService.myMovies.isEmpty {
+            if !myMediaService.myMovies.isEmpty {
                 VStack(spacing: 0, content: {
                     Text("영화 기록을 시작해보세요!")
                     Text("검색 탭으로 이동해 관심있는 영화를 검색해봐요!")
@@ -77,9 +77,27 @@ struct ViewingTimeView: View {
                 Spacer()
             }
             else {
-                Text("Total")
-                    .font(.caption01)
-                    .padding(.bottom, 10)
+                HStack(alignment: .top, spacing: 2) {
+                    Text("Total")
+                        .font(.caption01)
+                    Button(action: {
+                        isPopupVisible = true
+                    }, label: {
+                        Image(systemName: "info.circle")
+                            .renderingMode(.template)
+                            .resizable()
+                            .foregroundColor(Color.black)
+                            .frame(width: 5, height: 5)
+                    })
+                    .popover(isPresented: $isPopupVisible, content: {
+                        Text("나의 러닝타임은 다 본 영화의 러닝타임만을 책정합니다.")
+                            .font(.body04)
+                            .padding()
+                            .presentationCompactAdaptation(.popover)
+                    })
+                    
+                }
+                .padding(.bottom, 10)
                 Text("\(intToHour(runtime: myMediaService.myRunningTime))시간 \(intToMinute(runtime: myMediaService.myRunningTime))분")
                     .font(.headline1)
                 

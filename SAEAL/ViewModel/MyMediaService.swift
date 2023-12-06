@@ -69,6 +69,13 @@ final class MyMediaService: ObservableObject {
             }) {
                 filteredMovies.remove(at: idx)
             }
+            
+            if let idx = myMovies.firstIndex(where: { m in
+                m.id == movie.id
+            }) {
+                myMovies.remove(at: idx)
+            }
+            
             try MyMediaService.realm.write {
                 MyMediaService.realm.delete(movie)
             }
