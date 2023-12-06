@@ -120,7 +120,7 @@ final class MyMediaService: ObservableObject {
         do {
             try MyMediaService.realm.write {
                 movie.score = score
-                movie.review = review
+//                movie.review = review
             }
         }
         catch {
