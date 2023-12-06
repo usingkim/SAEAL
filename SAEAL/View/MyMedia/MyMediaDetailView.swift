@@ -14,124 +14,160 @@ struct MyMediaDetailView: View {
     @State var movie: DBMovie
     
     @State private var isShowingEditSheet: Bool = false
-    @State private var status: DBMovie.Status = .bookmark
+    @State private var status: DBMovie.Status? = .bookmark
     @State private var watchedTime: Double = 0
     @State private var startDate: Date = Date.now
     @State private var endDate: Date = Date.now
     
     var body: some View {
         VStack {
-            Text(movie.title)
-            Text("\(movie.status)")
-            Text("내 러닝타임 : \(movie.myRuntime)")
-            Text(DBMovie.Status.getStatusByInt(movie.status)?.statusString ?? "")
-        }
-        .toolbar(content: {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
-                    isShowingEditSheet = true
-                }, label: {
-                    Text("수정")
-                })
-                .sheet(isPresented: $isShowingEditSheet, content: {
-                    editSheet
-                        .onAppear {
-                            if let s = DBMovie.Status.getStatusByInt(movie.status) {
-                                status = s
-                            }
-                            
-                            if let s = movie.startDate {
-                                startDate = s
-                            }
-                            
-                            if let e = movie.endDate {
-                                endDate = e
-                            }
-                        }
-                        .presentationDetents([.medium])
-                })
-            }
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
-//                    myMediaService.delMovie(movie: movie)
-                    dismiss()
-                }, label: {
-                    Text("삭제")
-                })
-            }
-        })
-    }
-    
-    var editSheet: some View {
-        VStack {
+            
+            MovieDetailSubView(movie: movie)
+            
             HStack {
                 ForEach(DBMovie.Status.allCases, id:\.self) { s in
                     Button {
-                        status = s
+                        if status == s {
+                            status = nil
+                        }
+                        else {
+                            status = s
+                        }
                     } label: {
-                        Text(s.statusString)
+                        VStack {
+                            Image(s.getStatusImageString())
+                                .renderingMode(.template)
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .foregroundStyle(s == DBMovie.Status.getStatusByInt(movie.status) ? Color.black : Color.gray)
+                            Text(s.statusString)
+                                .font(.body02)
+                                .foregroundStyle(s == DBMovie.Status.getStatusByInt(movie.status) ? Color.black : Color.gray)
+                        }
                     }
                     .buttonStyle(.plain)
+                    .onChange(of: status, perform: { value in
+                        if status != .bookmark && s == status {
+                            isShowingEditSheet = true
+                        }
+                    })
                 }
             }
             
-            Text("\(status.statusString)")
+            
+            Divider()
+            
+            HStack {
+                VStack(alignment: .leading, content: {
+                    Text("줄거리")
+                        .font(.title04)
+                        .padding(.bottom, 10)
+                    Text("\(movie.overview)")
+                        .font(.body03)
+                        .padding(.leading, 5)
+                })
+                Spacer()
+            }
+            
+            
+            
+            Spacer()
+        }
+        .padding(.leading, 16)
+        .padding(.trailing, 16)
+        .sheet(isPresented: $isShowingEditSheet, content: {
+            editSheet
+                .onAppear {
+                    
+                    if let s = movie.startDate {
+                        startDate = s
+                    }
+                    
+                    if let e = movie.endDate {
+                        endDate = e
+                    }
+                }
+                .presentationDetents([.fraction(0.3)])
+        })
+    }
+    
+    
+    var editSheet: some View {
+        VStack {
             
             if status == .ing {
-                HStack {
-                    Text("0")
-                    Slider(value: $watchedTime, in: 0...Double(movie.runtime), step: 1)
-                    
-                    Text("\(movie.runtime)")
-                }
-                
-                Text("\(Int(watchedTime))분")
-                
                 DatePicker(selection: $startDate, displayedComponents: .date) {
                     Text("시작 날짜")
+                        .font(.body02)
                 }
+                .padding()
             }
             
             else if status == .end {
-                Text("\(Int(watchedTime))분")
-                
-                DatePicker(selection: $startDate, displayedComponents: .date) {
-                    Text("시작 날짜")
+                VStack(spacing: 20) {
+                    DatePicker(selection: $startDate, displayedComponents: .date) {
+                        Text("시작 날짜")
+                            .font(.body02)
+                    }
+                    
+                    DatePicker("끝난 날짜", selection: $endDate, in: startDate...(Calendar.current.date(byAdding: .year, value: 1, to: startDate) ?? startDate), displayedComponents: .date)
+                        .font(.body02)
                 }
-                DatePicker("끝난 날짜", selection: $endDate, in: startDate...(Calendar.current.date(byAdding: .year, value: 1, to: startDate) ?? startDate), displayedComponents: .date)
+                .padding()
+                .padding(.top, 30)
             }
+            
             
             Button {
                 let newMovie = DBMovie(movie: movie)
                 newMovie.touchedTime = Date.now
                 
-                switch(status) {
-                case .bookmark:
-                    newMovie.status = DBMovie.Status.bookmark.rawValue
-                    newMovie.myRuntime = 0
-                    newMovie.startDate = nil
-                    newMovie.endDate = nil
-                case .ing:
-                    newMovie.status = DBMovie.Status.ing.rawValue
-                    newMovie.myRuntime = Int(watchedTime)
-                    newMovie.startDate = startDate
-                    newMovie.endDate = nil
-                case .end:
-                    newMovie.status = DBMovie.Status.end.rawValue
-                    newMovie.myRuntime = movie.runtime
-                    newMovie.startDate = startDate
-                    newMovie.endDate = endDate
+                if let s = status {
+                    switch(s) {
+                    case .bookmark:
+                        newMovie.status = DBMovie.Status.bookmark.rawValue
+                        newMovie.myRuntime = 0
+                        newMovie.startDate = nil
+                        newMovie.endDate = nil
+                    case .ing:
+                        newMovie.status = DBMovie.Status.ing.rawValue
+                        newMovie.myRuntime = Int(watchedTime)
+                        newMovie.startDate = startDate
+                        newMovie.endDate = nil
+                    case .end:
+                        newMovie.status = DBMovie.Status.end.rawValue
+                        newMovie.myRuntime = movie.runtime
+                        newMovie.startDate = startDate
+                        newMovie.endDate = endDate
+                    }
+                    movie = newMovie
+                    myMediaService.editMovie(oldMovie: movie, newMovie: newMovie)
                 }
-                myMediaService.editMovie(oldMovie: movie, newMovie: newMovie)
                 isShowingEditSheet = false
                 dismiss()
             } label: {
-                Text("저장")
+                HStack {
+                    Spacer()
+                    Text("저장")
+                        .foregroundColor(Color.white)
+                        .font(.body02)
+                    Spacer()
+                }
+                .padding(.top, 16)
+                .padding(.bottom, 16)
             }
+            .background {
+                RoundedRectangle(cornerRadius: 12)
+                    .fill(Color.black)
+            }
+            .foregroundColor(.white)
+            .padding(.leading, 11)
+            .padding(.trailing, 15)
+            .padding(.bottom, 80)
         }
     }
 }
 
 #Preview {
-    MyMediaDetailView(myMediaService: MyMediaService(), movie: DBMovie(title: "", MovieID: 0, runtime: 0, posterLink: nil, touchedTime: Date.now, status: 0, myRuntime: 0, startDate: nil, endDate: nil))
+    MyMediaDetailView(myMediaService: MyMediaService(), movie: DBMovie(title: "태어난 김에 세계일주 3", MovieID: 0, runtime: 235, posterLink: nil, touchedTime: Date.now, releaseDate: "2023-03-21", overview: "모두 끝나버렸다 난 시작도 안해봤는데", status: 0, actors: ["정우성", "김유진"], director: "김유진", myRuntime: 0, startDate: nil, endDate: nil))
 }
