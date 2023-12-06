@@ -68,7 +68,7 @@ struct ViewingTimeView: View {
             
             Spacer()
             
-            if !myMediaService.myMovies.isEmpty {
+            if myMediaService.myMovies.isEmpty {
                 VStack(spacing: 0, content: {
                     Text("영화 기록을 시작해보세요!")
                     Text("검색 탭으로 이동해 관심있는 영화를 검색해봐요!")
