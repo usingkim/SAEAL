@@ -28,7 +28,7 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
     @Persisted var endDate: Date?
     
     @Persisted var score: Int = 3
-    @Persisted var review: String = ""
+    @Persisted var review: List<String> = List<String>()
     
     override init() {
         super.init()
@@ -87,6 +87,25 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
         self.endDate = movie.endDate
     }
     
+    init(movie: MyMovie) {
+        super.init()
+        self.id = movie.id
+        self.title = movie.title
+        self.MovieID = movie.MovieID
+        self.runtime = movie.runtime
+        self.posterLink = movie.posterLink
+        self.touchedTime = movie.touchedTime
+        self.releaseDate = movie.releaseDate
+        self.overview = movie.overview
+        self.actors = List<String>()
+        self.actors.append(objectsIn: movie.actors)
+        self.director = movie.director
+        self.status = movie.status
+        self.myRuntime = movie.myRuntime
+        self.startDate = movie.startDate
+        self.endDate = movie.endDate
+    }
+    
     enum Status: Int, CaseIterable {
         case bookmark
         case ing
@@ -119,15 +138,17 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
         func getStatusImageString()->String {
             switch self {
             case .bookmark:
-                return "loading"
+                return "bookmark"
             case .ing:
-                return "loading"
+                return "watching"
             case .end:
-                return "loading"
-            default:
-                return "loading"
+                return "filming"
             }
         }
+    }
+    
+    override static func primaryKey() -> String? {
+        return "id"
     }
     
 }

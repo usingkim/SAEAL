@@ -13,7 +13,7 @@ struct ViewingTimeView: View {
     let years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
     @State private var year: Int = 2023
     @State private var isPickingYear: Bool = false
-    
+    @State private var isPopupVisible: Bool = false
     let columns = [
         GridItem(.flexible()),
         GridItem(.flexible()),
@@ -22,6 +22,29 @@ struct ViewingTimeView: View {
     ]
     
     var body: some View {
+        ZStack {
+            viewingTime
+            if isPopupVisible {
+                Text("나의 러닝타임은 다 본 영화의 러닝타임만을 책정합니다.")
+                    .font(.body04)
+                    .padding()
+                    .background {
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(Color.white)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 25)
+                                    .stroke(Color.black, lineWidth: 1)
+                            )
+                    }
+                    .offset(y: -300)
+                    .onTapGesture {
+                        isPopupVisible.toggle()
+                    }
+            }
+        }
+    }
+    
+    var viewingTime: some View {
         VStack {
             
             HStack(spacing: 0) {
@@ -39,6 +62,15 @@ struct ViewingTimeView: View {
                 .foregroundColor(Color.color1)
                 
                 Spacer()
+                Button(action: {
+                    isPopupVisible.toggle()
+                }, label: {
+                    Image(systemName: "info.circle")
+                        .renderingMode(.template)
+                        .resizable()
+                        .foregroundColor(Color.black)
+                        .frame(width: 15, height: 15)
+                })
             }
             .padding()
             .sheet(isPresented: $isPickingYear, content: {
@@ -68,22 +100,18 @@ struct ViewingTimeView: View {
             
             Spacer()
             
-            if myMediaService.myRunningTime == -1 {
+            if myMediaService.Movies.isEmpty {
                 VStack(spacing: 0, content: {
                     Text("영화 기록을 시작해보세요!")
-                    Text("검색 후 저장을 시작하시면 됩니다!")
+                    Text("검색 탭으로 이동해 관심있는 영화를 검색해봐요!")
                 })
-                .font(.dotumLight(size: 15))
-                .frame(width: 350, height: 100)
-                .background {
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(Color.color5)
-                }
+                .font(.body01)
+                Spacer()
             }
             else {
                 Text("Total")
                     .font(.caption01)
-                    .padding(.bottom, 10)
+                .padding(.bottom, 10)
                 Text("\(intToHour(runtime: myMediaService.myRunningTime))시간 \(intToMinute(runtime: myMediaService.myRunningTime))분")
                     .font(.headline1)
                 

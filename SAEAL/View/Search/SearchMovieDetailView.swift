@@ -31,7 +31,7 @@ struct SearchMovieDetailView: View {
                 MovieDetailSubView(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: detail.runtime, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: -1, actors: actors, director: director, myRuntime: -1, startDate: startDate, endDate: endDate))
             }
             
-            HStack {
+            HStack(spacing: 30) {
                 ForEach(DBMovie.Status.allCases, id:\.self) { s in
                     Button {
                         if status == s {
@@ -146,6 +146,9 @@ struct SearchMovieDetailView: View {
                         Text("시작 날짜")
                             .font(.body02)
                     }
+                    .onChange(of: startDate, perform: { value in
+                        endDate = startDate
+                    })
                     
                     DatePicker("끝난 날짜", selection: $endDate, in: startDate...(Calendar.current.date(byAdding: .year, value: 1, to: startDate) ?? startDate), displayedComponents: .date)
                         .font(.body02)
@@ -157,18 +160,7 @@ struct SearchMovieDetailView: View {
             Button {
                 // TODO: 이미 나의 필모그래피에 있는 경우
                 // 이미 나의 필모그래피에 존재합니다. 2회차를 감상하시겠습니까?
-                switch(status) {
-                case .bookmark:
-                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.bookmark.rawValue, actors: actors, director: director, myRuntime: 0, startDate: nil, endDate: nil))
-                case .ing:
-                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.ing.rawValue, actors: actors, director: director, myRuntime: Int(watchedTime), startDate: startDate, endDate: nil))
-                case .end:
-                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.end.rawValue, actors: actors, director: director, myRuntime: movieDetail?.runtime ?? 0, startDate: startDate, endDate: endDate))
-                case .none:
-                    print()
-                }
-                isShowingSaveSheet = false
-                dismiss()
+                isShowingSaveAlert = true
             } label: {
                 HStack {
                     Spacer()
@@ -188,6 +180,27 @@ struct SearchMovieDetailView: View {
             .padding(.leading, 11)
             .padding(.trailing, 15)
             .padding(.bottom, 80)
+            .alert(isPresented: $isShowingSaveAlert, content: {
+                Alert(title: Text("나의 필모그래피에 등록하시겠습니까?"),
+                      primaryButton: .default(Text("등록") , action: {
+                    switch(status) {
+                    case .bookmark:
+                        myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.bookmark.rawValue, actors: actors, director: director, myRuntime: 0, startDate: nil, endDate: nil))
+                    case .ing:
+                        myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.ing.rawValue, actors: actors, director: director, myRuntime: Int(watchedTime), startDate: startDate, endDate: nil))
+                    case .end:
+                        myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.end.rawValue, actors: actors, director: director, myRuntime: movieDetail?.runtime ?? 0, startDate: startDate, endDate: endDate))
+                    case .none:
+                        print()
+                    }
+                    isShowingSaveSheet = false
+                    dismiss()
+                }),
+                      secondaryButton: .cancel(Text("취소"), action: {
+                    isShowingSaveSheet = false
+                })
+                )
+            })
         }
     }
 }
