@@ -17,7 +17,7 @@ struct MyMediaView: View {
         VStack {
             filteringSection
             
-            List(myMediaService.filteredMyMovies) { movie in
+            List(myMediaService.filteredMovies) { movie in
                 NavigationLink {
                     MyMediaDetailView(myMediaService: myMediaService, movie: movie.toDBMovie())
                 } label: {

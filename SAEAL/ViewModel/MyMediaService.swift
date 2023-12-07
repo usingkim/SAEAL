@@ -10,8 +10,7 @@ import RealmSwift
 
 final class MyMediaService: ObservableObject {
     @Published var Movies: [DBMovie] = []
-    @Published var filteredMovies: [DBMovie] = []
-    @Published var filteredMyMovies: [MyMovie] = []
+    @Published var filteredMovies: [MyMovie] = []
     
     @Published var myRunningTime: Int = -1
     @Published var monthlyRunningTime = (1...12).map { [$0, 0] }
@@ -92,20 +91,21 @@ final class MyMediaService: ObservableObject {
     }
     
     func filterMovies(status: Int) {
+        var filteredDBMovies: [DBMovie] = []
         recentStatus = status
         
         if let _ = DBMovie.Status.getStatusByInt(status) {
-            filteredMovies = Movies.filter { movie in
+            filteredDBMovies = Movies.filter { movie in
                 movie.status == status
             }
         }
         else {
-            filteredMovies = Movies
+            filteredDBMovies = Movies
         }
         
-        filteredMyMovies = []
-        for movie in filteredMovies {
-            filteredMyMovies.append(MyMovie(movie: movie))
+        filteredMovies = []
+        for movie in filteredDBMovies {
+            filteredMovies.append(MyMovie(movie: movie))
         }
     }
     
