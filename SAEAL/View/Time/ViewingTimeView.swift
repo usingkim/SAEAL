@@ -22,6 +22,29 @@ struct ViewingTimeView: View {
     ]
     
     var body: some View {
+        ZStack {
+            viewingTime
+            if isPopupVisible {
+                Text("나의 러닝타임은 다 본 영화의 러닝타임만을 책정합니다.")
+                    .font(.body04)
+                    .padding()
+                    .background {
+                        RoundedRectangle(cornerRadius: 6)
+                            .fill(Color.white)
+                            .overlay(
+                                RoundedRectangle(cornerRadius: 25)
+                                    .stroke(Color.black, lineWidth: 1)
+                            )
+                    }
+                    .offset(y: -300)
+                    .onTapGesture {
+                        isPopupVisible.toggle()
+                    }
+            }
+        }
+    }
+    
+    var viewingTime: some View {
         VStack {
             
             HStack(spacing: 0) {
@@ -39,6 +62,15 @@ struct ViewingTimeView: View {
                 .foregroundColor(Color.color1)
                 
                 Spacer()
+                Button(action: {
+                    isPopupVisible.toggle()
+                }, label: {
+                    Image(systemName: "info.circle")
+                        .renderingMode(.template)
+                        .resizable()
+                        .foregroundColor(Color.black)
+                        .frame(width: 15, height: 15)
+                })
             }
             .padding()
             .sheet(isPresented: $isPickingYear, content: {
@@ -77,26 +109,8 @@ struct ViewingTimeView: View {
                 Spacer()
             }
             else {
-                HStack(alignment: .top, spacing: 2) {
-                    Text("Total")
-                        .font(.caption01)
-                    Button(action: {
-                        isPopupVisible = true
-                    }, label: {
-                        Image(systemName: "info.circle")
-                            .renderingMode(.template)
-                            .resizable()
-                            .foregroundColor(Color.black)
-                            .frame(width: 5, height: 5)
-                    })
-                    .popover(isPresented: $isPopupVisible, content: {
-                        Text("나의 러닝타임은 다 본 영화의 러닝타임만을 책정합니다.")
-                            .font(.body04)
-                            .padding()
-                            .presentationCompactAdaptation(.popover)
-                    })
-                    
-                }
+                Text("Total")
+                    .font(.caption01)
                 .padding(.bottom, 10)
                 Text("\(intToHour(runtime: myMediaService.myRunningTime))시간 \(intToMinute(runtime: myMediaService.myRunningTime))분")
                     .font(.headline1)
