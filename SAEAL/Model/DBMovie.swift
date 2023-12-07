@@ -87,6 +87,25 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
         self.endDate = movie.endDate
     }
     
+    init(movie: MyMovie) {
+        super.init()
+        self.id = movie.id
+        self.title = movie.title
+        self.MovieID = movie.MovieID
+        self.runtime = movie.runtime
+        self.posterLink = movie.posterLink
+        self.touchedTime = movie.touchedTime
+        self.releaseDate = movie.releaseDate
+        self.overview = movie.overview
+        self.actors = List<String>()
+        self.actors.append(objectsIn: movie.actors)
+        self.director = movie.director
+        self.status = movie.status
+        self.myRuntime = movie.myRuntime
+        self.startDate = movie.startDate
+        self.endDate = movie.endDate
+    }
+    
     enum Status: Int, CaseIterable {
         case bookmark
         case ing
@@ -124,10 +143,12 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
                 return "watching"
             case .end:
                 return "filming"
-            default:
-                return "loading"
             }
         }
+    }
+    
+    override static func primaryKey() -> String? {
+        return "id"
     }
     
 }

@@ -10,7 +10,7 @@ import Kingfisher
 
 struct MyMediaView: View {
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var myMediaService: MyMediaService
+    var myMediaService: MyMediaService
     @State private var status: DBMovie.Status?
     
     var body: some View {
@@ -90,15 +90,15 @@ struct MyMediaView: View {
             }
             .padding()
             
-            List(myMediaService.filteredMovies) { movie in
+            List(myMediaService.filteredMyMovies) { movie in
                 NavigationLink {
-                    MyMediaDetailView(myMediaService: myMediaService, movie: movie)
+                    MyMediaDetailView(myMediaService: myMediaService, movie: movie.toDBMovie())
                 } label: {
-                    OneMovieCapsule(mode: .myMedia, movie: movie)
+                    OneMovieCapsule(mode: .myMedia, movie: movie.toDBMovie())
                 }
                 .swipeActions {
                     Button(role: .destructive) {
-                        myMediaService.delMovie(movie: movie)
+                        myMediaService.delMovie(movie: movie.toDBMovie())
                     } label: {
                         Text("삭제")
                     }

@@ -146,6 +146,9 @@ struct SearchMovieDetailView: View {
                         Text("시작 날짜")
                             .font(.body02)
                     }
+                    .onChange(of: startDate, perform: { value in
+                        endDate = startDate
+                    })
                     
                     DatePicker("끝난 날짜", selection: $endDate, in: startDate...(Calendar.current.date(byAdding: .year, value: 1, to: startDate) ?? startDate), displayedComponents: .date)
                         .font(.body02)

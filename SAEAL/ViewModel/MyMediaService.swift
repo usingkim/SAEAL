@@ -9,8 +9,9 @@ import Foundation
 import RealmSwift
 
 final class MyMediaService: ObservableObject {
-    @Published var myMovies: [DBMovie] = []
+    @Published var Movies: [DBMovie] = []
     @Published var filteredMovies: [DBMovie] = []
+    @Published var filteredMyMovies: [MyMovie] = []
     
     @Published var myRunningTime: Int = -1
     @Published var monthlyRunningTime = (1...12).map { [$0, 0] }
@@ -20,7 +21,7 @@ final class MyMediaService: ObservableObject {
     private var recentStatus: Int = -1
     
     func addMovie(newMovie: DBMovie) {
-        myMovies.append(newMovie)
+        Movies.append(newMovie)
         do {
             try MyMediaService.realm.write {
                 MyMediaService.realm.add(newMovie)
@@ -64,20 +65,10 @@ final class MyMediaService: ObservableObject {
     
     func delMovie(movie: DBMovie) {
         do {
-            if let idx = filteredMovies.firstIndex(where: { m in
-                m.id == movie.id
-            }) {
-                filteredMovies.remove(at: idx)
-            }
-            
-            if let idx = myMovies.firstIndex(where: { m in
-                m.id == movie.id
-            }) {
-                myMovies.remove(at: idx)
-            }
-            
-            try MyMediaService.realm.write {
-                MyMediaService.realm.delete(movie)
+            if let forDelete = MyMediaService.realm.object(ofType: DBMovie.self, forPrimaryKey: movie.id) {
+                try MyMediaService.realm.write {
+                    MyMediaService.realm.delete(forDelete)
+                }
             }
         }
         catch {
@@ -88,8 +79,8 @@ final class MyMediaService: ObservableObject {
     }
     
     func fetchAllMovie() {
-        myMovies = Array(MyMediaService.realm.objects(DBMovie.self))
-        myMovies.sort { $0.touchedTime > $1.touchedTime }
+        Movies = Array(MyMediaService.realm.objects(DBMovie.self))
+        Movies.sort { $0.touchedTime > $1.touchedTime }
         self.filterMovies(status: recentStatus)
     }
     
@@ -97,17 +88,22 @@ final class MyMediaService: ObservableObject {
         recentStatus = status
         
         if let _ = DBMovie.Status.getStatusByInt(status) {
-            filteredMovies = myMovies.filter { movie in
+            filteredMovies = Movies.filter { movie in
                 movie.status == status
             }
         }
         else {
-            filteredMovies = myMovies
+            filteredMovies = Movies
+        }
+        
+        filteredMyMovies = []
+        for movie in filteredMovies {
+            filteredMyMovies.append(MyMovie(movie: movie))
         }
     }
     
     func resetRunningTime(startDate: Date, endDate: Date) {
-        if myMovies.isEmpty {
+        if Movies.isEmpty {
             myRunningTime = 0
             monthlyRunningTime = (1...12).map { [$0, 0] }
             return
@@ -115,7 +111,7 @@ final class MyMediaService: ObservableObject {
         
         myRunningTime = 0
         monthlyRunningTime = (1...12).map { [$0, 0] }
-        for movie in myMovies {
+        for movie in Movies {
             if let end = movie.endDate {
                 if startDate...endDate ~= end {
                     myRunningTime += movie.myRuntime

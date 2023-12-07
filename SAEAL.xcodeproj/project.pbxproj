@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		90C5A7B82B21741100873357 /* MyMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C5A7B72B21741100873357 /* MyMovie.swift */; };
 		C48D43552B16F4C400471126 /* MovieDetailSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48D43542B16F4C400471126 /* MovieDetailSubView.swift */; };
 		C48D43572B16FF6900471126 /* MonthlyGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48D43562B16FF6900471126 /* MonthlyGraphView.swift */; };
 		C48D435A2B1708C500471126 /* Color+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48D43592B1708C500471126 /* Color+Extension.swift */; };
@@ -43,6 +44,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		90C5A7B72B21741100873357 /* MyMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMovie.swift; sourceTree = "<group>"; };
 		C48D43542B16F4C400471126 /* MovieDetailSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailSubView.swift; sourceTree = "<group>"; };
 		C48D43562B16FF6900471126 /* MonthlyGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyGraphView.swift; sourceTree = "<group>"; };
 		C48D43592B1708C500471126 /* Color+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Extension.swift"; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 		C498EEC82B0F33EB00D16CE8 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				90C5A7B72B21741100873357 /* MyMovie.swift */,
 				C4D3087B2AFE57BB0005053E /* MyMediaService.swift */,
 			);
 			path = ViewModel;
@@ -343,6 +346,7 @@
 				C4D6C7462AFBAE2400072148 /* ContentView.swift in Sources */,
 				C4D3086E2AFE482A0005053E /* APIConstant.swift in Sources */,
 				C49D5ED82B1EE9180054901F /* Date+Extension.swift in Sources */,
+				90C5A7B82B21741100873357 /* MyMovie.swift in Sources */,
 				C4D308862AFF37B20005053E /* Account.swift in Sources */,
 				C4D6C7442AFBAE2400072148 /* RunningTimeApp.swift in Sources */,
 				C4D308692AFE41380005053E /* SearchView.swift in Sources */,
