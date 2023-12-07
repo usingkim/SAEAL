@@ -34,10 +34,13 @@ final class MyMediaService: ObservableObject {
     }
     
     func editMovie(oldMovie: DBMovie, newStatus: DBMovie.Status) {
+        let newMovie = oldMovie
+        newMovie.status = newStatus.rawValue
+        newMovie.touchedTime = Date.now
+        
         do {
             try MyMediaService.realm.write {
-                oldMovie.touchedTime = Date.now
-                oldMovie.status = newStatus.rawValue
+                MyMediaService.realm.add(newMovie, update: .all)
             }
         }
         catch {
@@ -47,13 +50,17 @@ final class MyMediaService: ObservableObject {
     }
     
     func editMovie(oldMovie: DBMovie, newMovie: DBMovie) {
+        
+        let movie = oldMovie
+        movie.touchedTime = newMovie.touchedTime
+        movie.status = newMovie.status
+        movie.myRuntime = newMovie.myRuntime
+        movie.startDate = newMovie.startDate
+        movie.endDate = newMovie.endDate
+        
         do {
             try MyMediaService.realm.write {
-                oldMovie.touchedTime = newMovie.touchedTime
-                oldMovie.status = newMovie.status
-                oldMovie.myRuntime = newMovie.myRuntime
-                oldMovie.startDate = newMovie.startDate
-                oldMovie.endDate = newMovie.endDate
+                MyMediaService.realm.add(movie, update: .all)
             }
         }
         catch {

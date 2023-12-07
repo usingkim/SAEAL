@@ -64,7 +64,6 @@ struct OneMovieCapsule: View {
                                 }
                             }
                         }
-                        
                     }
                 }
             })

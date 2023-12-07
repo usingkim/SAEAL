@@ -10,90 +10,18 @@ import Kingfisher
 
 struct MyMediaView: View {
     @Environment(\.dismiss) var dismiss
-    var myMediaService: MyMediaService
+    @ObservedObject var myMediaService: MyMediaService
     @State private var status: DBMovie.Status?
     
     var body: some View {
         VStack {
-            HStack {
-                Button(action: {
-                    status = nil
-                    myMediaService.filterMovies(status: status?.rawValue ?? -1)
-                }, label: {
-                    Text("전체")
-                        .font(.body01)
-                        .padding(.top, 8)
-                        .padding(.leading, 15)
-                        .padding(.trailing, 14)
-                        .padding(.bottom, 8)
-                })
-                .buttonStyle(.plain)
-                .foregroundStyle(status == nil ? Color.black : Color.gray)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(status == nil ? Color.black : Color.gray, lineWidth: 1)
-                )
-                
-                Button(action: {
-                    status = .bookmark
-                    myMediaService.filterMovies(status: DBMovie.Status.bookmark.rawValue)
-                }, label: {
-                    Text(DBMovie.Status.bookmark.statusString)
-                        .font(.body01)
-                        .padding(.top, 8)
-                        .padding(.leading, 15)
-                        .padding(.trailing, 14)
-                        .padding(.bottom, 8)
-                })
-                .buttonStyle(.plain)
-                .foregroundStyle(status == .bookmark ? Color.black : Color.gray)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(status == .bookmark ? Color.black : Color.gray, lineWidth: 1)
-                )
-                
-                Button(action: {
-                    status = .ing
-                    myMediaService.filterMovies(status: DBMovie.Status.ing.rawValue)
-                }, label: {
-                    Text(DBMovie.Status.ing.statusString)
-                        .font(.body01)
-                        .padding(.top, 8)
-                        .padding(.leading, 15)
-                        .padding(.trailing, 14)
-                        .padding(.bottom, 8)
-                })
-                .buttonStyle(.plain)
-                .foregroundStyle(status == .ing ? Color.black : Color.gray)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(status == .ing ? Color.black : Color.gray, lineWidth: 1)
-                )
-                
-                Button(action: {
-                    status = .end
-                    myMediaService.filterMovies(status: DBMovie.Status.end.rawValue)
-                }, label: {
-                    Text(DBMovie.Status.end.statusString)
-                        .font(.body01)
-                        .padding(.top, 8)
-                        .padding(.leading, 15)
-                        .padding(.trailing, 14)
-                        .padding(.bottom, 8)
-                })
-                .buttonStyle(.plain)
-                .foregroundStyle(status == .end ? Color.black : Color.gray)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 12)
-                        .stroke(status == .end ? Color.black : Color.gray, lineWidth: 1)
-                )
-            }
-            .padding()
+            filteringSection
             
             List(myMediaService.filteredMyMovies) { movie in
                 NavigationLink {
                     MyMediaDetailView(myMediaService: myMediaService, movie: movie.toDBMovie())
                 } label: {
+                    // TODO: Value는 바뀌는데 화면에 그려진 글이 안바뀜
                     OneMovieCapsule(mode: .myMedia, movie: movie.toDBMovie())
                 }
                 .swipeActions {
@@ -112,6 +40,83 @@ struct MyMediaView: View {
             .listRowSeparator(.hidden)
             
         }
+    }
+    
+    var filteringSection: some View {
+        HStack {
+            Button(action: {
+                status = nil
+                myMediaService.filterMovies(status: status?.rawValue ?? -1)
+            }, label: {
+                Text("전체")
+                    .font(.body01)
+                    .padding(.top, 8)
+                    .padding(.leading, 15)
+                    .padding(.trailing, 14)
+                    .padding(.bottom, 8)
+            })
+            .buttonStyle(.plain)
+            .foregroundStyle(status == nil ? Color.black : Color.gray)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(status == nil ? Color.black : Color.gray, lineWidth: 1)
+            )
+            
+            Button(action: {
+                status = .bookmark
+                myMediaService.filterMovies(status: DBMovie.Status.bookmark.rawValue)
+            }, label: {
+                Text(DBMovie.Status.bookmark.statusString)
+                    .font(.body01)
+                    .padding(.top, 8)
+                    .padding(.leading, 15)
+                    .padding(.trailing, 14)
+                    .padding(.bottom, 8)
+            })
+            .buttonStyle(.plain)
+            .foregroundStyle(status == .bookmark ? Color.black : Color.gray)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(status == .bookmark ? Color.black : Color.gray, lineWidth: 1)
+            )
+            
+            Button(action: {
+                status = .ing
+                myMediaService.filterMovies(status: DBMovie.Status.ing.rawValue)
+            }, label: {
+                Text(DBMovie.Status.ing.statusString)
+                    .font(.body01)
+                    .padding(.top, 8)
+                    .padding(.leading, 15)
+                    .padding(.trailing, 14)
+                    .padding(.bottom, 8)
+            })
+            .buttonStyle(.plain)
+            .foregroundStyle(status == .ing ? Color.black : Color.gray)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(status == .ing ? Color.black : Color.gray, lineWidth: 1)
+            )
+            
+            Button(action: {
+                status = .end
+                myMediaService.filterMovies(status: DBMovie.Status.end.rawValue)
+            }, label: {
+                Text(DBMovie.Status.end.statusString)
+                    .font(.body01)
+                    .padding(.top, 8)
+                    .padding(.leading, 15)
+                    .padding(.trailing, 14)
+                    .padding(.bottom, 8)
+            })
+            .buttonStyle(.plain)
+            .foregroundStyle(status == .end ? Color.black : Color.gray)
+            .overlay(
+                RoundedRectangle(cornerRadius: 12)
+                    .stroke(status == .end ? Color.black : Color.gray, lineWidth: 1)
+            )
+        }
+        .padding()
     }
 }
 

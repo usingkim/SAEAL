@@ -137,7 +137,6 @@ struct MyMediaDetailView: View {
               primaryButton: .default(Text("확인") , action: {
             let newMovie = DBMovie(movie: movie)
             newMovie.touchedTime = Date.now
-            
             if let s = status {
                 switch(s) {
                 case .bookmark:
