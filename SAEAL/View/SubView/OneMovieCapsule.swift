@@ -28,7 +28,7 @@ struct OneMovieCapsule: View {
                     .shadow(radius: 5)
             }
             else {
-                Image(.loading)
+                Image(.defaultMovie)
                     .resizable()
                     .frame(width: 80, height: 80)
             }
