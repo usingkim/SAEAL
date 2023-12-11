@@ -21,8 +21,57 @@ struct MyMediaView: View {
                 NavigationLink {
                     MyMediaDetailView(myMediaService: myMediaService, movie: movie.toDBMovie())
                 } label: {
-                    // TODO: Value는 바뀌는데 화면에 그려진 글이 안바뀜
-                    OneMovieCapsule(mode: .myMedia, movie: movie.toDBMovie())
+                    // MARK: 추후 리팩토링 필요
+                    HStack {
+                        if let poster = movie.posterLink {
+                            KFImage(URL(string: APIConstant.imageURL + poster))
+                                .retry(maxCount: 3, interval: .seconds(5))
+                                .resizable()
+                                .frame(width: 80, height: 100)
+                                .cornerRadius(10)
+                                .shadow(radius: 5)
+                        }
+                        else {
+                            Image(.loading)
+                                .resizable()
+                                .frame(width: 80, height: 80)
+                        }
+                        
+                        VStack(alignment: .leading, content: {
+                            Text(movie.title)
+                                .lineLimit(1)
+                                .font(.title04)
+                                .foregroundColor(.black)
+                            Text("\(movie.releaseDate)")
+                                .font(.body04)
+                                .foregroundColor(.black)
+                            Spacer()
+                            if let status = DBMovie.Status.getStatusByInt(movie.status) {
+                                switch status {
+                                case .bookmark:
+                                    Text(status.statusString)
+                                        .font(.caption01)
+                                        .foregroundColor(.black)
+                                case .ing:
+                                    if let start = movie.startDate {
+                                        Text("\(start.yearMonthDay) ~ 보는 중")
+                                            .font(.caption01)
+                                            .foregroundColor(.black)
+                                    }
+                                case .end:
+                                    if let start = movie.startDate {
+                                        if let end = movie.endDate {
+                                            Text("\(start.yearMonthDay) ~ \(end.yearMonthDay) 다 봤어요")
+                                                .font(.caption01)
+                                                .foregroundColor(.black)
+                                        }
+                                    }
+                                }
+                            }
+                            
+                        })
+                        Spacer()
+                    }
                 }
                 .swipeActions {
                     Button(role: .destructive) {
