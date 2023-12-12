@@ -10,7 +10,7 @@ import SwiftUI
 struct MyMediaDetailView: View {
     @Environment(\.dismiss) var dismiss
     
-    @ObservedObject var myMediaService: MyMediaService
+    @EnvironmentObject var myMediaService: MyMediaService
     @State var movie: DBMovie
     
     @State private var isShowingEditSheet: Bool = false
@@ -223,5 +223,5 @@ struct MyMediaDetailView: View {
 }
 
 #Preview {
-    MyMediaDetailView(myMediaService: MyMediaService(), movie: DBMovie(title: "태어난 김에 세계일주 3", MovieID: 0, runtime: 235, posterLink: nil, touchedTime: Date.now, releaseDate: "2023-03-21", overview: "모두 끝나버렸다 난 시작도 안해봤는데", status: 0, actors: ["정우성", "김유진"], director: "김유진", myRuntime: 0, startDate: nil, endDate: nil))
+    MyMediaDetailView(movie: DBMovie(title: "태어난 김에 세계일주 3", MovieID: 0, runtime: 235, posterLink: nil, touchedTime: Date.now, releaseDate: "2023-03-21", overview: "모두 끝나버렸다 난 시작도 안해봤는데", status: 0, actors: ["정우성", "김유진"], director: "김유진", myRuntime: 0, startDate: nil, endDate: nil))
 }

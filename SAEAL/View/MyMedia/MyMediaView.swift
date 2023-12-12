@@ -10,7 +10,7 @@ import Kingfisher
 
 struct MyMediaView: View {
     @Environment(\.dismiss) var dismiss
-    @ObservedObject var myMediaService: MyMediaService
+    @EnvironmentObject var myMediaService: MyMediaService
     @State private var status: DBMovie.Status?
     
     var body: some View {
@@ -19,7 +19,7 @@ struct MyMediaView: View {
             
             List(myMediaService.filteredMovies) { movie in
                 NavigationLink {
-                    MyMediaDetailView(myMediaService: myMediaService, movie: movie.toDBMovie())
+                    MyMediaDetailView(movie: movie.toDBMovie())
                 } label: {
                     // MARK: 추후 리팩토링 필요
                     HStack {
@@ -170,5 +170,5 @@ struct MyMediaView: View {
 }
 
 #Preview {
-    MyMediaView(myMediaService: MyMediaService())
+    MyMediaView()
 }

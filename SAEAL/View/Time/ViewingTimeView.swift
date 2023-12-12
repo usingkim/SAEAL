@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct ViewingTimeView: View {
-    @ObservedObject var myMediaService: MyMediaService
+    @EnvironmentObject var myMediaService: MyMediaService
     
     let years = [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023]
     @State private var year: Int = 2023
@@ -36,7 +36,6 @@ struct ViewingTimeView: View {
                                     .stroke(Color.black, lineWidth: 1)
                             )
                     }
-                    .offset(y: -300)
                     .onTapGesture {
                         isPopupVisible.toggle()
                     }
@@ -62,15 +61,13 @@ struct ViewingTimeView: View {
                 .foregroundColor(Color.color1)
                 
                 Spacer()
-                Button(action: {
-                    isPopupVisible.toggle()
-                }, label: {
-                    Image(systemName: "info.circle")
-                        .renderingMode(.template)
+                NavigationLink {
+                    SettingView()
+                } label: {
+                    Image(systemName: "gearshape")
                         .resizable()
-                        .foregroundColor(Color.black)
-                        .frame(width: 15, height: 15)
-                })
+                        .frame(width: 24, height: 24)
+                }
             }
             .padding()
             .sheet(isPresented: $isPickingYear, content: {
@@ -109,9 +106,21 @@ struct ViewingTimeView: View {
                 Spacer()
             }
             else {
-                Text("Total")
-                    .font(.caption01)
+                HStack {
+                    Text("Total")
+                        .font(.caption01)
+                    Button(action: {
+                        isPopupVisible.toggle()
+                    }, label: {
+                        Image(systemName: "info.circle")
+                            .renderingMode(.template)
+                            .resizable()
+                            .foregroundColor(Color.black)
+                            .frame(width: 10, height: 10)
+                    })
+                }
                 .padding(.bottom, 10)
+                    
                 Text("\(intToHour(runtime: myMediaService.myRunningTime))시간 \(intToMinute(runtime: myMediaService.myRunningTime))분")
                     .font(.headline1)
                 
@@ -196,5 +205,5 @@ struct ViewingTimeView: View {
 }
 
 #Preview {
-    ViewingTimeView(myMediaService: MyMediaService())
+    ViewingTimeView()
 }
