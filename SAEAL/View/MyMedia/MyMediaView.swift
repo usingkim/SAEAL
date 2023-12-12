@@ -112,18 +112,19 @@ struct MyMediaView: View {
                         } label: {
                             Text("삭제")
                         }
-                        .alert(isPresented: $isShowingDeleteAlert, content: {
-                            Alert(title: Text("나의 필모그래피에서 삭제하시겠습니까?"),
-                                  primaryButton: .destructive(Text("삭제") , action: {
-                                myMediaService.delMovie(movie: movie.toDBMovie())
-                                dismiss()
-                            }),
-                                  secondaryButton: .cancel(Text("취소"), action: {
-                                isShowingDeleteAlert = false
-                            })
-                            )
-                        })
+                        
                     }
+                    .alert(isPresented: $isShowingDeleteAlert, content: {
+                        Alert(title: Text("나의 필모그래피에서 삭제하시겠습니까?"),
+                              primaryButton: .destructive(Text("삭제") , action: {
+                            myMediaService.delMovie(movie: movie.toDBMovie())
+                            dismiss()
+                        }),
+                              secondaryButton: .cancel(Text("취소"), action: {
+                            isShowingDeleteAlert = false
+                        })
+                        )
+                    })
                 }
                 .refreshable {
                     status = nil
