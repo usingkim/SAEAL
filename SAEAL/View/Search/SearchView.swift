@@ -23,11 +23,15 @@ struct SearchView: View {
         VStack {
             
             HStack {
-                TextField(text: $searchText) {
-                    Text("어떤 영화를 기록하시겠어요?")
-                        .font(.title05)
-                }
+                TextField("어떤 영화를 기록하시겠어요?", text: $searchText, onCommit: {
+                    Task {
+                        if let m = await TMDBService.findMoviebyString(word: searchText) {
+                            movies = m
+                        }
+                    }
+                })
                 .font(.title05)
+
                 
                 if searchText != "" {
                     Button {
