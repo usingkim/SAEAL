@@ -24,111 +24,113 @@ struct MyMediaDetailView: View {
     
     
     var body: some View {
-        VStack {
-            
-            MovieDetailSubView(movie: movie)
-            
-            HStack(spacing: 30) {
-                ForEach(DBMovie.Status.allCases, id:\.self) { s in
-                    Button {
-                        if s != .bookmark {
-                            isShowingEditSheet = true
+        ScrollView {
+            VStack {
+                
+                MovieDetailSubView(movie: movie)
+                
+                HStack(spacing: 30) {
+                    ForEach(DBMovie.Status.allCases, id:\.self) { s in
+                        Button {
+                            if s != .bookmark {
+                                isShowingEditSheet = true
+                            }
+                            else {
+                                isShowingBookmarkAlert = true
+                            }
+                            status = s
+                        } label: {
+                            VStack {
+                                Image(s.getStatusImageString())
+                                    .renderingMode(.template)
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .foregroundStyle(s == status ? Color.black : Color.gray)
+                                Text(s.statusString)
+                                    .font(.body02)
+                                    .foregroundStyle(s == status ? Color.black : Color.gray)
+                            }
                         }
-                        else {
-                            isShowingBookmarkAlert = true
+                        .buttonStyle(.plain)
+                        .alert(isPresented: $isShowingBookmarkAlert, content: {
+                            changeAlert
+                        })
+                        
+                    }
+                    //                Button {
+                    //                    isShowingDeleteAlertSheet = true
+                    //                } label: {
+                    //                    VStack {
+                    //                        Image(systemName: "xmark")
+                    //                            .renderingMode(.template)
+                    //                            .resizable()
+                    //                            .frame(width: 20, height: 20)
+                    //                            .foregroundStyle(Color.red)
+                    //                            .padding(.bottom, 10)
+                    //                        Text("삭제")
+                    //                            .font(.body02)
+                    //                            .foregroundStyle(Color.red)
+                    //                    }
+                    //                }
+                    //                .alert(isPresented: $isShowingDeleteAlertSheet, content: {
+                    //                    Alert(title: Text("나의 필모그래피에서 삭제하시겠습니까?"),
+                    //                          primaryButton: .destructive(Text("삭제") , action: {
+                    //                        myMediaService.delMovie(movie: movie)
+                    //                        dismiss()
+                    //                    }),
+                    //                          secondaryButton: .cancel(Text("취소"), action: {
+                    //                        isShowingDeleteAlertSheet = false
+                    //                    })
+                    //                    )
+                    //                })
+                    
+                }
+                
+                
+                Divider()
+                
+                HStack {
+                    VStack(alignment: .leading, content: {
+                        Text("줄거리")
+                            .font(.title04)
+                            .padding(.bottom, 10)
+                        Text("\(movie.overview)")
+                            .font(.body03)
+                            .padding(.leading, 5)
+                    })
+                    Spacer()
+                }
+                
+                
+                
+                Spacer()
+            }
+            .onAppear {
+                status = DBMovie.Status.getStatusByInt(movie.status)
+            }
+            .padding(.leading, 16)
+            .padding(.trailing, 16)
+            .sheet(isPresented: $isShowingEditSheet, content: {
+                editSheet
+                    .onAppear {
+                        
+                        if let s = movie.startDate {
+                            startDate = s
                         }
-                        status = s
-                    } label: {
-                        VStack {
-                            Image(s.getStatusImageString())
-                                .renderingMode(.template)
-                                .resizable()
-                                .frame(width: 30, height: 30)
-                                .foregroundStyle(s == status ? Color.black : Color.gray)
-                            Text(s.statusString)
-                                .font(.body02)
-                                .foregroundStyle(s == status ? Color.black : Color.gray)
+                        
+                        if let e = movie.endDate {
+                            endDate = e
                         }
                     }
-                    .buttonStyle(.plain)
+                    .onDisappear {
+                        status = DBMovie.Status.getStatusByInt(movie.status)
+                    }
+                    .presentationDetents([.fraction(0.3)])
                     .alert(isPresented: $isShowingBookmarkAlert, content: {
                         changeAlert
                     })
-                    
-                }
-//                Button {
-//                    isShowingDeleteAlertSheet = true
-//                } label: {
-//                    VStack {
-//                        Image(systemName: "xmark")
-//                            .renderingMode(.template)
-//                            .resizable()
-//                            .frame(width: 20, height: 20)
-//                            .foregroundStyle(Color.red)
-//                            .padding(.bottom, 10)
-//                        Text("삭제")
-//                            .font(.body02)
-//                            .foregroundStyle(Color.red)
-//                    }
-//                }
-//                .alert(isPresented: $isShowingDeleteAlertSheet, content: {
-//                    Alert(title: Text("나의 필모그래피에서 삭제하시겠습니까?"),
-//                          primaryButton: .destructive(Text("삭제") , action: {
-//                        myMediaService.delMovie(movie: movie)
-//                        dismiss()
-//                    }),
-//                          secondaryButton: .cancel(Text("취소"), action: {
-//                        isShowingDeleteAlertSheet = false
-//                    })
-//                    )
-//                })
-
-            }
-            
-            
-            Divider()
-            
-            HStack {
-                VStack(alignment: .leading, content: {
-                    Text("줄거리")
-                        .font(.title04)
-                        .padding(.bottom, 10)
-                    Text("\(movie.overview)")
-                        .font(.body03)
-                        .padding(.leading, 5)
-                })
-                Spacer()
-            }
-            
-            
-            
-            Spacer()
+            })
         }
-        .onAppear {
-            status = DBMovie.Status.getStatusByInt(movie.status)
-        }
-        .padding(.leading, 16)
-        .padding(.trailing, 16)
-        .sheet(isPresented: $isShowingEditSheet, content: {
-            editSheet
-                .onAppear {
-                    
-                    if let s = movie.startDate {
-                        startDate = s
-                    }
-                    
-                    if let e = movie.endDate {
-                        endDate = e
-                    }
-                }
-                .onDisappear {
-                    status = DBMovie.Status.getStatusByInt(movie.status)
-                }
-                .presentationDetents([.fraction(0.3)])
-                .alert(isPresented: $isShowingBookmarkAlert, content: {
-                    changeAlert
-                })
-        })
         
     }
     

@@ -10,7 +10,7 @@ import SwiftUI
 struct SearchView: View {
     @EnvironmentObject var myMediaService: MyMediaService
     
-    @State private var searchText: String = ""
+    @State private var searchText: String = "해리포터"
     @State private var movies: [TMDBService.SearchMovie] = []
     @State private var isShowingAlert: Bool = false
     @State private var isSearched: Bool = false
