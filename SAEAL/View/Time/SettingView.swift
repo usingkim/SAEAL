@@ -40,6 +40,7 @@ struct SettingView: View {
                         return Alert(title: Text("데이터를 초기화 하시겠습니까?"), message: Text("절대 되돌릴 수 없습니다."),
                               primaryButton: .destructive(Text("삭제") , action: {
                             myMediaService.delAll()
+                            dismiss()
                         }),
                               secondaryButton: .cancel(Text("취소"), action: {
                             resetAlert = false
@@ -83,12 +84,21 @@ struct SettingView: View {
                 .font(.title05)
                 
                 Section("기타") {
-                    Button(action: {
-                        
-                    }, label: {
+                    NavigationLink {
+                        VStack {
+                            Image(uiImage: .developer)
+                                .resizable()
+                                .frame(width: 250, height: 250)
+                            Text("Instagram @7uly8ighth")
+                                .font(.body01)
+                            Text("Contact! chris3209@naver.com")
+                                .font(.body01)
+                                
+                        }
+                    } label: {
                         Text("개발자 소개")
                             .font(.body01)
-                    })
+                    }
                 }
                 .font(.title05)
             }
@@ -98,7 +108,9 @@ struct SettingView: View {
 }
 
 #Preview {
-    SettingView()
+    NavigationStack {
+        SettingView()
+    }
 }
 
 
