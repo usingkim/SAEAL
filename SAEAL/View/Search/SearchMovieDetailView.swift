@@ -11,7 +11,7 @@ struct SearchMovieDetailView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @ObservedObject var myMediaService: MyMediaService
+    @EnvironmentObject var myMediaService: MyMediaService
     
     @State var movie: TMDBService.SearchMovie
     @State private var movieDetail: TMDBService.MovieDetail?

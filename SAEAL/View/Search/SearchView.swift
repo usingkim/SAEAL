@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct SearchView: View {
-    @ObservedObject var myMediaService: MyMediaService
+    @EnvironmentObject var myMediaService: MyMediaService
     
     @State private var searchText: String = ""
     @State private var movies: [TMDBService.SearchMovie] = []
@@ -89,7 +89,7 @@ struct SearchView: View {
         List(movies, id:\.self) { movie in
             HStack {
                 NavigationLink {
-                    SearchMovieDetailView(myMediaService: myMediaService, movie: movie)
+                    SearchMovieDetailView(movie: movie)
                 } label: {
                     OneMovieCapsule(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: -1, actors: [], director: "", myRuntime: 0, startDate: nil, endDate: nil))
                 }
@@ -114,5 +114,5 @@ struct SearchView: View {
 }
 
 #Preview {
-    SearchView(myMediaService: MyMediaService())
+    SearchView()
 }

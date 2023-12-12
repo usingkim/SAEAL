@@ -84,6 +84,19 @@ final class MyMediaService: ObservableObject {
         self.fetchAllMovie()
     }
     
+    func delAll() {
+        do {
+            try MyMediaService.realm.write {
+                MyMediaService.realm.deleteAll()
+            }
+        }
+        catch {
+            print("DELETE ERROR!!!")
+        }
+        
+        self.fetchAllMovie()
+    }
+    
     func fetchAllMovie() {
         Movies = Array(MyMediaService.realm.objects(DBMovie.self))
         Movies.sort { $0.touchedTime > $1.touchedTime }

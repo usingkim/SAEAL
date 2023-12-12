@@ -14,17 +14,21 @@ struct ContentView: View {
     
     var body: some View {
         TabView {
-            ViewingTimeView(myMediaService: myMediaService)
-                .tabItem {
-                    Image(.timetab)
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .scaledToFit()
-                    Text("러닝 타임")
-                }
+            NavigationStack {
+                ViewingTimeView()
+                    .environmentObject(myMediaService)
+            }
+            .tabItem {
+                Image(.timetab)
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .scaledToFit()
+                Text("러닝 타임")
+            }
             
             NavigationStack {
-                SearchView(myMediaService: myMediaService)
+                SearchView()
+                    .environmentObject(myMediaService)
             }
             .tabItem {
                 Image(systemName: "magnifyingglass")
@@ -33,7 +37,8 @@ struct ContentView: View {
             }
             
             NavigationStack {
-                MyMediaView(myMediaService: myMediaService)
+                MyMediaView()
+                    .environmentObject(myMediaService)
             }
             .tabItem {
                 Image(.filmotab)
