@@ -35,8 +35,7 @@ struct OneMovieCapsule: View {
             
             VStack(alignment: .leading, content: {
                 Text(movie.title)
-                    .lineLimit(1)
-                    .font(.title04)
+                    .font(.title05)
                     .foregroundColor(.black)
                 Text("\(movie.releaseDate)")
                     .font(.body04)
