@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "7D73D25C-F6EA-4EB6-ACB7-DB826CC2BBD3"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "DBD99C02-5B5D-4FFA-A691-8D16FCAF2FE2"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SAEAL/View/MyMedia/MyMediaDetailView.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "160"
+            endingLineNumber = "160"
+            landmarkName = "body"
+            landmarkType = "24">
+            <Locations>
+               <Location
+                  uuid = "DBD99C02-5B5D-4FFA-A691-8D16FCAF2FE2 - 578434d3378b7c3c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in SAEAL.MyMediaDetailView.changeAlert.getter : SwiftUI.Alert"
+                  moduleName = "SAEAL"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/using/Desktop/SAEAL/SAEAL/View/MyMedia/MyMediaDetailView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "159"
+                  endingLineNumber = "159"
+                  offsetFromSymbolStart = "3040">
+               </Location>
+               <Location
+                  uuid = "DBD99C02-5B5D-4FFA-A691-8D16FCAF2FE2 - 578434d3378b7fdd"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in SAEAL.MyMediaDetailView.changeAlert.getter : SwiftUI.Alert"
+                  moduleName = "SAEAL"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/using/Desktop/SAEAL/SAEAL/View/MyMedia/MyMediaDetailView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "158"
+                  endingLineNumber = "158"
+                  offsetFromSymbolStart = "2432">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

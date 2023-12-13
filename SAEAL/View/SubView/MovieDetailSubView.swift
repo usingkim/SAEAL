@@ -14,7 +14,8 @@ struct MovieDetailSubView: View {
     var body: some View {
         VStack {
             Text(movie.title)
-                .font(.title01)
+                .font(.title04)
+                .lineLimit(2)
             HStack {
                 VStack(alignment: .leading, content: {
                     

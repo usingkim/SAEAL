@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		90BDC6712B280F510035DB1B /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BDC6702B280F510035DB1B /* SettingView.swift */; };
 		90C5A7B82B21741100873357 /* MyMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C5A7B72B21741100873357 /* MyMovie.swift */; };
 		C48D43552B16F4C400471126 /* MovieDetailSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48D43542B16F4C400471126 /* MovieDetailSubView.swift */; };
 		C48D43572B16FF6900471126 /* MonthlyGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48D43562B16FF6900471126 /* MonthlyGraphView.swift */; };
@@ -44,6 +45,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		90BDC6702B280F510035DB1B /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
 		90C5A7B72B21741100873357 /* MyMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMovie.swift; sourceTree = "<group>"; };
 		C48D43542B16F4C400471126 /* MovieDetailSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailSubView.swift; sourceTree = "<group>"; };
 		C48D43562B16FF6900471126 /* MonthlyGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyGraphView.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 			children = (
 				C4D308832AFF37940005053E /* ViewingTimeView.swift */,
 				C48D43562B16FF6900471126 /* MonthlyGraphView.swift */,
+				90BDC6702B280F510035DB1B /* SettingView.swift */,
 			);
 			path = Time;
 			sourceTree = "<group>";
@@ -343,6 +346,7 @@
 				C49D5ED62B1ED5240054901F /* Int+Extension.swift in Sources */,
 				C4D308662AFE1E050005053E /* SearchMovieDetailView.swift in Sources */,
 				C4D3087C2AFE57BB0005053E /* MyMediaService.swift in Sources */,
+				90BDC6712B280F510035DB1B /* SettingView.swift in Sources */,
 				C4D6C7462AFBAE2400072148 /* ContentView.swift in Sources */,
 				C4D3086E2AFE482A0005053E /* APIConstant.swift in Sources */,
 				C49D5ED82B1EE9180054901F /* Date+Extension.swift in Sources */,
@@ -491,7 +495,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0.1;
 				DEVELOPMENT_ASSET_PATHS = "\"SAEAL/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = S5877PQ292;
 				ENABLE_PREVIEWS = YES;
@@ -508,7 +512,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.usingkkim.SAEAL;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -526,7 +530,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
+				CURRENT_PROJECT_VERSION = 1.0.1;
 				DEVELOPMENT_ASSET_PATHS = "\"SAEAL/Resources/Preview Content\"";
 				DEVELOPMENT_TEAM = S5877PQ292;
 				ENABLE_PREVIEWS = YES;
@@ -543,7 +547,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 1.0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.usingkkim.SAEAL;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";

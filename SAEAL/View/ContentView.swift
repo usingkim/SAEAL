@@ -9,22 +9,23 @@ import SwiftUI
 
 
 struct ContentView: View {
-    
-    @StateObject var myMediaService: MyMediaService = MyMediaService()
+    @EnvironmentObject var myMediaService: MyMediaService
     
     var body: some View {
         TabView {
-            ViewingTimeView(myMediaService: myMediaService)
-                .tabItem {
-                    Image(.timetab)
-                        .resizable()
-                        .frame(width: 20, height: 20)
-                        .scaledToFit()
-                    Text("러닝 타임")
-                }
+            NavigationStack {
+                ViewingTimeView()
+            }
+            .tabItem {
+                Image(.timetab)
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .scaledToFit()
+                Text("러닝 타임")
+            }
             
             NavigationStack {
-                SearchView(myMediaService: myMediaService)
+                SearchView()
             }
             .tabItem {
                 Image(systemName: "magnifyingglass")
@@ -33,7 +34,7 @@ struct ContentView: View {
             }
             
             NavigationStack {
-                MyMediaView(myMediaService: myMediaService)
+                MyMediaView()
             }
             .tabItem {
                 Image(.filmotab)

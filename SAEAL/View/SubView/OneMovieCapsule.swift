@@ -28,15 +28,14 @@ struct OneMovieCapsule: View {
                     .shadow(radius: 5)
             }
             else {
-                Image(.loading)
+                Image(.defaultMovie)
                     .resizable()
                     .frame(width: 80, height: 80)
             }
             
             VStack(alignment: .leading, content: {
                 Text(movie.title)
-                    .lineLimit(1)
-                    .font(.title04)
+                    .font(.title05)
                     .foregroundColor(.black)
                 Text("\(movie.releaseDate)")
                     .font(.body04)
@@ -64,7 +63,6 @@ struct OneMovieCapsule: View {
                                 }
                             }
                         }
-                        
                     }
                 }
             })
