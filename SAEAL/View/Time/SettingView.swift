@@ -84,8 +84,11 @@ struct SettingView: View {
                 .font(.title05)
                 
                 Section("기타") {
-                    Text("버전 v 1.0.1")
-                        .font(.body01)
+                    if let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String {
+                        Text("버전 v\(buildNumber)")
+                            .font(.body01)
+                    }
+                    
                     
                     NavigationLink {
                         VStack {
