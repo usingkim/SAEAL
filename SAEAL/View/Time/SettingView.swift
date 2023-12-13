@@ -84,15 +84,25 @@ struct SettingView: View {
                 .font(.title05)
                 
                 Section("기타") {
+                    Text("버전 v 1.0.1")
+                        .font(.body01)
+                    
                     NavigationLink {
                         VStack {
-                            Image(uiImage: .developer)
+                            Spacer()
+                            Image(uiImage: .bb)
                                 .resizable()
-                                .frame(width: 250, height: 250)
+                                .frame(width: 300, height: 375)
+                            Spacer()
+                            Text("YOOJIN KIM")
+                                .font(.body01)
                             Text("Instagram @7uly8ighth")
                                 .font(.body01)
-                            Text("Contact! chris3209@naver.com")
+                            Text("Email chris3209@naver.com")
                                 .font(.body01)
+                            Text("Github https://github.com/usingkim")
+                                .font(.body01)
+                            Spacer()
                                 
                         }
                     } label: {
