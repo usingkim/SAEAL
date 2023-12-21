@@ -12,7 +12,6 @@ struct RunningTimeApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environmentObject(MyMediaService())
         }
     }
 }

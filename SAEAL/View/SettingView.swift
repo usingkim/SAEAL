@@ -11,11 +11,8 @@ import MessageUI
 
 struct SettingView: View {
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var myMediaService: MyMediaService
     
-    @State private var isShowingMailView = false
-    @State private var resetAlert = false
-    @State private var cantSend: Bool = false
+    @StateObject private var settingVM = SettingViewModel()
 
     var body: some View {
         VStack {
@@ -30,20 +27,23 @@ struct SettingView: View {
             List {
                 Section("유저 설정") {
                     Button(action: {
-                        resetAlert = true
+                        settingVM.resetAlert = true
                     }, label: {
                         Text("앱 초기화 하기")
                             .tint(.black)
                             .font(.body01)
                     })
-                    .alert(isPresented: $resetAlert, content: {
+                    .alert(isPresented: Binding<Bool>(
+                        get: { settingVM.resetAlert },
+                        set: { settingVM.resetAlert = $0 }
+                    ), content: {
                         return Alert(title: Text("데이터를 초기화 하시겠습니까?"), message: Text("절대 되돌릴 수 없습니다."),
                               primaryButton: .destructive(Text("삭제") , action: {
-                            myMediaService.delAll()
+                            settingVM.delAll()
                             dismiss()
                         }),
                               secondaryButton: .cancel(Text("취소"), action: {
-                            resetAlert = false
+                            settingVM.resetAlert = false
                         })
                         )
                     })
@@ -52,21 +52,27 @@ struct SettingView: View {
                 
                 Section("지원") {
                     Button(action: {
-                        isShowingMailView.toggle()
+                        settingVM.isShowingMailView.toggle()
                     }, label: {
                         Text("문의하기")
                             .font(.body01)
                     })
-                    .sheet(isPresented: $isShowingMailView) {
+                    .sheet(isPresented: Binding<Bool>(
+                        get: { settingVM.isShowingMailView },
+                        set: { settingVM.isShowingMailView = $0 }
+                    )) {
                         MailView(content: "", to: "chris3209@naver.com", subject: "[새알] ")
                     }
-                    .alert(isPresented: $cantSend, content: {
+                    .alert(isPresented: Binding<Bool>(
+                        get: { settingVM.cantSend },
+                        set: { settingVM.cantSend = $0 }
+                    ), content: {
                         return Alert(title: Text("문의를 보낼 수 없습니다."), message: Text("이메일을 복사하시겠습니까?"),
                                      primaryButton: .default(Text("네") , action: {
                             UIPasteboard.general.string = "chris3209@naver.com"
                         }),
                               secondaryButton: .cancel(Text("아니오"), action: {
-                            cantSend = false
+                            settingVM.cantSend = false
                         })
                         )
                     })

@@ -14,8 +14,8 @@
             filePath = "SAEAL/View/MyMedia/MyMediaDetailView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
+            startingLineNumber = "105"
+            endingLineNumber = "105"
             landmarkName = "changeAlert"
             landmarkType = "24">
             <Locations>
@@ -62,8 +62,8 @@
             filePath = "SAEAL/ViewModel/MyMediaService.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "24"
-            endingLineNumber = "24"
+            startingLineNumber = "22"
+            endingLineNumber = "22"
             landmarkName = "addMovie(newMovie:)"
             landmarkType = "7">
          </BreakpointContent>

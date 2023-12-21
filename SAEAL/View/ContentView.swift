@@ -7,9 +7,7 @@
 
 import SwiftUI
 
-
 struct ContentView: View {
-    @EnvironmentObject var myMediaService: MyMediaService
     
     var body: some View {
         TabView {
@@ -43,9 +41,6 @@ struct ContentView: View {
                     .scaledToFit()
                 Text("나의 필모그래피")
             }
-        }
-        .onAppear {
-            myMediaService.fetchAllMovie()
         }
         .accentColor(.black)
     }

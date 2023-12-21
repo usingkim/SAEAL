@@ -150,19 +150,7 @@ struct ViewingTimeView: View {
                     }
                 }
                 .padding(10)
-                
-//                MonthlyGraphView(myMediaService: myMediaService)
-//                    .padding()
-//                    .frame(width: 350, height: 250)
-//                    .background {
-//                        RoundedRectangle(cornerRadius: 12)
-//                            .fill(Color.color5)
-//                    }
             }
-            
-            
-            
-//            Spacer()
         }
         .onAppear {
             viewingTimeVM.fetchAllMovie()
