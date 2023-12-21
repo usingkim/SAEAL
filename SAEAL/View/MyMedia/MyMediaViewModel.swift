@@ -13,8 +13,22 @@ final class MyMediaViewModel: ObservableObject {
     @Published var status: DBMovie.Status?
     @Published var isShowingDeleteAlert: Bool = false
     
-    private var Movies: [DBMovie] = []
-    private var recentStatus: Int = -1
+    var Movies: [DBMovie] = []
+    private var recentStatus: DBMovie.Status? = nil
+    
+    func resetFilter(s: DBMovie.Status?) {
+        switch(s){
+        case .none:
+            status = nil
+        case .bookmark:
+            status = .bookmark
+        case .ing:
+            status = .ing
+        case .end:
+            status = .end
+        }
+        filterMovies(status: status)
+    }
     
     func fetchAllMovie() {
         Movies = Array(realm.objects(DBMovie.self))
@@ -22,13 +36,13 @@ final class MyMediaViewModel: ObservableObject {
         self.filterMovies(status: recentStatus)
     }
     
-    func filterMovies(status: Int) {
+    func filterMovies(status: DBMovie.Status?) {
         var filteredDBMovies: [DBMovie] = []
         recentStatus = status
         
-        if let _ = DBMovie.Status.getStatusByInt(status) {
+        if let _ = status {
             filteredDBMovies = Movies.filter { movie in
-                movie.status == status
+                DBMovie.Status.getStatusByInt(movie.status) == status
             }
         }
         else {

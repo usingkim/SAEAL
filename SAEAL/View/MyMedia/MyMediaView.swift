@@ -135,13 +135,15 @@ struct MyMediaView: View {
                 .listRowSeparator(.hidden)
             }
         }
+        .onAppear {
+            myMediaViewModel.fetchAllMovie()
+        }
     }
     
     var filteringSection: some View {
         HStack {
             Button(action: {
-                myMediaViewModel.status = nil
-                myMediaViewModel.filterMovies(status: myMediaViewModel.status?.rawValue ?? -1)
+                myMediaViewModel.resetFilter(s: .none)
             }, label: {
                 Text("전체")
                     .font(.body01)
@@ -158,8 +160,7 @@ struct MyMediaView: View {
             )
             
             Button(action: {
-                myMediaViewModel.status = .bookmark
-                myMediaViewModel.filterMovies(status: DBMovie.Status.bookmark.rawValue)
+                myMediaViewModel.resetFilter(s: .bookmark)
             }, label: {
                 Text(DBMovie.Status.bookmark.statusString)
                     .font(.body01)
@@ -176,8 +177,7 @@ struct MyMediaView: View {
             )
             
             Button(action: {
-                myMediaViewModel.status = .ing
-                myMediaViewModel.filterMovies(status: DBMovie.Status.ing.rawValue)
+                myMediaViewModel.resetFilter(s: .ing)
             }, label: {
                 Text(DBMovie.Status.ing.statusString)
                     .font(.body01)
@@ -194,8 +194,7 @@ struct MyMediaView: View {
             )
             
             Button(action: {
-                myMediaViewModel.status = .end
-                myMediaViewModel.filterMovies(status: DBMovie.Status.end.rawValue)
+                myMediaViewModel.resetFilter(s: .end)
             }, label: {
                 Text(DBMovie.Status.end.statusString)
                     .font(.body01)
