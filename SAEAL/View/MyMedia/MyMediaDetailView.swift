@@ -84,7 +84,7 @@ struct MyMediaDetailView: View {
                         }
                     }
                     .onDisappear {
-                        myMediaDetailVM.status = DBMovie.Status.getStatusByInt(movie.status)
+                        myMediaDetailVM.setStatus(s: movie.status)
                     }
                     .presentationDetents([.fraction(0.3)])
                     .alert(isPresented: Binding<Bool>(
