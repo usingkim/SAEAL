@@ -14,9 +14,9 @@
             filePath = "SAEAL/View/MyMedia/MyMediaDetailView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "160"
-            endingLineNumber = "160"
-            landmarkName = "body"
+            startingLineNumber = "133"
+            endingLineNumber = "133"
+            landmarkName = "changeAlert"
             landmarkType = "24">
             <Locations>
                <Location
@@ -50,6 +50,22 @@
                   offsetFromSymbolStart = "2432">
                </Location>
             </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A53ECA3F-CDFD-4850-A4E9-AF8B35F28C08"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "SAEAL/ViewModel/MyMediaService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "24"
+            endingLineNumber = "24"
+            landmarkName = "addMovie(newMovie:)"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

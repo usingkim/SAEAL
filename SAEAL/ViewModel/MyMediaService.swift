@@ -8,22 +8,24 @@
 import Foundation
 import RealmSwift
 
+var realm: Realm = try! Realm()
+
 final class MyMediaService: ObservableObject {
     @Published var Movies: [DBMovie] = []
-    @Published var filteredMovies: [MyMovie] = []
+    @Published var filteredMovies: [MyMediaViewModel.MyMovie] = []
     
     @Published var myRunningTime: Int = -1
     @Published var monthlyRunningTime = (1...12).map { [$0, 0] }
     
-    private static var realm: Realm = try! Realm()
+    
     
     private var recentStatus: Int = -1
     
     func addMovie(newMovie: DBMovie) {
         Movies.append(newMovie)
         do {
-            try MyMediaService.realm.write {
-                MyMediaService.realm.add(newMovie)
+            try realm.write {
+                realm.add(newMovie)
             }
         }
         catch {
@@ -38,8 +40,8 @@ final class MyMediaService: ObservableObject {
         newMovie.touchedTime = Date.now
         
         do {
-            try MyMediaService.realm.write {
-                MyMediaService.realm.add(newMovie, update: .all)
+            try realm.write {
+                realm.add(newMovie, update: .all)
             }
         }
         catch {
@@ -58,8 +60,8 @@ final class MyMediaService: ObservableObject {
         movie.endDate = newMovie.endDate
         
         do {
-            try MyMediaService.realm.write {
-                MyMediaService.realm.add(movie, update: .all)
+            try realm.write {
+                realm.add(movie, update: .all)
             }
         }
         catch {
@@ -71,9 +73,9 @@ final class MyMediaService: ObservableObject {
     
     func delMovie(movie: DBMovie) {
         do {
-            if let forDelete = MyMediaService.realm.object(ofType: DBMovie.self, forPrimaryKey: movie.id) {
-                try MyMediaService.realm.write {
-                    MyMediaService.realm.delete(forDelete)
+            if let forDelete = realm.object(ofType: DBMovie.self, forPrimaryKey: movie.id) {
+                try realm.write {
+                    realm.delete(forDelete)
                 }
             }
         }
@@ -86,8 +88,8 @@ final class MyMediaService: ObservableObject {
     
     func delAll() {
         do {
-            try MyMediaService.realm.write {
-                MyMediaService.realm.deleteAll()
+            try realm.write {
+                realm.deleteAll()
             }
         }
         catch {
@@ -98,7 +100,7 @@ final class MyMediaService: ObservableObject {
     }
     
     func fetchAllMovie() {
-        Movies = Array(MyMediaService.realm.objects(DBMovie.self))
+        Movies = Array(realm.objects(DBMovie.self))
         Movies.sort { $0.touchedTime > $1.touchedTime }
         self.filterMovies(status: recentStatus)
     }
@@ -118,7 +120,7 @@ final class MyMediaService: ObservableObject {
         
         filteredMovies = []
         for movie in filteredDBMovies {
-            filteredMovies.append(MyMovie(movie: movie))
+            filteredMovies.append(MyMediaViewModel.MyMovie(movie: movie))
         }
     }
     
@@ -145,7 +147,7 @@ final class MyMediaService: ObservableObject {
     
     func writeReview(movie: DBMovie, score: Int, review: String) {
         do {
-            try MyMediaService.realm.write {
+            try realm.write {
                 movie.score = score
 //                movie.review = review
             }

@@ -87,7 +87,7 @@ final class DBMovie: Object, ObjectKeyIdentifiable {
         self.endDate = movie.endDate
     }
     
-    init(movie: MyMovie) {
+    init(movie: MyMediaViewModel.MyMovie) {
         super.init()
         self.id = movie.id
         self.title = movie.title
