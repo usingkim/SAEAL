@@ -8,30 +8,24 @@
 import SwiftUI
 
 struct SearchView: View {
-    @EnvironmentObject var myMediaService: MyMediaService
-    
-    @State private var searchText: String = ""
-    @State private var movies: [TMDBService.SearchMovie] = []
-    @State private var isShowingAlert: Bool = false
-    @State private var isSearched: Bool = false
+    @StateObject var searchVM = SearchViewModel()
     
     var body: some View {
         VStack {
             
             HStack {
-                TextField("어떤 영화를 기록하시겠어요?", text: $searchText, onCommit: {
-                    Task {
-                        if let m = await TMDBService.findMoviebyString(word: searchText) {
-                            movies = m
-                        }
-                    }
+                TextField("어떤 영화를 기록하시겠어요?", text: Binding<String>(
+                    get: { searchVM.searchText },
+                    set: { searchVM.searchText = $0 }
+                ), onCommit: {
+                    searchVM.search()
                 })
                 .font(.title05)
 
                 
-                if searchText != "" {
+                if searchVM.searchText != "" {
                     Button {
-                        searchText = ""
+                        searchVM.searchText = ""
                     } label: {
                         Image(systemName: "xmark")
                             .foregroundColor(Color.gray)
@@ -39,12 +33,7 @@ struct SearchView: View {
                 }
                 
                 Button(action: {
-                    Task {
-                        if let m = await TMDBService.findMoviebyString(word: searchText) {
-                            movies = m
-                        }
-                    }
-                    isSearched = true
+                    searchVM.search()
                 }, label: {
                     Image(systemName: "magnifyingglass")
                         .renderingMode(.template)
@@ -61,15 +50,15 @@ struct SearchView: View {
                     )
             }
             
-            if movies.isEmpty {
+            if searchVM.movies.isEmpty {
                 Spacer()
             }
         }
         .padding(.leading, 16)
         .padding(.trailing, 16)
         
-        if movies.isEmpty {
-            if !isSearched {
+        if searchVM.movies.isEmpty {
+            if !searchVM.isSearched {
                 VStack(spacing: 0, content: {
                     Text("검색을 시작해보세요!")
                 })
@@ -86,7 +75,7 @@ struct SearchView: View {
         }
         
         
-        List(movies, id:\.self) { movie in
+        List(searchVM.movies, id:\.self) { movie in
             HStack {
                 NavigationLink {
                     SearchMovieDetailView(movie: movie)

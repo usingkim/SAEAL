@@ -14,35 +14,27 @@ struct SearchMovieDetailView: View {
     @EnvironmentObject var myMediaService: MyMediaService
     
     @State var movie: TMDBService.SearchMovie
-    @State private var movieDetail: TMDBService.MovieDetail?
-    @State private var movieCredit: TMDBService.MovieCredit?
-    @State private var director: String = ""
-    @State private var actors: [String] = []
-    @State private var isShowingSaveSheet: Bool = false
-    @State private var isShowingSaveAlert: Bool = false
-    @State private var status: DBMovie.Status? = nil
-    @State private var watchedTime: Double = 0
-    @State private var startDate: Date = Date.now
-    @State private var endDate: Date = Date.now
+    
+    @StateObject private var searchMovieDetailVM = SearchMovieDetailViewModel()
     
     var body: some View {
         ScrollView {
             VStack {
-                if let detail = movieDetail {
-                    MovieDetailSubView(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: detail.runtime, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: -1, actors: actors, director: director, myRuntime: -1, startDate: startDate, endDate: endDate))
+                if let detail = searchMovieDetailVM.movieDetail {
+                    MovieDetailSubView(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: detail.runtime, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: -1, actors: searchMovieDetailVM.actors, director: searchMovieDetailVM.director, myRuntime: -1, startDate: searchMovieDetailVM.startDate, endDate: searchMovieDetailVM.endDate))
                 }
                 
                 HStack(spacing: 30) {
                     ForEach(DBMovie.Status.allCases, id:\.self) { s in
                         Button {
-                            if status == s {
-                                status = nil
+                            if searchMovieDetailVM.status == s {
+                                searchMovieDetailVM.status = nil
                             }
                             else {
-                                status = s
+                                searchMovieDetailVM.status = s
                             }
-                            if status == .bookmark {
-                                isShowingSaveAlert = true
+                            if searchMovieDetailVM.status == .bookmark {
+                                searchMovieDetailVM.isShowingSaveAlert = true
                             }
                         } label: {
                             VStack {
@@ -50,16 +42,16 @@ struct SearchMovieDetailView: View {
                                     .renderingMode(.template)
                                     .resizable()
                                     .frame(width: 30, height: 30)
-                                    .foregroundStyle(s == status ? Color.black : Color.gray)
+                                    .foregroundStyle(s == searchMovieDetailVM.status ? Color.black : Color.gray)
                                 Text(s.statusString)
                                     .font(.body02)
-                                    .foregroundStyle(s == status ? Color.black : Color.gray)
+                                    .foregroundStyle(s == searchMovieDetailVM.status ? Color.black : Color.gray)
                             }
                         }
                         .buttonStyle(.plain)
-                        .onChange(of: status, perform: { value in
-                            if status != .bookmark && s == status {
-                                isShowingSaveSheet = true
+                        .onChange(of: searchMovieDetailVM.status, perform: { value in
+                            if searchMovieDetailVM.status != .bookmark && s == searchMovieDetailVM.status {
+                                searchMovieDetailVM.isShowingSaveSheet = true
                             }
                         })
                     }
@@ -88,24 +80,24 @@ struct SearchMovieDetailView: View {
             .onAppear {
                 Task {
                     if let detail = await TMDBService.getMovieDetailByID(id: movie.id) {
-                        movieDetail = detail
+                        searchMovieDetailVM.movieDetail = detail
                     }
                     else {
                         print("영화 정보가 없습니다.")
                     }
                     
                     if let credit = await TMDBService.getMovieCreditByID(id: movie.id) {
-                        movieCredit = credit
+                        searchMovieDetailVM.movieCredit = credit
                         var numOfActor = 0
                         for actor in credit.cast {
-                            actors.append(actor.name)
+                            searchMovieDetailVM.actors.append(actor.name)
                             numOfActor += 1
                             if numOfActor == 3 {
                                 break
                             }
                         }
-                        if let idx = movieCredit?.crew.firstIndex(where: { $0.job == "Directing" || $0.job ==  "Director" }) {
-                            director = credit.crew[idx].name
+                        if let idx = searchMovieDetailVM.movieCredit?.crew.firstIndex(where: { $0.job == "Directing" || $0.job ==  "Director" }) {
+                            searchMovieDetailVM.director = credit.crew[idx].name
                         }
                     }
                     else {
@@ -114,19 +106,25 @@ struct SearchMovieDetailView: View {
                     
                 }
             }
-            .sheet(isPresented: $isShowingSaveSheet, onDismiss: {
-                status = nil
+            .sheet(isPresented: Binding<Bool>(
+                get: { searchMovieDetailVM.isShowingSaveSheet },
+                set: { searchMovieDetailVM.isShowingSaveSheet = $0 }
+            ), onDismiss: {
+                searchMovieDetailVM.status = nil
             }, content: {
                 saveSheet
                     .presentationDetents([.fraction(0.3)])
             })
-            .alert(isPresented: $isShowingSaveAlert, content: {
+            .alert(isPresented: Binding<Bool>(
+                get: { searchMovieDetailVM.isShowingSaveAlert },
+                set: { searchMovieDetailVM.isShowingSaveAlert = $0 }
+            ), content: {
                 Alert(title: Text("나의 필모그래피에 등록하시겠습니까?"),
-                      primaryButton: .cancel(Text("등록") , action: {
-                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.bookmark.rawValue, actors: actors, director: director, myRuntime: 0, startDate: nil, endDate: nil))
+                      primaryButton: .default(Text("등록") , action: {
+                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: searchMovieDetailVM.movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.bookmark.rawValue, actors: searchMovieDetailVM.actors, director: searchMovieDetailVM.director, myRuntime: 0, startDate: nil, endDate: nil))
                     dismiss()
                 }),
-                      secondaryButton: .destructive(Text("취소"), action: { status = nil })
+                      secondaryButton: .destructive(Text("취소"), action: { searchMovieDetailVM.status = nil })
                 )
             })
         }
@@ -134,25 +132,34 @@ struct SearchMovieDetailView: View {
     
     var saveSheet: some View {
         VStack {
-            if status == .ing {
-                DatePicker(selection: $startDate, displayedComponents: .date) {
+            if searchMovieDetailVM.status == .ing {
+                DatePicker(selection: Binding<Date>(
+                    get: { searchMovieDetailVM.startDate },
+                    set: { searchMovieDetailVM.startDate = $0 }
+                ), displayedComponents: .date) {
                     Text("시작 날짜")
                         .font(.body02)
                 }
                 .padding()
             }
             
-            else if status == .end {
+            else if searchMovieDetailVM.status == .end {
                 VStack(spacing: 20) {
-                    DatePicker(selection: $startDate, displayedComponents: .date) {
+                    DatePicker(selection: Binding<Date>(
+                        get: { searchMovieDetailVM.startDate },
+                        set: { searchMovieDetailVM.startDate = $0 }
+                    ), displayedComponents: .date) {
                         Text("시작 날짜")
                             .font(.body02)
                     }
-                    .onChange(of: startDate, perform: { value in
-                        endDate = startDate
+                    .onChange(of: searchMovieDetailVM.startDate, perform: { value in
+                        searchMovieDetailVM.endDate = searchMovieDetailVM.startDate
                     })
                     
-                    DatePicker("끝난 날짜", selection: $endDate, in: startDate...(Calendar.current.date(byAdding: .year, value: 1, to: startDate) ?? startDate), displayedComponents: .date)
+                    DatePicker("끝난 날짜", selection: Binding<Date>(
+                        get: { searchMovieDetailVM.endDate },
+                        set: { searchMovieDetailVM.endDate = $0 }
+                    ), in: searchMovieDetailVM.startDate..., displayedComponents: .date)
                         .font(.body02)
                 }
                 .padding()
@@ -162,7 +169,7 @@ struct SearchMovieDetailView: View {
             Button {
                 // TODO: 이미 나의 필모그래피에 있는 경우
                 // 이미 나의 필모그래피에 존재합니다. 2회차를 감상하시겠습니까?
-                isShowingSaveAlert = true
+                searchMovieDetailVM.isShowingSaveAlert = true
             } label: {
                 HStack {
                     Spacer()
@@ -182,24 +189,27 @@ struct SearchMovieDetailView: View {
             .padding(.leading, 11)
             .padding(.trailing, 15)
             .padding(.bottom, 80)
-            .alert(isPresented: $isShowingSaveAlert, content: {
+            .alert(isPresented: Binding<Bool>(
+                get: { searchMovieDetailVM.isShowingSaveAlert },
+                set: { searchMovieDetailVM.isShowingSaveAlert = $0 }
+            ), content: {
                 Alert(title: Text("나의 필모그래피에 등록하시겠습니까?"),
                       primaryButton: .default(Text("등록") , action: {
-                    switch(status) {
+                    switch(searchMovieDetailVM.status) {
                     case .bookmark:
-                        myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.bookmark.rawValue, actors: actors, director: director, myRuntime: 0, startDate: nil, endDate: nil))
+                        myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: searchMovieDetailVM.movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.bookmark.rawValue, actors: searchMovieDetailVM.actors, director: searchMovieDetailVM.director, myRuntime: 0, startDate: nil, endDate: nil))
                     case .ing:
-                        myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.ing.rawValue, actors: actors, director: director, myRuntime: Int(watchedTime), startDate: startDate, endDate: nil))
+                        myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: searchMovieDetailVM.movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.ing.rawValue, actors: searchMovieDetailVM.actors, director: searchMovieDetailVM.director, myRuntime: Int(searchMovieDetailVM.watchedTime), startDate: searchMovieDetailVM.startDate, endDate: nil))
                     case .end:
-                        myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.end.rawValue, actors: actors, director: director, myRuntime: movieDetail?.runtime ?? 0, startDate: startDate, endDate: endDate))
+                        myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: searchMovieDetailVM.movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.end.rawValue, actors: searchMovieDetailVM.actors, director: searchMovieDetailVM.director, myRuntime: searchMovieDetailVM.movieDetail?.runtime ?? 0, startDate: searchMovieDetailVM.startDate, endDate: searchMovieDetailVM.endDate))
                     case .none:
                         print()
                     }
-                    isShowingSaveSheet = false
+                    searchMovieDetailVM.isShowingSaveSheet = false
                     dismiss()
                 }),
                       secondaryButton: .cancel(Text("취소"), action: {
-                    isShowingSaveSheet = false
+                    searchMovieDetailVM.isShowingSaveSheet = false
                 })
                 )
             })
