@@ -9,8 +9,8 @@ import Foundation
 
 final class SearchMovieDetailViewModel: ObservableObject {
     
-    @Published var movieDetail: TMDBService.MovieDetail?
-    @Published var movieCredit: TMDBService.MovieCredit?
+    @Published var movieDetail: MovieDetail?
+    @Published var movieCredit: MovieCredit?
     @Published var director: String = ""
     @Published var actors: [String] = []
     @Published var isShowingSaveSheet: Bool = false
@@ -32,16 +32,16 @@ final class SearchMovieDetailViewModel: ObservableObject {
         }
     }
     
-    func getDetailAndCredit(movie: TMDBService.SearchMovie) {
+    func getDetailAndCredit(movie: SearchViewModel.SearchMovie) {
         Task {
-            if let detail = await TMDBService.getMovieDetailByID(id: movie.id) {
+            if let detail = await getMovieDetailByID(id: movie.id) {
                 movieDetail = detail
             }
             else {
                 print("영화 정보가 없습니다.")
             }
             
-            if let credit = await TMDBService.getMovieCreditByID(id: movie.id) {
+            if let credit = await getMovieCreditByID(id: movie.id) {
                 movieCredit = credit
                 var numOfActor = 0
                 for actor in credit.cast {
@@ -73,7 +73,7 @@ final class SearchMovieDetailViewModel: ObservableObject {
         }
     }
     
-    func registerMovie(movie: TMDBService.SearchMovie) {
+    func registerMovie(movie: SearchViewModel.SearchMovie) {
         switch(status) {
         case .bookmark:
             addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.bookmark.rawValue, actors: actors, director: director, myRuntime: 0, startDate: nil, endDate: nil))
@@ -86,4 +86,162 @@ final class SearchMovieDetailViewModel: ObservableObject {
         }
     }
     
+    func makeURLRequest(url: URL)->URLRequest {
+        var urlRequest = URLRequest(url: url)
+        
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue(APIConstant.accessToken, forHTTPHeaderField: "Authorization")
+        urlRequest.httpMethod = "GET"
+        
+        return urlRequest
+    }
+    
+    
+    /// id 값을 통해 해당 영화의 디테일 값을 리턴
+    func getMovieDetailByID(id: Int) async -> MovieDetail?  {
+        let urlString = APIConstant.baseURL + "movie/\(id)"
+        let URL = URL(string: urlString)!
+        
+        var urlRequest = makeURLRequest(url: URL)
+        
+        
+        var urlComponent = URLComponents(string: urlString)
+        urlComponent?.queryItems =
+        [
+            URLQueryItem(name: "language", value: "ko-KR"),
+        ]
+        urlRequest.url = urlComponent?.url
+        
+        var data: Data
+        let session = URLSession.shared
+        
+        do {
+            (data, _) = try await session.data(for: urlRequest)
+            
+            let dataDecoded = try JSONDecoder().decode(MovieDetail.self, from: data)
+            
+            return dataDecoded
+        }
+        catch {
+            print("Can't Find or Decode Data")
+        }
+        
+        return nil
+    }
+    
+    /// id 값을 통해 해당 영화의 Credit 값을 리턴
+    func getMovieCreditByID(id: Int) async -> MovieCredit?  {
+        let urlString = APIConstant.baseURL + "movie/\(id)/credits"
+        let URL = URL(string: urlString)!
+        
+        var urlRequest = makeURLRequest(url: URL)
+        
+        
+        var urlComponent = URLComponents(string: urlString)
+        urlComponent?.queryItems =
+        [
+            URLQueryItem(name: "language", value: "ko-KR"),
+        ]
+        urlRequest.url = urlComponent?.url
+        
+        var data: Data
+        let session = URLSession.shared
+        
+        do {
+            (data, _) = try await session.data(for: urlRequest)
+            
+            let dataDecoded = try JSONDecoder().decode(MovieCredit.self, from: data)
+            return dataDecoded
+        }
+        catch {
+            print("Can't Find or Decode Data")
+        }
+        
+        return nil
+    }
+}
+
+extension SearchMovieDetailViewModel {
+    struct SearchMovie: Codable, Hashable {
+        let adult: Bool
+        let backdropPath: String?
+        let genreIDS: [Int]
+        let id: Int
+        let originalLanguage: String
+        let originalTitle, overview: String
+        let popularity: Double
+        let posterPath: String?
+        let releaseDate, title: String
+        let video: Bool
+        let voteAverage: Double
+        let voteCount: Int
+
+        enum CodingKeys: String, CodingKey {
+            case adult
+            case backdropPath = "backdrop_path"
+            case genreIDS = "genre_ids"
+            case id
+            case originalLanguage = "original_language"
+            case originalTitle = "original_title"
+            case overview, popularity
+            case posterPath = "poster_path"
+            case releaseDate = "release_date"
+            case title, video
+            case voteAverage = "vote_average"
+            case voteCount = "vote_count"
+        }
+    }
+    
+    struct SearchMovies: Codable {
+        let page: Int
+        let results: [SearchMovie]
+        let totalPages, totalResults: Int
+
+        enum CodingKeys: String, CodingKey {
+            case page, results
+            case totalPages = "total_pages"
+            case totalResults = "total_results"
+        }
+    }
+    
+    struct MovieDetail: Codable {
+        var title: String
+        var original_language: String
+        var original_title: String
+        var overview: String
+        var runtime: Int
+        var status: String
+    }
+    
+    struct MovieCredit: Codable {
+        let id: Int
+        let cast, crew: [Cast]
+    }
+
+    struct Cast: Codable {
+        let adult: Bool
+        let gender, id: Int
+        let knownForDepartment, name, originalName: String
+        let popularity: Double
+        let profilePath: String?
+        let castID: Int?
+        let character: String?
+        let creditID: String
+        let order: Int?
+        let department, job: String?
+
+        enum CodingKeys: String, CodingKey {
+            case adult, gender, id
+            case knownForDepartment = "known_for_department"
+            case name
+            case originalName = "original_name"
+            case popularity
+            case profilePath = "profile_path"
+            case castID = "cast_id"
+            case character
+            case creditID = "credit_id"
+            case order, department, job
+        }
+    }
+
 }

@@ -11,7 +11,7 @@ struct SearchMovieDetailView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @State var movie: TMDBService.SearchMovie
+    @State var movie: SearchViewModel.SearchMovie
     
     @StateObject private var searchMovieDetailVM = SearchMovieDetailViewModel()
     
