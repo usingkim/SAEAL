@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		90BDC6712B280F510035DB1B /* SettingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BDC6702B280F510035DB1B /* SettingView.swift */; };
+		90BF82022B34836500C6D12B /* ViewingTimeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90BF82012B34836500C6D12B /* ViewingTimeViewModel.swift */; };
 		90C5A7B82B21741100873357 /* MyMovie.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90C5A7B72B21741100873357 /* MyMovie.swift */; };
 		C48D43552B16F4C400471126 /* MovieDetailSubView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48D43542B16F4C400471126 /* MovieDetailSubView.swift */; };
 		C48D43572B16FF6900471126 /* MonthlyGraphView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C48D43562B16FF6900471126 /* MonthlyGraphView.swift */; };
@@ -46,6 +47,7 @@
 
 /* Begin PBXFileReference section */
 		90BDC6702B280F510035DB1B /* SettingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingView.swift; sourceTree = "<group>"; };
+		90BF82012B34836500C6D12B /* ViewingTimeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewingTimeViewModel.swift; sourceTree = "<group>"; };
 		90C5A7B72B21741100873357 /* MyMovie.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMovie.swift; sourceTree = "<group>"; };
 		C48D43542B16F4C400471126 /* MovieDetailSubView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieDetailSubView.swift; sourceTree = "<group>"; };
 		C48D43562B16FF6900471126 /* MonthlyGraphView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyGraphView.swift; sourceTree = "<group>"; };
@@ -111,7 +113,6 @@
 			children = (
 				C4D308832AFF37940005053E /* ViewingTimeView.swift */,
 				C48D43562B16FF6900471126 /* MonthlyGraphView.swift */,
-				90BDC6702B280F510035DB1B /* SettingView.swift */,
 			);
 			path = Time;
 			sourceTree = "<group>";
@@ -119,6 +120,7 @@
 		C498EEC82B0F33EB00D16CE8 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				90BF82012B34836500C6D12B /* ViewingTimeViewModel.swift */,
 				90C5A7B72B21741100873357 /* MyMovie.swift */,
 				C4D3087B2AFE57BB0005053E /* MyMediaService.swift */,
 			);
@@ -171,6 +173,7 @@
 			isa = PBXGroup;
 			children = (
 				C4D6C7452AFBAE2400072148 /* ContentView.swift */,
+				90BDC6702B280F510035DB1B /* SettingView.swift */,
 				C498EEC62B0F2D5500D16CE8 /* Time */,
 				C4D308772AFE53400005053E /* Search */,
 				C4D308782AFE53580005053E /* MyMedia */,
@@ -360,6 +363,7 @@
 				C4D308842AFF37940005053E /* ViewingTimeView.swift in Sources */,
 				C4A8FF9F2B148FED008E25E4 /* OneMovieCapsule.swift in Sources */,
 				C4BBF5652B0B233A00C1A409 /* MyMediaDetailView.swift in Sources */,
+				90BF82022B34836500C6D12B /* ViewingTimeViewModel.swift in Sources */,
 				C4A6D0BA2B17647D00137244 /* Font+Extension.swift in Sources */,
 				C48D435A2B1708C500471126 /* Color+Extension.swift in Sources */,
 				C48D43552B16F4C400471126 /* MovieDetailSubView.swift in Sources */,
