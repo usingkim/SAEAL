@@ -116,7 +116,6 @@
 			isa = PBXGroup;
 			children = (
 				C4D308832AFF37940005053E /* ViewingTimeView.swift */,
-				C48D43562B16FF6900471126 /* MonthlyGraphView.swift */,
 			);
 			path = Time;
 			sourceTree = "<group>";
@@ -161,6 +160,7 @@
 		C4A8FF9D2B148FC5008E25E4 /* SubView */ = {
 			isa = PBXGroup;
 			children = (
+				C48D43562B16FF6900471126 /* MonthlyGraphView.swift */,
 				C4A8FF9E2B148FED008E25E4 /* OneMovieCapsule.swift */,
 				C48D43542B16F4C400471126 /* MovieDetailSubView.swift */,
 			);
