@@ -23,13 +23,7 @@ struct MyMediaDetailView: View {
                 HStack(spacing: 30) {
                     ForEach(DBMovie.Status.allCases, id:\.self) { s in
                         Button {
-                            if s != .bookmark {
-                                myMediaDetailVM.isShowingEditSheet = true
-                            }
-                            else {
-                                myMediaDetailVM.isShowingBookmarkAlert = true
-                            }
-                            myMediaDetailVM.status = s
+                            myMediaDetailVM.openSheet(s: s)
                         } label: {
                             VStack {
                                 Image(s.getStatusImageString())
@@ -67,13 +61,10 @@ struct MyMediaDetailView: View {
                     })
                     Spacer()
                 }
-                
-                
-                
                 Spacer()
             }
             .onAppear {
-                myMediaDetailVM.status = DBMovie.Status.getStatusByInt(movie.status)
+                myMediaDetailVM.setStatus(s: movie.status)
             }
             .padding(.leading, 16)
             .padding(.trailing, 16)
@@ -111,29 +102,9 @@ struct MyMediaDetailView: View {
         Alert(title: Text("변경하시겠습니까?"),
               primaryButton: .default(Text("확인") , action: {
             let newMovie = DBMovie(movie: movie)
-            newMovie.touchedTime = Date.now
-            if let s = myMediaDetailVM.status {
-                switch(s) {
-                case .bookmark:
-                    newMovie.status = DBMovie.Status.bookmark.rawValue
-                    newMovie.myRuntime = 0
-                    newMovie.startDate = nil
-                    newMovie.endDate = nil
-                case .ing:
-                    newMovie.status = DBMovie.Status.ing.rawValue
-                    newMovie.myRuntime = Int(myMediaDetailVM.watchedTime)
-                    newMovie.startDate = myMediaDetailVM.startDate
-                    newMovie.endDate = nil
-                case .end:
-                    newMovie.status = DBMovie.Status.end.rawValue
-                    newMovie.myRuntime = movie.runtime
-                    newMovie.startDate = myMediaDetailVM.startDate
-                    newMovie.endDate = myMediaDetailVM.endDate
-                }
-                myMediaDetailVM.editMovie(oldMovie: movie, newMovie: newMovie)
-                movie = newMovie
-            }
-            myMediaDetailVM.isShowingEditSheet = false
+            myMediaDetailVM.editMovie(oldMovie: movie, newMovie: newMovie)
+            
+            movie = newMovie
             dismiss()
         }),
               secondaryButton: .cancel(Text("취소"), action: {

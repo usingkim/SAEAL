@@ -18,6 +18,27 @@ final class MyMediaDetailViewModel: ObservableObject {
     
     func editMovie(oldMovie: DBMovie, newMovie: DBMovie) {
         
+        newMovie.touchedTime = Date.now
+        if let s = status {
+            switch(s) {
+            case .bookmark:
+                newMovie.status = DBMovie.Status.bookmark.rawValue
+                newMovie.myRuntime = 0
+                newMovie.startDate = nil
+                newMovie.endDate = nil
+            case .ing:
+                newMovie.status = DBMovie.Status.ing.rawValue
+                newMovie.myRuntime = Int(watchedTime)
+                newMovie.startDate = startDate
+                newMovie.endDate = nil
+            case .end:
+                newMovie.status = DBMovie.Status.end.rawValue
+                newMovie.myRuntime = oldMovie.runtime
+                newMovie.startDate = startDate
+                newMovie.endDate = endDate
+            }
+        }
+        
         let movie = oldMovie
         movie.touchedTime = newMovie.touchedTime
         movie.status = newMovie.status
@@ -33,6 +54,21 @@ final class MyMediaDetailViewModel: ObservableObject {
         catch {
             print("WRITE ERROR!!!")
         }
+        
+        isShowingEditSheet = false
     }
     
+    func openSheet(s: DBMovie.Status) {
+        if status != .bookmark {
+            isShowingEditSheet = true
+        }
+        else {
+            isShowingBookmarkAlert = true
+        }
+        status = s
+    }
+    
+    func setStatus(s: Int) {
+        status = DBMovie.Status.getStatusByInt(s)
+    }
 }
