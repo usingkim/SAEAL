@@ -1,15 +1,92 @@
 //
-//  TMDBService.swift
+//  SearchMovieDetailViewModel.swift
 //  SAEAL
 //
-//  Created by 김유진 on 11/10/23.
+//  Created by 김유진 on 12/22/23.
 //
 
 import Foundation
 
-struct TMDBService {
-    /// header 추가
-    private static func makeURLRequest(url: URL)->URLRequest {
+final class SearchMovieDetailViewModel: ObservableObject {
+    
+    @Published var movieDetail: MovieDetail?
+    @Published var movieCredit: MovieCredit?
+    @Published var director: String = ""
+    @Published var actors: [String] = []
+    @Published var isShowingSaveSheet: Bool = false
+    @Published var isShowingSaveAlert: Bool = false
+    @Published var status: DBMovie.Status? = nil
+    @Published var watchedTime: Double = 0
+    @Published var startDate: Date = Date.now
+    @Published var endDate: Date = Date.now
+    
+    func changeStatus(newStatus: DBMovie.Status) {
+        if status == newStatus {
+            status = nil
+        }
+        else {
+            status = newStatus
+        }
+        if status == .bookmark {
+            isShowingSaveAlert = true
+        }
+    }
+    
+    func getDetailAndCredit(movie: SearchViewModel.SearchMovie) {
+        Task {
+            if let detail = await getMovieDetailByID(id: movie.id) {
+                movieDetail = detail
+            }
+            else {
+                print("영화 정보가 없습니다.")
+            }
+            
+            if let credit = await getMovieCreditByID(id: movie.id) {
+                movieCredit = credit
+                var numOfActor = 0
+                for actor in credit.cast {
+                    actors.append(actor.name)
+                    numOfActor += 1
+                    if numOfActor == 3 {
+                        break
+                    }
+                }
+                if let idx = movieCredit?.crew.firstIndex(where: { $0.job == "Directing" || $0.job ==  "Director" }) {
+                    director = credit.crew[idx].name
+                }
+            }
+            else {
+                print("Credit 정보가 없습니다.")
+            }
+            
+        }
+    }
+    
+    func addMovie(newMovie: DBMovie) {
+        do {
+            try realm.write {
+                realm.add(newMovie)
+            }
+        }
+        catch {
+            print("WRITE ERROR!!!")
+        }
+    }
+    
+    func registerMovie(movie: SearchViewModel.SearchMovie) {
+        switch(status) {
+        case .bookmark:
+            addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.bookmark.rawValue, actors: actors, director: director, myRuntime: 0, startDate: nil, endDate: nil))
+        case .ing:
+            addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.ing.rawValue, actors: actors, director: director, myRuntime: Int(watchedTime), startDate: startDate, endDate: nil))
+        case .end:
+            addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.end.rawValue, actors: actors, director: director, myRuntime: movieDetail?.runtime ?? 0, startDate: startDate, endDate: endDate))
+        case .none:
+            print()
+        }
+    }
+    
+    func makeURLRequest(url: URL)->URLRequest {
         var urlRequest = URLRequest(url: url)
         
         urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -19,42 +96,9 @@ struct TMDBService {
         return urlRequest
     }
     
-    /// 검색을 통해 Movie 리스트를 리턴
-    static func findMoviebyString(word: String) async -> [SearchMovie]? {
-        
-        let urlString = APIConstant.baseURL + "search/movie"
-        let URL = URL(string: urlString)!
-        
-        var urlRequest = makeURLRequest(url: URL)
-        
-        var urlComponent = URLComponents(string: urlString)
-        urlComponent?.queryItems =
-        [
-            URLQueryItem(name: "query", value: word),
-            URLQueryItem(name: "language", value: "ko-KR"),
-            URLQueryItem(name: "include_adult", value: "false"),
-        ]
-        urlRequest.url = urlComponent?.url
-        
-        // Data 가져오기
-        var data: Data
-        
-        let session = URLSession.shared
-        
-        do {
-            (data, _) = try await session.data(for: urlRequest)
-            let dataDecoded = try JSONDecoder().decode(SearchViewModel.self, from: data)
-            return dataDecoded.results
-        }
-        catch {
-            print("Can't Find or Decode Data")
-        }
-        
-        return nil
-    }
     
     /// id 값을 통해 해당 영화의 디테일 값을 리턴
-    static func getMovieDetailByID(id: Int) async -> MovieDetail?  {
+    func getMovieDetailByID(id: Int) async -> MovieDetail?  {
         let urlString = APIConstant.baseURL + "movie/\(id)"
         let URL = URL(string: urlString)!
         
@@ -86,7 +130,7 @@ struct TMDBService {
     }
     
     /// id 값을 통해 해당 영화의 Credit 값을 리턴
-    static func getMovieCreditByID(id: Int) async -> MovieCredit?  {
+    func getMovieCreditByID(id: Int) async -> MovieCredit?  {
         let urlString = APIConstant.baseURL + "movie/\(id)/credits"
         let URL = URL(string: urlString)!
         
@@ -117,7 +161,7 @@ struct TMDBService {
     }
 }
 
-extension TMDBService {
+extension SearchMovieDetailViewModel {
     struct SearchMovie: Codable, Hashable {
         let adult: Bool
         let backdropPath: String?
@@ -145,18 +189,6 @@ extension TMDBService {
             case title, video
             case voteAverage = "vote_average"
             case voteCount = "vote_count"
-        }
-    }
-    
-    struct SearchViewModel: Codable {
-        let page: Int
-        let results: [SearchMovie]
-        let totalPages, totalResults: Int
-
-        enum CodingKeys: String, CodingKey {
-            case page, results
-            case totalPages = "total_pages"
-            case totalResults = "total_results"
         }
     }
     

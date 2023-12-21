@@ -6,6 +6,9 @@
 //
 
 import Foundation
+import RealmSwift
+
+var realm: Realm = try! Realm()
 
 struct APIConstant {
     

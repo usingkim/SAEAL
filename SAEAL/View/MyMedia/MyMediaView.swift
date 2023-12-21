@@ -10,15 +10,14 @@ import Kingfisher
 
 struct MyMediaView: View {
     @Environment(\.dismiss) var dismiss
-    @EnvironmentObject var myMediaService: MyMediaService
-    @State private var status: DBMovie.Status?
-    @State private var isShowingDeleteAlert: Bool = false
+    
+    @StateObject private var myMediaViewModel = MyMediaViewModel()
     
     var body: some View {
         VStack {
             filteringSection
             
-            if myMediaService.Movies.isEmpty {
+            if myMediaViewModel.Movies.isEmpty {
                 
                 Spacer()
                 VStack(spacing: 0, content: {
@@ -29,9 +28,9 @@ struct MyMediaView: View {
                 Spacer()
             }
             
-            else if myMediaService.filteredMovies.isEmpty {
+            else if myMediaViewModel.filteredMovies.isEmpty {
                 Spacer()
-                switch(status) {
+                switch(myMediaViewModel.status) {
                 case .bookmark:
                     Text("보고싶은 영화가 없어요").font(.body01)
                 case .ing:
@@ -50,7 +49,7 @@ struct MyMediaView: View {
             }
             
             else {
-                List(myMediaService.filteredMovies) { movie in
+                List(myMediaViewModel.filteredMovies) { movie in
                     NavigationLink {
                         MyMediaDetailView(movie: movie.toDBMovie())
                     } label: {
@@ -107,39 +106,44 @@ struct MyMediaView: View {
                     }
                     .swipeActions {
                         Button(role: .destructive) {
-                            isShowingDeleteAlert = true
+                            myMediaViewModel.isShowingDeleteAlert = true
                         } label: {
                             Text("삭제")
                         }
                         
                     }
-                    .alert(isPresented: $isShowingDeleteAlert, content: {
+                    .alert(isPresented: Binding<Bool>(
+                        get: { myMediaViewModel.isShowingDeleteAlert },
+                        set: { myMediaViewModel.isShowingDeleteAlert = $0 }
+                    ), content: {
                         Alert(title: Text("나의 필모그래피에서 삭제하시겠습니까?"),
                               primaryButton: .destructive(Text("삭제") , action: {
-                            myMediaService.delMovie(movie: movie.toDBMovie())
+                            myMediaViewModel.delMovie(movie: movie.toDBMovie())
                             dismiss()
                         }),
                               secondaryButton: .cancel(Text("취소"), action: {
-                            isShowingDeleteAlert = false
+                            myMediaViewModel.isShowingDeleteAlert = false
                         })
                         )
                     })
                 }
                 .refreshable {
-                    status = nil
-                    myMediaService.fetchAllMovie()
+                    myMediaViewModel.status = nil
+                    myMediaViewModel.fetchAllMovie()
                 }
                 .listStyle(.plain)
                 .listRowSeparator(.hidden)
             }
+        }
+        .onAppear {
+            myMediaViewModel.fetchAllMovie()
         }
     }
     
     var filteringSection: some View {
         HStack {
             Button(action: {
-                status = nil
-                myMediaService.filterMovies(status: status?.rawValue ?? -1)
+                myMediaViewModel.resetFilter(s: .none)
             }, label: {
                 Text("전체")
                     .font(.body01)
@@ -149,15 +153,14 @@ struct MyMediaView: View {
                     .padding(.bottom, 8)
             })
             .buttonStyle(.plain)
-            .foregroundStyle(status == nil ? Color.black : Color.gray)
+            .foregroundStyle(myMediaViewModel.status == nil ? Color.black : Color.gray)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(status == nil ? Color.black : Color.gray, lineWidth: 1)
+                    .stroke(myMediaViewModel.status == nil ? Color.black : Color.gray, lineWidth: 1)
             )
             
             Button(action: {
-                status = .bookmark
-                myMediaService.filterMovies(status: DBMovie.Status.bookmark.rawValue)
+                myMediaViewModel.resetFilter(s: .bookmark)
             }, label: {
                 Text(DBMovie.Status.bookmark.statusString)
                     .font(.body01)
@@ -167,15 +170,14 @@ struct MyMediaView: View {
                     .padding(.bottom, 8)
             })
             .buttonStyle(.plain)
-            .foregroundStyle(status == .bookmark ? Color.black : Color.gray)
+            .foregroundStyle(myMediaViewModel.status == .bookmark ? Color.black : Color.gray)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(status == .bookmark ? Color.black : Color.gray, lineWidth: 1)
+                    .stroke(myMediaViewModel.status == .bookmark ? Color.black : Color.gray, lineWidth: 1)
             )
             
             Button(action: {
-                status = .ing
-                myMediaService.filterMovies(status: DBMovie.Status.ing.rawValue)
+                myMediaViewModel.resetFilter(s: .ing)
             }, label: {
                 Text(DBMovie.Status.ing.statusString)
                     .font(.body01)
@@ -185,15 +187,14 @@ struct MyMediaView: View {
                     .padding(.bottom, 8)
             })
             .buttonStyle(.plain)
-            .foregroundStyle(status == .ing ? Color.black : Color.gray)
+            .foregroundStyle(myMediaViewModel.status == .ing ? Color.black : Color.gray)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(status == .ing ? Color.black : Color.gray, lineWidth: 1)
+                    .stroke(myMediaViewModel.status == .ing ? Color.black : Color.gray, lineWidth: 1)
             )
             
             Button(action: {
-                status = .end
-                myMediaService.filterMovies(status: DBMovie.Status.end.rawValue)
+                myMediaViewModel.resetFilter(s: .end)
             }, label: {
                 Text(DBMovie.Status.end.statusString)
                     .font(.body01)
@@ -203,10 +204,10 @@ struct MyMediaView: View {
                     .padding(.bottom, 8)
             })
             .buttonStyle(.plain)
-            .foregroundStyle(status == .end ? Color.black : Color.gray)
+            .foregroundStyle(myMediaViewModel.status == .end ? Color.black : Color.gray)
             .overlay(
                 RoundedRectangle(cornerRadius: 12)
-                    .stroke(status == .end ? Color.black : Color.gray, lineWidth: 1)
+                    .stroke(myMediaViewModel.status == .end ? Color.black : Color.gray, lineWidth: 1)
             )
         }
         .padding()
