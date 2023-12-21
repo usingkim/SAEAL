@@ -10,7 +10,7 @@ import SwiftUI
 struct ViewingTimeView: View {
     @EnvironmentObject var myMediaService: MyMediaService
     
-    var viewingTimeVM: ViewingTimeViewModel = ViewingTimeViewModel()
+    @StateObject var viewingTimeVM: ViewingTimeViewModel = ViewingTimeViewModel()
     
     let columns = [
         GridItem(.flexible()),
@@ -58,6 +58,35 @@ struct ViewingTimeView: View {
                         .frame(width: 24, height: 24)
                 })
                 .foregroundColor(Color.color1)
+                .sheet(isPresented: Binding<Bool>(
+                    get: { self.viewingTimeVM.isPickingYear },
+                    set: { self.viewingTimeVM.isPickingYear = $0 }
+                ), content: {
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            viewingTimeVM.isPickingYear = false
+                        }, label: {
+                            Text("완료")
+                                .font(.body03)
+                        })
+                        .foregroundColor(Color.color1)
+                        .padding(.trailing, 16)
+                    }
+                    Picker(selection: Binding<Int>(
+                        get: { self.viewingTimeVM.year },
+                        set: { self.viewingTimeVM.year = $0 }
+                    ), label: Text("기간")) {
+                        ForEach(viewingTimeVM.years, id:\.self) { year in
+                            if let y = year.yearFormatterString() {
+                                Text("\(y)년").tag(year)
+                                    .font(.body01)
+                            }
+                        }
+                    }
+                    .pickerStyle(.wheel)
+                    .presentationDetents([.fraction(0.4)])
+                })
                 
                 Spacer()
                 NavigationLink {
@@ -69,35 +98,7 @@ struct ViewingTimeView: View {
                 }
             }
             .padding()
-            .sheet(isPresented: Binding<Bool>(
-                get: { self.viewingTimeVM.isPickingYear },
-                set: { self.viewingTimeVM.isPickingYear = $0 }
-            ), content: {
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        viewingTimeVM.isPickingYear = false
-                    }, label: {
-                        Text("완료")
-                            .font(.body03)
-                    })
-                    .foregroundColor(Color.color1)
-                    .padding(.trailing, 16)
-                }
-                Picker(selection: Binding<Int>(
-                    get: { self.viewingTimeVM.year },
-                    set: { self.viewingTimeVM.year = $0 }
-                ), label: Text("기간")) {
-                    ForEach(viewingTimeVM.years, id:\.self) { year in
-                        if let y = year.yearFormatterString() {
-                            Text("\(y)년").tag(year)
-                                .font(.body01)
-                        }
-                    }
-                }
-                .pickerStyle(.wheel)
-                .presentationDetents([.fraction(0.4)])
-            })
+            
             
             
             Spacer()
@@ -115,7 +116,7 @@ struct ViewingTimeView: View {
                     Text("Total")
                         .font(.caption01)
                     Button(action: {
-                        viewingTimeVM.isPopupVisible.toggle()
+                        viewingTimeVM.isPopupVisible = true
                     }, label: {
                         Image(systemName: "info.circle")
                             .renderingMode(.template)

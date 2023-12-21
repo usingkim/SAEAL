@@ -15,10 +15,6 @@ struct SearchView: View {
     @State private var isShowingAlert: Bool = false
     @State private var isSearched: Bool = false
     
-    func hideKeyboard() {
-        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
-    }
-    
     var body: some View {
         VStack {
             
@@ -97,24 +93,20 @@ struct SearchView: View {
                 } label: {
                     OneMovieCapsule(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: -1, actors: [], director: "", myRuntime: 0, startDate: nil, endDate: nil))
                 }
-                
-//                Button {
-//                    print("add")
-//                } label: {
-//                    Image(.addButton)
-//                }
-//                .buttonStyle(.plain)
             }
         }
         .listStyle(.plain)
         .listRowSeparator(.hidden)
         
         .padding()
-//        .onTapGesture {
-//            hideKeyboard()
-//        }
     }
     
+}
+
+extension SearchView {
+    func hideKeyboard() {
+        UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    }
 }
 
 #Preview {
