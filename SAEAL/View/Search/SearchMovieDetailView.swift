@@ -11,8 +11,6 @@ struct SearchMovieDetailView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @EnvironmentObject var myMediaService: MyMediaService
-    
     @State var movie: TMDBService.SearchMovie
     
     @StateObject private var searchMovieDetailVM = SearchMovieDetailViewModel()
@@ -27,15 +25,7 @@ struct SearchMovieDetailView: View {
                 HStack(spacing: 30) {
                     ForEach(DBMovie.Status.allCases, id:\.self) { s in
                         Button {
-                            if searchMovieDetailVM.status == s {
-                                searchMovieDetailVM.status = nil
-                            }
-                            else {
-                                searchMovieDetailVM.status = s
-                            }
-                            if searchMovieDetailVM.status == .bookmark {
-                                searchMovieDetailVM.isShowingSaveAlert = true
-                            }
+                            searchMovieDetailVM.changeStatus(newStatus: s)
                         } label: {
                             VStack {
                                 Image(s.getStatusImageString())
@@ -78,33 +68,7 @@ struct SearchMovieDetailView: View {
             .padding(.leading, 16)
             .padding(.trailing, 16)
             .onAppear {
-                Task {
-                    if let detail = await TMDBService.getMovieDetailByID(id: movie.id) {
-                        searchMovieDetailVM.movieDetail = detail
-                    }
-                    else {
-                        print("영화 정보가 없습니다.")
-                    }
-                    
-                    if let credit = await TMDBService.getMovieCreditByID(id: movie.id) {
-                        searchMovieDetailVM.movieCredit = credit
-                        var numOfActor = 0
-                        for actor in credit.cast {
-                            searchMovieDetailVM.actors.append(actor.name)
-                            numOfActor += 1
-                            if numOfActor == 3 {
-                                break
-                            }
-                        }
-                        if let idx = searchMovieDetailVM.movieCredit?.crew.firstIndex(where: { $0.job == "Directing" || $0.job ==  "Director" }) {
-                            searchMovieDetailVM.director = credit.crew[idx].name
-                        }
-                    }
-                    else {
-                        print("Credit 정보가 없습니다.")
-                    }
-                    
-                }
+                searchMovieDetailVM.getDetailAndCredit(movie: movie)
             }
             .sheet(isPresented: Binding<Bool>(
                 get: { searchMovieDetailVM.isShowingSaveSheet },
@@ -121,7 +85,7 @@ struct SearchMovieDetailView: View {
             ), content: {
                 Alert(title: Text("나의 필모그래피에 등록하시겠습니까?"),
                       primaryButton: .default(Text("등록") , action: {
-                    myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: searchMovieDetailVM.movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.bookmark.rawValue, actors: searchMovieDetailVM.actors, director: searchMovieDetailVM.director, myRuntime: 0, startDate: nil, endDate: nil))
+                    searchMovieDetailVM.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: searchMovieDetailVM.movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.bookmark.rawValue, actors: searchMovieDetailVM.actors, director: searchMovieDetailVM.director, myRuntime: 0, startDate: nil, endDate: nil))
                     dismiss()
                 }),
                       secondaryButton: .destructive(Text("취소"), action: { searchMovieDetailVM.status = nil })
@@ -195,16 +159,7 @@ struct SearchMovieDetailView: View {
             ), content: {
                 Alert(title: Text("나의 필모그래피에 등록하시겠습니까?"),
                       primaryButton: .default(Text("등록") , action: {
-                    switch(searchMovieDetailVM.status) {
-                    case .bookmark:
-                        myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: searchMovieDetailVM.movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.bookmark.rawValue, actors: searchMovieDetailVM.actors, director: searchMovieDetailVM.director, myRuntime: 0, startDate: nil, endDate: nil))
-                    case .ing:
-                        myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: searchMovieDetailVM.movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.ing.rawValue, actors: searchMovieDetailVM.actors, director: searchMovieDetailVM.director, myRuntime: Int(searchMovieDetailVM.watchedTime), startDate: searchMovieDetailVM.startDate, endDate: nil))
-                    case .end:
-                        myMediaService.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: searchMovieDetailVM.movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.end.rawValue, actors: searchMovieDetailVM.actors, director: searchMovieDetailVM.director, myRuntime: searchMovieDetailVM.movieDetail?.runtime ?? 0, startDate: searchMovieDetailVM.startDate, endDate: searchMovieDetailVM.endDate))
-                    case .none:
-                        print()
-                    }
+                    searchMovieDetailVM.registerMovie(movie: movie)
                     searchMovieDetailVM.isShowingSaveSheet = false
                     dismiss()
                 }),
