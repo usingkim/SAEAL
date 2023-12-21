@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct ViewingTimeView: View {
-    @EnvironmentObject var myMediaService: MyMediaService
     
     @StateObject var viewingTimeVM: ViewingTimeViewModel = ViewingTimeViewModel()
     
@@ -103,7 +102,7 @@ struct ViewingTimeView: View {
             
             Spacer()
             
-            if myMediaService.Movies.isEmpty {
+            if viewingTimeVM.Movies.isEmpty {
                 VStack(spacing: 0, content: {
                     Text("영화 기록을 시작해보세요!")
                     Text("검색 탭으로 이동해 관심있는 영화를 검색해봐요!")
@@ -127,7 +126,7 @@ struct ViewingTimeView: View {
                 }
                 .padding(.bottom, 10)
                     
-                Text(viewingTimeVM.getTimeStringWithKorean(time: myMediaService.myRunningTime))
+                Text(viewingTimeVM.getTimeStringWithKorean())
                     .font(.headline1)
                 
                 Spacer()
@@ -141,7 +140,7 @@ struct ViewingTimeView: View {
                 .padding(.leading, 15)
                 
                 LazyVGrid(columns: columns, spacing: 20) {
-                    ForEach(myMediaService.monthlyRunningTime, id: \.self) { runtime in
+                    ForEach(viewingTimeVM.monthlyRunningTime, id: \.self) { runtime in
                         VStack {
                             Text("\(runtime[0])월")
                                 .font(.title05)
@@ -166,10 +165,11 @@ struct ViewingTimeView: View {
 //            Spacer()
         }
         .onAppear {
-            myMediaService.resetRunningTime(startDate: viewingTimeVM.calendarToDate(year: viewingTimeVM.year, month: 1, day: 1, isStart: true), endDate: viewingTimeVM.calendarToDate(year: viewingTimeVM.year, month: 12, day: 31, isStart: false))
+            viewingTimeVM.fetchAllMovie()
+            viewingTimeVM.resetRunningTime(startDate: viewingTimeVM.calendarToDate(year: viewingTimeVM.year, month: 1, day: 1, isStart: true), endDate: viewingTimeVM.calendarToDate(year: viewingTimeVM.year, month: 12, day: 31, isStart: false))
         }
         .onChange(of: viewingTimeVM.year, perform: { value in
-            myMediaService.resetRunningTime(startDate: viewingTimeVM.calendarToDate(year: viewingTimeVM.year, month: 1, day: 1, isStart: true), endDate: viewingTimeVM.calendarToDate(year: viewingTimeVM.year, month: 12, day: 31, isStart: false))
+            viewingTimeVM.resetRunningTime(startDate: viewingTimeVM.calendarToDate(year: viewingTimeVM.year, month: 1, day: 1, isStart: true), endDate: viewingTimeVM.calendarToDate(year: viewingTimeVM.year, month: 12, day: 31, isStart: false))
         })
     }
     

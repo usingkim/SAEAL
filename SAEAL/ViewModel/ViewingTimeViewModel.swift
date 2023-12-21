@@ -13,12 +13,16 @@ final class ViewingTimeViewModel: ObservableObject {
     @Published var isPickingYear: Bool = false
     @Published var isPopupVisible: Bool = false
     
+    @Published var Movies: [DBMovie] = []
+    @Published var myRunningTime: Int = -1
+    @Published var monthlyRunningTime = (1...12).map { [$0, 0] }
+    
     func getYearString() -> String? {
         return year.yearFormatterString()
     }
     
-    func getTimeStringWithKorean(time: Int) -> String {
-        return "\(intToHour(runtime: time))시간 \(intToMinute(runtime: time))분"
+    func getTimeStringWithKorean() -> String {
+        return "\(intToHour(runtime: myRunningTime))시간 \(intToMinute(runtime: myRunningTime))분"
     }
     
     func getTimeString(time: Int) -> String {
@@ -61,5 +65,30 @@ final class ViewingTimeViewModel: ObservableObject {
         }
         
         return Date.now
+    }
+    
+    func fetchAllMovie() {
+        Movies = Array(realm.objects(DBMovie.self))
+    }
+    
+    func resetRunningTime(startDate: Date, endDate: Date) {
+        if Movies.isEmpty {
+            myRunningTime = 0
+            monthlyRunningTime = (1...12).map { [$0, 0] }
+            return
+        }
+        
+        myRunningTime = 0
+        monthlyRunningTime = (1...12).map { [$0, 0] }
+        for movie in Movies {
+            if let end = movie.endDate {
+                if startDate...endDate ~= end {
+                    myRunningTime += movie.myRuntime
+                    if let month = Calendar.current.dateComponents([.month], from: end).month {
+                        monthlyRunningTime[month - 1][1] += movie.myRuntime
+                    }
+                }
+            }
+        }
     }
 }
