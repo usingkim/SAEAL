@@ -11,15 +11,20 @@ struct SearchMovieDetailView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @State var movie: SearchViewModel.SearchMovie
+    var movie: SearchViewModel.SearchMovie
+    @StateObject private var searchMovieDetailVM: SearchMovieDetailViewModel
     
-    @StateObject private var searchMovieDetailVM = SearchMovieDetailViewModel()
+    init(movie: SearchViewModel.SearchMovie) {
+        self.movie = movie
+        _searchMovieDetailVM = StateObject(wrappedValue: SearchMovieDetailViewModel(movie: movie))
+    }
+    
     
     var body: some View {
         ScrollView {
             VStack {
                 if let detail = searchMovieDetailVM.movieDetail {
-                    MovieDetailSubView(movie: DBMovie(title: movie.title, MovieID: movie.id, runtime: detail.runtime, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: -1, actors: searchMovieDetailVM.actors, director: searchMovieDetailVM.director, myRuntime: -1, startDate: searchMovieDetailVM.startDate, endDate: searchMovieDetailVM.endDate))
+                    MovieDetailSubView(movie: DBMovie(title: searchMovieDetailVM.movie.title, MovieID: movie.id, runtime: detail.runtime, posterLink: searchMovieDetailVM.movie.posterPath, touchedTime: Date.now, releaseDate: searchMovieDetailVM.movie.releaseDate, overview: searchMovieDetailVM.movie.overview, status: -1, actors: searchMovieDetailVM.actors, director: searchMovieDetailVM.director, myRuntime: -1, startDate: searchMovieDetailVM.startDate, endDate: searchMovieDetailVM.endDate))
                 }
                 
                 HStack(spacing: 30) {
@@ -54,7 +59,7 @@ struct SearchMovieDetailView: View {
                         Text("줄거리")
                             .font(.title04)
                             .padding(.bottom, 10)
-                        Text("\(movie.overview)")
+                        Text("\(searchMovieDetailVM.movie.overview)")
                             .font(.body03)
                             .padding(.leading, 5)
                     })
@@ -68,7 +73,7 @@ struct SearchMovieDetailView: View {
             .padding(.leading, 16)
             .padding(.trailing, 16)
             .onAppear {
-                searchMovieDetailVM.getDetailAndCredit(movie: movie)
+                searchMovieDetailVM.getDetailAndCredit(movie: searchMovieDetailVM.movie)
             }
             .sheet(isPresented: Binding<Bool>(
                 get: { searchMovieDetailVM.isShowingSaveSheet },
@@ -85,7 +90,7 @@ struct SearchMovieDetailView: View {
             ), content: {
                 Alert(title: Text("나의 필모그래피에 등록하시겠습니까?"),
                       primaryButton: .default(Text("등록") , action: {
-                    searchMovieDetailVM.addMovie(newMovie: DBMovie(title: movie.title, MovieID: movie.id, runtime: searchMovieDetailVM.movieDetail?.runtime ?? 0, posterLink: movie.posterPath, touchedTime: Date.now, releaseDate: movie.releaseDate, overview: movie.overview, status: DBMovie.Status.bookmark.rawValue, actors: searchMovieDetailVM.actors, director: searchMovieDetailVM.director, myRuntime: 0, startDate: nil, endDate: nil))
+                    searchMovieDetailVM.addMovie(newMovie: DBMovie(title: searchMovieDetailVM.movie.title, MovieID: searchMovieDetailVM.movie.id, runtime: searchMovieDetailVM.movieDetail?.runtime ?? 0, posterLink: searchMovieDetailVM.movie.posterPath, touchedTime: Date.now, releaseDate: searchMovieDetailVM.movie.releaseDate, overview: searchMovieDetailVM.movie.overview, status: DBMovie.Status.bookmark.rawValue, actors: searchMovieDetailVM.actors, director: searchMovieDetailVM.director, myRuntime: 0, startDate: nil, endDate: nil))
                     dismiss()
                 }),
                       secondaryButton: .destructive(Text("취소"), action: { searchMovieDetailVM.status = nil })

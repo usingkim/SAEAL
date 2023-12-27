@@ -10,15 +10,20 @@ import SwiftUI
 struct MyMediaDetailView: View {
     @Environment(\.dismiss) var dismiss
     
-    @State var movie: DBMovie
+    var movie: DBMovie
     
-    @StateObject private var myMediaDetailVM: MyMediaDetailViewModel = MyMediaDetailViewModel()
+    @StateObject private var myMediaDetailVM: MyMediaDetailViewModel
+    
+    init(movie: DBMovie) {
+        self.movie = movie
+        _myMediaDetailVM = StateObject(wrappedValue: MyMediaDetailViewModel(movie: movie))
+    }
     
     var body: some View {
         ScrollView {
             VStack {
                 
-                MovieDetailSubView(movie: movie)
+                MovieDetailSubView(movie: myMediaDetailVM.movie)
                 
                 HStack(spacing: 30) {
                     ForEach(DBMovie.Status.allCases, id:\.self) { s in
@@ -55,7 +60,7 @@ struct MyMediaDetailView: View {
                         Text("줄거리")
                             .font(.title04)
                             .padding(.bottom, 10)
-                        Text("\(movie.overview)")
+                        Text("\(myMediaDetailVM.movie.overview)")
                             .font(.body03)
                             .padding(.leading, 5)
                     })
@@ -64,7 +69,7 @@ struct MyMediaDetailView: View {
                 Spacer()
             }
             .onAppear {
-                myMediaDetailVM.setStatus(s: movie.status)
+                myMediaDetailVM.setStatus(s: myMediaDetailVM.movie.status)
             }
             .padding(.leading, 16)
             .padding(.trailing, 16)
@@ -75,16 +80,16 @@ struct MyMediaDetailView: View {
                 editSheet
                     .onAppear {
                         
-                        if let s = movie.startDate {
+                        if let s = myMediaDetailVM.movie.startDate {
                             myMediaDetailVM.startDate = s
                         }
                         
-                        if let e = movie.endDate {
+                        if let e = myMediaDetailVM.movie.endDate {
                             myMediaDetailVM.endDate = e
                         }
                     }
                     .onDisappear {
-                        myMediaDetailVM.setStatus(s: movie.status)
+                        myMediaDetailVM.setStatus(s: myMediaDetailVM.movie.status)
                     }
                     .presentationDetents([.fraction(0.3)])
                     .alert(isPresented: Binding<Bool>(
@@ -101,10 +106,10 @@ struct MyMediaDetailView: View {
     var changeAlert: Alert {
         Alert(title: Text("변경하시겠습니까?"),
               primaryButton: .default(Text("확인") , action: {
-            let newMovie = DBMovie(movie: movie)
-            myMediaDetailVM.editMovie(oldMovie: movie, newMovie: newMovie)
+            let newMovie = DBMovie(movie: myMediaDetailVM.movie)
+            myMediaDetailVM.editMovie(oldMovie: myMediaDetailVM.movie, newMovie: newMovie)
             
-            movie = newMovie
+            myMediaDetailVM.movie = newMovie
             dismiss()
         }),
               secondaryButton: .cancel(Text("취소"), action: {

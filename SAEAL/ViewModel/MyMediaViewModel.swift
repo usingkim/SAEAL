@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-final class MyMediaViewModel: ObservableObject {
+class MyMediaViewModel: ObservableObject {
     @Published var filteredMovies: [MyMovie] = []
     @Published var status: DBMovie.Status?
     @Published var isShowingDeleteAlert: Bool = false
