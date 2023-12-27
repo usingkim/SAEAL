@@ -16,7 +16,11 @@ struct SearchView: View {
             HStack {
                 TextField("어떤 영화를 기록하시겠어요?", text: Binding<String>(
                     get: { searchVM.searchText },
-                    set: { searchVM.searchText = $0 }
+                    set: { value in
+                        DispatchQueue.main.async {
+                            searchVM.searchText = value
+                        }
+                    }
                 ), onCommit: {
                     searchVM.search()
                 })

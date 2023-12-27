@@ -8,12 +8,18 @@
 import Foundation
 
 final class MyMediaDetailViewModel: MyMediaViewModel {
+    @Published var movie: DBMovie
+    
     @Published var isShowingEditSheet: Bool = false
     @Published var isShowingDeleteAlertSheet: Bool = false
     @Published var isShowingBookmarkAlert: Bool = false
     @Published var watchedTime: Double = 0
     @Published var startDate: Date = Date.now
     @Published var endDate: Date = Date.now
+    
+    init(movie: DBMovie) {
+        self.movie = movie
+    }
     
     func editMovie(oldMovie: DBMovie, newMovie: DBMovie) {
         
