@@ -11,9 +11,14 @@ struct SearchMovieDetailView: View {
     
     @Environment(\.dismiss) var dismiss
     
-    @State var movie: SearchViewModel.SearchMovie
+    var movie: SearchViewModel.SearchMovie
+    @StateObject private var searchMovieDetailVM: SearchMovieDetailViewModel
     
-    @StateObject private var searchMovieDetailVM = SearchMovieDetailViewModel()
+    init(movie: SearchViewModel.SearchMovie) {
+        self.movie = movie
+        _searchMovieDetailVM = StateObject(wrappedValue: SearchMovieDetailViewModel(movie: movie))
+    }
+    
     
     var body: some View {
         ScrollView {

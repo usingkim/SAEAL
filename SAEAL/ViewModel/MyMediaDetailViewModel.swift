@@ -7,11 +7,10 @@
 
 import Foundation
 
-final class MyMediaDetailViewModel: ObservableObject {
+final class MyMediaDetailViewModel: MyMediaViewModel {
     @Published var isShowingEditSheet: Bool = false
     @Published var isShowingDeleteAlertSheet: Bool = false
     @Published var isShowingBookmarkAlert: Bool = false
-    @Published var status: DBMovie.Status? = .bookmark
     @Published var watchedTime: Double = 0
     @Published var startDate: Date = Date.now
     @Published var endDate: Date = Date.now

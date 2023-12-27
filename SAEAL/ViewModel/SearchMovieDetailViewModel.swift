@@ -9,6 +9,8 @@ import Foundation
 
 final class SearchMovieDetailViewModel: ObservableObject {
     
+    @Published var movie: SearchViewModel.SearchMovie
+    
     @Published var movieDetail: MovieDetail?
     @Published var movieCredit: MovieCredit?
     @Published var director: String = ""
@@ -19,6 +21,10 @@ final class SearchMovieDetailViewModel: ObservableObject {
     @Published var watchedTime: Double = 0
     @Published var startDate: Date = Date.now
     @Published var endDate: Date = Date.now
+    
+    init(movie: SearchViewModel.SearchMovie) {
+        self.movie = movie
+    }
     
     func changeStatus(newStatus: DBMovie.Status) {
         if status == newStatus {
