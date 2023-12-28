@@ -19,7 +19,6 @@ struct SearchMovieDetailView: View {
         _searchMovieDetailVM = StateObject(wrappedValue: SearchMovieDetailViewModel(movie: movie))
     }
     
-    
     var body: some View {
         ScrollView {
             VStack {
