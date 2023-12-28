@@ -7,10 +7,11 @@
 
 import Foundation
 
+@MainActor
 final class SearchMovieDetailViewModel: ObservableObject {
     
-    @Published var movie: SearchViewModel.SearchMovie
-    
+    var movie: SearchViewModel.SearchMovie
+    //서울의 봄
     @Published var movieDetail: MovieDetail?
     @Published var movieCredit: MovieCredit?
     @Published var director: String = ""
@@ -41,7 +42,7 @@ final class SearchMovieDetailViewModel: ObservableObject {
     func getDetailAndCredit(movie: SearchViewModel.SearchMovie) {
         Task {
             if let detail = await getMovieDetailByID(id: movie.id) {
-                movieDetail = detail
+                self.movieDetail = detail
             }
             else {
                 print("영화 정보가 없습니다.")
@@ -50,13 +51,17 @@ final class SearchMovieDetailViewModel: ObservableObject {
             if let credit = await getMovieCreditByID(id: movie.id) {
                 movieCredit = credit
                 var numOfActor = 0
+                
+                var tmpActor: [String] = []
                 for actor in credit.cast {
-                    actors.append(actor.name)
+                    tmpActor.append(actor.name)
                     numOfActor += 1
                     if numOfActor == 3 {
                         break
                     }
                 }
+                self.actors.append(contentsOf: tmpActor)
+                
                 if let idx = movieCredit?.crew.firstIndex(where: { $0.job == "Directing" || $0.job ==  "Director" }) {
                     director = credit.crew[idx].name
                 }
