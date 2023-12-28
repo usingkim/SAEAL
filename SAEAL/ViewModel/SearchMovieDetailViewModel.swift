@@ -42,11 +42,7 @@ final class SearchMovieDetailViewModel: ObservableObject {
     func getDetailAndCredit(movie: SearchViewModel.SearchMovie) {
         Task {
             if let detail = await getMovieDetailByID(id: movie.id) {
-                DispatchQueue.main.async { [weak self] in
-                    if let self {
-                        self.movieDetail = detail
-                    }
-                }
+                self.movieDetail = detail
             }
             else {
                 print("영화 정보가 없습니다.")
@@ -64,13 +60,8 @@ final class SearchMovieDetailViewModel: ObservableObject {
                         break
                     }
                 }
-            
-                DispatchQueue.main.async { [weak self] in
-                    if let self {
-                        self.actors.append(contentsOf: tmpActor)
-                    }
-                }
-                    
+                self.actors.append(contentsOf: tmpActor)
+                
                 if let idx = movieCredit?.crew.firstIndex(where: { $0.job == "Directing" || $0.job ==  "Director" }) {
                     director = credit.crew[idx].name
                 }
